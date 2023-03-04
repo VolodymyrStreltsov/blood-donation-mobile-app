@@ -1,0 +1,2 @@
+export { useThemeColor } from './useThemeColor'
+

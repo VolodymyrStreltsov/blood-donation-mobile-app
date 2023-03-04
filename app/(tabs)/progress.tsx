@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native'
-import { EditScreenInfo, MenuFAB, Text, View } from '../../components'
+import { EditScreenInfo, Text, View } from '../../components'
 
-export default function TabOneScreen() {
+export default function TabProgressScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Donations</Text>
+      <Text style={styles.title}>Progress</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-      <MenuFAB />
+      <EditScreenInfo path="app/(tabs)/progress.tsx" />
     </View>
   )
 }
