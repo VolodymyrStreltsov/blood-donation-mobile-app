@@ -1,2 +1,1 @@
-export { EditScreenInfo } from './editScreenInfo/EditScreenInfo'
-
+export {}
