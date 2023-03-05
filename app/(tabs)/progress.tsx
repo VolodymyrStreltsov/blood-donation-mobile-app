@@ -1,3 +1,4 @@
+import React from 'react'
 import { PageWrapper, Text } from '../../components'
 
 export default function TabProgressScreen() {

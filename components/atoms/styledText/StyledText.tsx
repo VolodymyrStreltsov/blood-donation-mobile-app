@@ -1,3 +1,4 @@
+import React from 'react'
 import { Text, TextProps } from '../text/Text'
 
 export const MonoText = (props: TextProps) => (

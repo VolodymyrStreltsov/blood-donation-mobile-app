@@ -2,11 +2,11 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 import {
     DarkTheme,
     DefaultTheme,
-    ThemeProvider,
+    ThemeProvider
 } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useColorScheme } from 'react-native'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { AuthProvider } from '../context'

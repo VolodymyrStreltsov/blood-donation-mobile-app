@@ -1,3 +1,4 @@
+import React from 'react'
 import { Text as DefaultText } from 'react-native'
 import { useThemeColor } from '../../../functions'
 

@@ -1,3 +1,4 @@
+import React from 'react'
 import { View as DefaultView } from 'react-native'
 import { useThemeColor } from '../../../functions'
 

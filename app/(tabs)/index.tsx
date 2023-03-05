@@ -1,3 +1,4 @@
+import React from 'react'
 import { MenuFAB, PageWrapper, Text } from '../../components'
 import { useAuth } from '../../context'
 

@@ -1,10 +1,10 @@
 import { useRouter, useSegments } from 'expo-router'
-import {
+import React, {
     createContext,
     ReactNode,
     useContext,
     useEffect,
-    useState,
+    useState
 } from 'react'
 
 const AuthContext = createContext({} as AuthContextData)

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { StyleSheet } from 'react-native'
 import { View } from '../../atoms'
 

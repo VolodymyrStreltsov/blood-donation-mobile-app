@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from 'expo-router'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { FAB, Portal } from 'react-native-paper'
 
 export const MenuFAB = () => {
@@ -22,8 +22,8 @@ export const MenuFAB = () => {
                             router.push('modal')
                         },
                     },
-                    { icon: 'star', label: 'Star', onPress: () => {} },
-                    { icon: 'email', label: 'Email', onPress: () => {} },
+                    { icon: 'star', label: 'Star', onPress: () => { router.push('modal') } },
+                    { icon: 'email', label: 'Email', onPress: () => { router.push('modal') } },
                 ]}
                 onStateChange={({ open }: { open: boolean }) => setOpen(open)}
                 visible={pathname === '/'}

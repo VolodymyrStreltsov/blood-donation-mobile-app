@@ -1,4 +1,5 @@
 import { Tabs } from 'expo-router'
+import React from 'react'
 import { useColorScheme } from 'react-native'
 import { TabBarButton } from '../../components'
 
@@ -56,7 +57,7 @@ const TabLayout = () => {
             <Tabs.Screen
                 name='profile'
                 options={{
-                    tabBarIcon: ({ focused, color }) => (
+                    tabBarIcon: ({ color }) => (
                         <TabBarButton
                             iconName='account-cowboy-hat-outline'
                             color={color}
