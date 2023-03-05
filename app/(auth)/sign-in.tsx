@@ -15,7 +15,7 @@ export default function SignIn() {
                 value={state}
                 placeholder='your name'
             />
-            <Text onPress={() => signIn({ name: state, email: '1@gm.com' })}>
+            <Text onPress={() => signIn({ name: state, email: '1@gm.com' })} align='center' style={{ marginTop: 40 }}>
                 Sign In
             </Text>
         </PageWrapper>
