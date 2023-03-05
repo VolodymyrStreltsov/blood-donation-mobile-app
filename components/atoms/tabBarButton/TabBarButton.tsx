@@ -30,7 +30,7 @@ export const TabBarButton = ({
                             : color,
                 }}
             />
-            <Text>{tabName}</Text>
+            <Text variant='h5' bold>{tabName}</Text>
         </>
     )
 }

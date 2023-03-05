@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react'
 import { StyleSheet } from 'react-native'
-import { View } from '../../atoms'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 type PageWrapperProps = {
     children: ReactNode
 }
 
 export const PageWrapper = ({ children }: PageWrapperProps) => {
-    return <View style={styles.container}>{children}</View>
+    return <SafeAreaView style={styles.container}>{children}</SafeAreaView>
 }
 
 const styles = StyleSheet.create({
@@ -15,5 +15,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        paddingTop: 25,
     },
 })

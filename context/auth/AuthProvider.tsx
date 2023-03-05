@@ -27,7 +27,7 @@ function useProtectedRoute(user: User) {
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [auth, setAuth] = useState(null as User | null)
+    const [auth, setAuth] = useState({} as User | null) // change to null
 
     useProtectedRoute(auth)
 
