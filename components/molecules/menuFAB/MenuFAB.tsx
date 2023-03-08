@@ -13,17 +13,19 @@ export const MenuFAB = () => {
             <FAB.Group
                 style={{ paddingBottom: 80 }}
                 open={open}
-                icon={open ? 'calendar-today' : 'plus'}
+                icon={open ? 'fountain-pen' : 'plus'}
                 actions={[
                     {
-                        icon: 'plus',
-                        label: 'Star',
+                        icon: 'bandage',
+                        label: 'Disqualification',
+                        style: { backgroundColor: '#B3261E' },
+                        color: '#fff',
                         onPress: () => {
-                            router.push('modal')
+                            router.push({ pathname: 'modal-form', params: { name: 'disqualification', mode: 'add' } })
                         },
                     },
-                    { icon: 'star', label: 'Star', onPress: () => { router.push('modal') } },
-                    { icon: 'email', label: 'Email', onPress: () => { router.push('modal') } },
+                    { icon: 'tag-heart', label: 'Platelets', onPress: () => { router.push({ pathname: 'modal-form', params: { name: 'platelets', mode: 'add' } }) } },
+                    { icon: 'grease-pencil', label: 'Whole blood', onPress: () => { router.push({ pathname: 'modal-form', params: { name: 'whole-blood', mode: 'add' } }) } },
                 ]}
                 onStateChange={({ open }: { open: boolean }) => setOpen(open)}
                 visible={pathname === '/'}

@@ -4,8 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { NEXT_DONATIONS_DATA, PREVIOUS_DONATIONS_DATA } from '../../assets/data/dataArrays'
 import { MenuFAB, NextDonationCard, PageWrapper, PreviousDonationListElement, Text } from '../../components'
 
-export default function TabOneScreen() {
-
+export default function TabDonationsScreen() {
     return (
         <PageWrapper>
             <Text variant='h3' align='flex-start' style={{ marginLeft: 42, marginBottom: 18 }}>Next donation</Text>
@@ -22,7 +21,7 @@ export default function TabOneScreen() {
             <SafeAreaView style={{ flex: 2 }}>
                 <FlatList
                     data={PREVIOUS_DONATIONS_DATA}
-                    renderItem={({ item }) => <PreviousDonationListElement type={item.type} data={item.data} />}
+                    renderItem={({ item }) => <PreviousDonationListElement type={item.type} date={item.date} />}
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
                 />

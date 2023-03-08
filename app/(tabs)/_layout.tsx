@@ -35,7 +35,7 @@ const TabLayout = () => {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <TabBarButton
-                            iconName='bat'
+                            iconName='blood-bag'
                             color={color}
                             tabName='Donations'
                         />
@@ -47,7 +47,7 @@ const TabLayout = () => {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <TabBarButton
-                            iconName='beaker-outline'
+                            iconName='progress-check'
                             color={color}
                             tabName='Progress'
                         />
@@ -59,7 +59,7 @@ const TabLayout = () => {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <TabBarButton
-                            iconName='account-cowboy-hat-outline'
+                            iconName='account-circle'
                             color={color}
                             tabName='Profile'
                         />

@@ -62,8 +62,16 @@ function RootLayoutNav() {
                             }}
                         />
                         <Stack.Screen
-                            name='modal'
+                            name='modal-info'
                             options={{
+                                presentation: 'modal',
+                                animation: 'slide_from_bottom',
+                            }}
+                        />
+                        <Stack.Screen
+                            name='modal-form'
+                            options={{
+                                headerShown: false,
                                 presentation: 'modal',
                                 animation: 'slide_from_bottom',
                             }}

@@ -3,7 +3,7 @@ import React from 'react'
 import { Platform } from 'react-native'
 import { PageWrapper, Text } from '../components'
 
-export default function ModalScreen() {
+export default function ModalInfoScreen() {
     return (
         <PageWrapper>
             <Text>Info</Text>

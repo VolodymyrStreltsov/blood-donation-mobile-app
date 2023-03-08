@@ -1,9 +1,9 @@
 import React from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Dimensions, Platform, StyleSheet, View } from 'react-native'
 import { Avatar } from 'react-native-paper'
 import { Text } from '../../atoms'
 
-export const PreviousDonationListElement = ({ type, data }: { type: string, data: string }) => {
+export const PreviousDonationListElement = ({ type, date }: { type: string, date: string }) => {
     return (<View style={styles.wrapper}>
         <View style={styles.left}>
             <Avatar.Text
@@ -12,7 +12,7 @@ export const PreviousDonationListElement = ({ type, data }: { type: string, data
 
             />
             <View style={styles.text}>
-                <Text align='flex-start' variant='h5' bold>{data}</Text>
+                <Text align='flex-start' variant='h5' bold>{date}</Text>
                 <Text align='flex-start' variant='h4'>{type}</Text>
             </View>
         </View>
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: Dimensions.get('window').width * 0.8,
+        width: Platform.OS === 'web' ? '80vw' : Dimensions.get('window').width * 0.8,
         height: 72,
     },
     text: {
