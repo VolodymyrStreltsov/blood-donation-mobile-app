@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { TextInput } from 'react-native-paper'
-import { Text } from '../../atoms'
-import { DatePicker } from '../../atoms/datePicker/DatePicker'
+import { DatePicker, Text } from '../../atoms'
 
 export const AddDonationForm = ({ nameOfDonation }: { nameOfDonation: string }) => {
   const [state, onChangeState] = useState<string>(' ')
   const [state1, onChangeState1] = useState<string>(' ')
   const [state2, onChangeState2] = useState<string>(' ')
   return (
-
     <View>
       <DatePicker />
       <Text variant='h2'>{nameOfDonation}</Text>
@@ -20,7 +18,6 @@ export const AddDonationForm = ({ nameOfDonation }: { nameOfDonation: string }) 
           label='hemoglobin'
           onChangeText={onChangeState}
           value={state}
-          autoFocus
         />
         <TextInput
           style={styles.item}
@@ -57,9 +54,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     gap: 10,
-    padding: 25
+    padding: 25,
   },
   item: {
-    width: '40%'
-  }
+    width: '40%',
+  },
 })

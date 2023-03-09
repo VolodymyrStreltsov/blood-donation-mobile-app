@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react"
-import { View } from "react-native"
+import React, { useCallback, useState } from 'react'
+import { View } from 'react-native'
 import { Button } from 'react-native-paper'
 import { DatePickerModal, enGB, registerTranslation } from 'react-native-paper-dates'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -18,17 +18,17 @@ export function DatePicker() {
       setOpen(false)
       setDate(params.date)
     },
-    [setOpen, setDate]
+    [setOpen, setDate],
   )
-
 
   return (
     <SafeAreaProvider>
-      <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
-        <Button onPress={() => setOpen(true)} uppercase={false} mode="outlined">
+      <View style={{ justifyContent: 'center', flex: 0.5, alignItems: 'center' }}>
+        <Button onPress={() => setOpen(true)} uppercase={false} mode='outlined'>
           {date.toDateString()}
         </Button>
         <DatePickerModal
+          animationType='slide'
           label='Select date'
           locale='en-GB'
           mode='single'
