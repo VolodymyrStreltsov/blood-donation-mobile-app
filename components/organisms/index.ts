@@ -1,1 +1,1 @@
-export { AddDonationForm } from './addDonationForm/AddDonationForm'
+export { DonationForm } from './donationForm/DonationForm'

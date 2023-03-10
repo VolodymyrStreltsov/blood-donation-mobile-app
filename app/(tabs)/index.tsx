@@ -7,16 +7,16 @@ import {
   NextDonationCard,
   PageWrapper,
   PreviousDonationListElement,
-  Text,
+  Text
 } from '../../components'
 
 export default function TabDonationsScreen() {
   return (
     <PageWrapper>
-      <Text variant='h3' align='flex-start' style={{ marginLeft: 42, marginBottom: 18 }}>
+      <Text variant='h3' align='flex-start' style={{ marginBottom: 18 }}>
         Next donation
       </Text>
-      <SafeAreaView style={{ flex: 0.9 }}>
+      <SafeAreaView style={{ flex: 0.9, marginHorizontal: -42 }}>
         <FlatList
           horizontal
           data={NEXT_DONATIONS_DATA}
@@ -25,14 +25,14 @@ export default function TabDonationsScreen() {
           showsHorizontalScrollIndicator={false}
         />
       </SafeAreaView>
-      <Text variant='h3' align='flex-start' style={{ marginLeft: 42 }}>
+      <Text variant='h3' align='flex-start'>
         Previous donation
       </Text>
-      <SafeAreaView style={{ flex: 2 }}>
+      <SafeAreaView style={{ flex: 2.1 }}>
         <FlatList
           data={PREVIOUS_DONATIONS_DATA}
           renderItem={({ item }) => (
-            <PreviousDonationListElement type={item.type} date={item.date} />
+            <PreviousDonationListElement item={item} />
           )}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}

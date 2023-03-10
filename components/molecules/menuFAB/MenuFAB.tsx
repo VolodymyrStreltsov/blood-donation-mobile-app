@@ -21,21 +21,21 @@ export const MenuFAB = () => {
             style: { backgroundColor: '#B3261E' },
             color: '#fff',
             onPress: () => {
-              router.push({ pathname: 'modal', params: { name: 'disqualification', mode: 'add' } })
+              router.push({ pathname: 'modal', params: { name: 'disqualification' } })
             },
           },
           {
             icon: 'tag-heart',
             label: 'Platelets',
             onPress: () => {
-              router.push({ pathname: 'modal', params: { name: 'platelets', mode: 'add' } })
+              router.push({ pathname: 'modal', params: { name: 'platelets' } })
             },
           },
           {
             icon: 'grease-pencil',
             label: 'Whole blood',
             onPress: () => {
-              router.push({ pathname: 'modal', params: { name: 'whole-blood', mode: 'add' } })
+              router.push({ pathname: 'modal', params: { name: 'whole-blood' } })
             },
           },
         ]}

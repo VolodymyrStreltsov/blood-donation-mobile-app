@@ -1,19 +1,24 @@
+import { useRouter } from 'expo-router'
+import moment from 'moment'
 import React from 'react'
-import { Dimensions, Platform, StyleSheet, View } from 'react-native'
+import { Dimensions, Platform, Pressable, StyleSheet, View } from 'react-native'
 import { Avatar } from 'react-native-paper'
+import { DATE_FORMAT } from '../../../constants/Constants'
 import { Text } from '../../atoms'
 
-export const PreviousDonationListElement = ({ type, date }: { type: string; date: string }) => {
+export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
+  const router = useRouter()
+
   return (
-    <View style={styles.wrapper}>
+    <Pressable style={styles.wrapper} onPress={() => router.push({ pathname: 'modal', params: { name: item.baseDonationInfo.type, id: item.id } })}>
       <View style={styles.left}>
-        <Avatar.Text size={40} label={type[0]} />
+        <Avatar.Text size={40} label={item.baseDonationInfo.type[0]} />
         <View style={styles.text}>
           <Text align='flex-start' variant='h5' bold>
-            {date}
+            {moment(item.baseDonationInfo.date).format(DATE_FORMAT)}
           </Text>
           <Text align='flex-start' variant='h4'>
-            {type}
+            {item.baseDonationInfo.type}
           </Text>
         </View>
       </View>
@@ -22,7 +27,7 @@ export const PreviousDonationListElement = ({ type, date }: { type: string; date
           450ml
         </Text>
       </View>
-    </View>
+    </Pressable>
   )
 }
 
