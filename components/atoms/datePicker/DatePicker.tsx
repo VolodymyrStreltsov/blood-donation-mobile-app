@@ -1,45 +1,62 @@
-import React, { useCallback, useState } from "react"
-import { View } from "react-native"
-import { Button } from 'react-native-paper'
-import { DatePickerModal, enGB, registerTranslation } from 'react-native-paper-dates'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
-registerTranslation('en-GB', enGB)
+import DateTimePicker from '@react-native-community/datetimepicker'
+import moment from 'moment'
+import React, { useState } from 'react'
+import { Control, Controller } from 'react-hook-form'
+import { View } from 'react-native'
+import { TextInput } from 'react-native-paper'
+import { StyleProp, ViewStyle } from 'react-native/types'
+import { DATE_FORMAT } from '../../../constants/Constants'
 
-export function DatePicker() {
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
+interface DatePickerProps {
+  control: Control<any>
+  name: string
+  style?: StyleProp<ViewStyle>
+  disabled?: boolean
+}
 
-  const onDismissSingle = useCallback(() => {
-    setOpen(false)
-  }, [setOpen])
+export const DatePicker = ({
+  control,
+  name,
+  style,
+  disabled,
+}: DatePickerProps) => {
+  const [showPicker, setShowPicker] = useState(false)
 
-  const onConfirmSingle = useCallback(
-    (params: any) => {
-      setOpen(false)
-      setDate(params.date)
-    },
-    [setOpen, setDate]
-  )
-
+  const togglePicker = () => {
+    setShowPicker(!showPicker)
+  }
 
   return (
-    <SafeAreaProvider>
-      <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
-        <Button onPress={() => setOpen(true)} uppercase={false} mode="outlined">
-          {date.toDateString()}
-        </Button>
-        <DatePickerModal
-          label='Select date'
-          locale='en-GB'
-          mode='single'
-          visible={open}
-          onDismiss={onDismissSingle}
-          date={date}
-          onConfirm={onConfirmSingle}
-          startYear={1990}
-          endYear={2049}
-        />
-      </View>
-    </SafeAreaProvider>
+    <View>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <>
+            <TextInput
+              style={style}
+              mode='outlined'
+              label={name}
+              editable={false}
+              disabled={disabled}
+              value={value?.nativeEvent?.timestamp ? moment(new Date(value.nativeEvent.timestamp)).format(DATE_FORMAT) : moment(new Date(value)).format(DATE_FORMAT)}
+              right={<TextInput.Icon icon='calendar' onPress={!disabled ? togglePicker : () => null} />}
+            />
+            {showPicker && (
+              <DateTimePicker
+                value={value?.nativeEvent?.timestamp ? new Date(value.nativeEvent.timestamp) : new Date(value)}
+                mode='date'
+                display='default'
+                themeVariant='dark'
+                onChange={(e) => {
+                  togglePicker(),
+                    onChange(e)
+                }}
+              />
+            )}
+          </>
+        )}
+      />
+    </View>
   )
 }

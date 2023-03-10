@@ -1,49 +1,57 @@
+import { useRouter } from 'expo-router'
+import moment from 'moment'
 import React from 'react'
-import { Dimensions, Platform, StyleSheet, View } from 'react-native'
+import { Dimensions, Platform, Pressable, StyleSheet, View } from 'react-native'
 import { Avatar } from 'react-native-paper'
+import { DATE_FORMAT } from '../../../constants/Constants'
 import { Text } from '../../atoms'
 
-export const PreviousDonationListElement = ({ type, date }: { type: string, date: string }) => {
-    return (<View style={styles.wrapper}>
-        <View style={styles.left}>
-            <Avatar.Text
-                size={40}
-                label={type[0]}
+export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
+  const router = useRouter()
 
-            />
-            <View style={styles.text}>
-                <Text align='flex-start' variant='h5' bold>{date}</Text>
-                <Text align='flex-start' variant='h4'>{type}</Text>
-            </View>
+  return (
+    <Pressable style={styles.wrapper} onPress={() => router.push({ pathname: 'modal', params: { name: item.baseDonationInfo.type, id: item.id } })}>
+      <View style={styles.left}>
+        <Avatar.Text size={40} label={item.baseDonationInfo.type[0]} />
+        <View style={styles.text}>
+          <Text align='flex-start' variant='h5' bold>
+            {moment(item.baseDonationInfo.date).format(DATE_FORMAT)}
+          </Text>
+          <Text align='flex-start' variant='h4'>
+            {item.baseDonationInfo.type}
+          </Text>
         </View>
-        <View style={styles.right}>
-            <Text variant='h4' bold>450ml</Text>
-        </View>
-    </View>)
+      </View>
+      <View style={styles.right}>
+        <Text variant='h4' bold>
+          450ml
+        </Text>
+      </View>
+    </Pressable>
+  )
 }
 
-
 const styles = StyleSheet.create({
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: Platform.OS === 'web' ? '80vw' : Dimensions.get('window').width * 0.8,
-        height: 72,
-    },
-    text: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginLeft: 16,
-    },
-    left: {
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    right: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: Platform.OS === 'web' ? '80vw' : Dimensions.get('window').width * 0.8,
+    height: 72,
+  },
+  text: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginLeft: 16,
+  },
+  left: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  right: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 })
