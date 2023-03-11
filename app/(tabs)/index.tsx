@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { NEXT_DONATIONS_DATA, PREVIOUS_DONATIONS_DATA } from '../../assets/data/dataArrays'
 import {
   MenuFAB,
   NextDonationCard,
@@ -9,8 +8,10 @@ import {
   PreviousDonationListElement,
   Text
 } from '../../components'
+import { DataContext } from '../../data/DataContext'
 
 export default function TabDonationsScreen() {
+  const { NEXT_DONATIONS_DATA, PREVIOUS_DONATIONS_DATA } = useContext(DataContext)
   return (
     <PageWrapper>
       <Text variant='h3' align='flex-start' style={{ marginBottom: 18 }}>
