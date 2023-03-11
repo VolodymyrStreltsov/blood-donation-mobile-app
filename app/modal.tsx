@@ -10,7 +10,7 @@ export default function ModalScreen() {
   const idOfDonation = typeof id === 'string' ? id : ''
 
   return (
-    <PageWrapper>
+    <PageWrapper type='modal'>
       <DonationForm nameOfDonation={nameOfDonation} id={idOfDonation} />
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />

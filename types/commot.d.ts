@@ -7,6 +7,8 @@ type User = { name: string; email: string } | null
 
 type RecordValue = string | number | Date
 
+type DropdownType = { label: string; value: string }
+
 interface AuthContextData {
   signIn: (user: User) => void
   signOut: () => void
@@ -14,7 +16,7 @@ interface AuthContextData {
 }
 
 interface BaseDonationInfo {
-  type: 'Whole_blood' | 'Plasma' | 'Platelets' | 'Disqualification'
+  type?: 'Whole_blood' | 'Plasma' | 'Platelets' | 'Disqualification'
   date: string | Date
   volume: string
   blood_pressure: string
@@ -47,7 +49,7 @@ interface BaseDonationIndicator extends Omit<Indicator, 'id'> {
 }
 
 interface AddDonationFormDefaultValues {
-  [key: string]: RecordValue
+  [key: string]: RecordValue | DropdownType
 }
 
 interface Donation {

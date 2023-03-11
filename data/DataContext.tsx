@@ -50,7 +50,6 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     PREVIOUS_DONATIONS_DATA: previousDonationsData,
     BASE_DONATION_INFO: [
       { id: 'date', title: 'Date', initVal: new Date() },
-      { id: 'type', title: 'Type', initVal: 'Whole_blood' },
       { id: 'volume', title: 'Volume', unit: 'ml', initVal: '450' },
       { id: 'blood_pressure', title: 'Blood Pressure', initVal: '0' },
     ],
@@ -69,6 +68,11 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
       { id: 'MO', title: 'MO', unit: '%', initVal: '0' },
     ],
     setPreviousDonationsData,
+    DONATION_TYPES: [
+      { label: 'Whole blood', value: 'Whole_blood' },
+      { label: 'Plates', value: 'Plates' },
+      { label: 'Plasma', value: 'Plasma' },
+    ],
   }
 
   return <DataContext.Provider value={values}>{children}</DataContext.Provider>

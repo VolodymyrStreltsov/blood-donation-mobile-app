@@ -1,6 +1,7 @@
 import { usePathname, useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import { FAB, Portal } from 'react-native-paper'
+import { Colors } from '../../../constants/Colors'
 
 export const MenuFAB = () => {
   const [open, setOpen] = useState<boolean>(false)
@@ -13,29 +14,40 @@ export const MenuFAB = () => {
       <FAB.Group
         style={{ paddingBottom: 80 }}
         open={open}
-        icon={open ? 'fountain-pen' : 'plus'}
+        icon={open ? 'cup-water' : 'plus'}
+        fabStyle={{ display: open ? 'none' : undefined }}
         actions={[
           {
             icon: 'bandage',
             label: 'Disqualification',
-            style: { backgroundColor: '#B3261E' },
-            color: '#fff',
+            style: { backgroundColor: Colors.DarkAlarm },
+            color: Colors.TintColorLight,
             onPress: () => {
-              router.push({ pathname: 'modal', params: { name: 'disqualification' } })
+              router.push({ pathname: 'modal', params: { name: 'Disqualification' } })
             },
           },
           {
-            icon: 'tag-heart',
+            icon: 'gauge',
             label: 'Platelets',
             onPress: () => {
-              router.push({ pathname: 'modal', params: { name: 'platelets' } })
+              router.push({ pathname: 'modal', params: { name: 'Platelets' } })
             },
           },
           {
-            icon: 'grease-pencil',
+            icon: 'water-outline',
             label: 'Whole blood',
             onPress: () => {
-              router.push({ pathname: 'modal', params: { name: 'whole-blood' } })
+              router.push({ pathname: 'modal', params: { name: 'Whole_blood' } })
+            },
+          },
+          {
+            icon: 'cup-water',
+            label: 'Donation',
+            size: 'medium',
+            style: { display: open ? 'flex' : 'none', backgroundColor: Colors.LightAlarm },
+            color: Colors.TintColorDark,
+            onPress: () => {
+              router.push({ pathname: 'modal', params: { name: 'Donation' } })
             },
           },
         ]}

@@ -5,7 +5,7 @@ import { Text } from '../../atoms'
 
 export const NextDonationCard = ({ title, index }: { title: string; index: number }) => {
   return (
-    <Card style={[styles.card, { marginLeft: index === 0 ? 25 : 7 }]}>
+    <Card style={[styles.card, { marginLeft: index === 0 ? 26 : 7 }]}>
       <Card.Content style={styles.content}>
         <View style={styles.header}>
           <Avatar.Text size={40} label={title[0]} />

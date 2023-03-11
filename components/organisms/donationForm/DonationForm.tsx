@@ -5,11 +5,14 @@ import { Dimensions, Platform, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
 import { DataContext } from '../../../data/DataContext'
-import { ControlledTextInput, DatePicker, Text, View } from '../../atoms'
+import { ControlledDropDown, ControlledTextInput, DatePicker, Text, View } from '../../atoms'
 
 
 export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, id?: string }) => {
-  const { BASE_DONATION_INFO, MORPHOLOGY_INDICATORS, PREVIOUS_DONATIONS_DATA, setPreviousDonationsData } = useContext(DataContext)
+  const { BASE_DONATION_INFO, MORPHOLOGY_INDICATORS, PREVIOUS_DONATIONS_DATA, DONATION_TYPES, setPreviousDonationsData } = useContext(DataContext)
+
+  const dropdownActive = ['Whole_blood', 'Plasma', 'Platelets', 'Disqualification'].includes(nameOfDonation) ? false : true
+
   const donation = id ? PREVIOUS_DONATIONS_DATA.find((el: Donation) => el.id === id) : null
   const [editable, setEditable] = useState(false)
   const [activeFields, setActiveFields] = useState(id === '')
@@ -31,6 +34,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
   }, [editable])
 
   const defaultValues: AddDonationFormDefaultValues = {
+    type: dropdownActive ? DONATION_TYPES[0] : nameOfDonation,
   }
 
   MORPHOLOGY_INDICATORS.forEach((item: Indicator) =>
@@ -54,8 +58,8 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
     setPreviousDonationsData([...PREVIOUS_DONATIONS_DATA, {
       id: Math.random().toString(36).toString(),
       baseDonationInfo: {
-        type: val.type,
-        date: val?.date?.nativeEvent?.timestamp ? new Date(val.date.nativeEvent.timestamp) : new Date(val.date),
+        type: dropdownActive ? val.type : nameOfDonation,
+        date: val.date,
         volume: val.volume,
         blood_pressure: val.blood_pressure,
       },
@@ -74,12 +78,11 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
         MO: val.MO,
       },
     }])
-    console.log(PREVIOUS_DONATIONS_DATA)
     router.back()
   }
 
   return (
-    <View style={styles.container} >
+    <>
       <Appbar.Header style={styles.appbarContainer}>
         <Appbar.BackAction onPress={() => router.back()} />
         <Menu
@@ -97,27 +100,26 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
           <Menu.Item onPress={() => null} title='Share' />
         </Menu>
       </Appbar.Header>
-      <Text variant='h2' align='flex-start'>{nameOfDonation}</Text>
+      <Text variant='h2' align='flex-start' style={{ marginBottom: 40 }}>{nameOfDonation}</Text>
+      {dropdownActive && <ControlledDropDown style={styles.dropDownItem} control={control} name='type' list={DONATION_TYPES} />}
       <View style={styles.headerWrapper}>
-        <View style={styles.formContainer}>
-          {BASE_DONATION_INFO.map((item: BaseDonationIndicator) => item.id === 'date' ?
-            <DatePicker
-              key={item.id}
-              control={control}
-              name={item.id}
-              style={styles.item}
-              disabled={!activeFields} /> :
-            <ControlledTextInput
-              disabled={!activeFields}
-              key={item.id}
-              name={item.id}
-              control={control}
-              style={styles.item}
-            />
-          )}
-        </View >
-      </View>
-      <Text variant='h2' align='flex-start'>Morphology results</Text>
+        {BASE_DONATION_INFO.map((item: BaseDonationIndicator) => item.id === 'date' ?
+          <DatePicker
+            key={item.id}
+            control={control}
+            name={item.id}
+            style={styles.item}
+            disabled={!activeFields} /> :
+          <ControlledTextInput
+            disabled={!activeFields}
+            key={item.id}
+            name={item.id}
+            control={control}
+            style={styles.item}
+          />
+        )}
+      </View >
+      <Text variant='h4' bold align='flex-start' style={{ marginBottom: 20 }}>Morphology results</Text>
       <ScrollView
         contentContainerStyle={styles.formContainer}
         showsVerticalScrollIndicator={false}>
@@ -131,23 +133,27 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
           />
         ))}
       </ScrollView >
-    </View >
+    </ >
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   appbarContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: -76,
-    marginHorizontal: -26,
+    alignItems: 'flex-start',
     backgroundColor: 'transparent',
+    width: Platform.OS === 'web' ? '100vw' : Dimensions.get('window').width,
+    marginTop: Platform.OS === 'web' ? 0 : -25,
   },
   headerWrapper: {
-    height: 150,
+    height: 160,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    width: '100%',
+    rowGap: 16,
   },
   formContainer: {
     flex: 1,
@@ -155,10 +161,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    width: Platform.OS === 'web' ? '85vw' : Dimensions.get('window').width * 0.85,
-    gap: 16,
+    width: '100%',
+    rowGap: 16,
   },
   item: {
     minWidth: '47%',
+  },
+  dropDownItem: {
+    width: '100%',
+    marginBottom: 16,
   },
 })

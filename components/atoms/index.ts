@@ -1,3 +1,4 @@
+export { ControlledDropDown } from './controlledDropDown/ControlledDropDown'
 export { ControlledTextInput } from './controlledTextInput/ControlledTextInput'
 export { DatePicker } from './datePicker/DatePicker'
 export { ResultPresentation } from './resultPresentation/ResultPresentation'

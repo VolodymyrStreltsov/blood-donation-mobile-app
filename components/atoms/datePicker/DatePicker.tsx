@@ -35,25 +35,25 @@ export const DatePicker = ({
         render={({ field: { onChange, value } }) => (
           <>
             {disabled ?
-              <ResultPresentation label={name} value={value?.nativeEvent?.timestamp ? moment(new Date(value.nativeEvent.timestamp)).format(DATE_FORMAT) : moment(new Date(value)).format(DATE_FORMAT)} /> :
+              <ResultPresentation label={name} value={moment(new Date(value)).format(DATE_FORMAT)} /> :
               <TextInput
                 style={style}
                 mode='outlined'
                 label={name}
                 editable={false}
                 disabled={disabled}
-                value={value?.nativeEvent?.timestamp ? moment(new Date(value.nativeEvent.timestamp)).format(DATE_FORMAT) : moment(new Date(value)).format(DATE_FORMAT)}
+                value={moment(new Date(value)).format(DATE_FORMAT)}
                 right={<TextInput.Icon icon='calendar' onPress={!disabled ? togglePicker : () => null} />}
               />}
             {showPicker && (
               <DateTimePicker
-                value={value?.nativeEvent?.timestamp ? new Date(value.nativeEvent.timestamp) : new Date(value)}
+                value={new Date(value)}
                 mode='date'
                 display='default'
                 themeVariant='dark'
-                onChange={(e) => {
+                onChange={(e, val) => {
                   togglePicker(),
-                    onChange(e)
+                    onChange(val)
                 }}
               />
             )}
