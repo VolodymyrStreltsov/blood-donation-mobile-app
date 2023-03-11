@@ -9,6 +9,7 @@ import { SplashScreen, Stack } from 'expo-router'
 import React, { useEffect } from 'react'
 import { useColorScheme } from 'react-native'
 import { Provider as PaperProvider } from 'react-native-paper'
+import { DataProvider } from '../data/DataContext'
 
 export { ErrorBoundary } from 'expo-router'
 
@@ -44,22 +45,24 @@ function RootLayoutNav() {
     <ThemeProvider
       value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <PaperProvider>
-        <Stack>
-          <Stack.Screen
-            name='(tabs)'
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name='modal'
-            options={{
-              headerShown: false,
-              presentation: 'modal',
-              animation: 'slide_from_bottom',
-            }}
-          />
-        </Stack>
+        <DataProvider>
+          <Stack>
+            <Stack.Screen
+              name='(tabs)'
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name='modal'
+              options={{
+                headerShown: false,
+                presentation: 'modal',
+                animation: 'slide_from_bottom',
+              }}
+            />
+          </Stack>
+        </DataProvider>
       </PaperProvider>
     </ThemeProvider>
   )

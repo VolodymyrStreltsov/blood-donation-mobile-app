@@ -15,7 +15,7 @@ export default function TabLayout() {
         tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].nawBar,
+          backgroundColor: Colors[colorScheme ?? 'light'].navBar,
           borderTopWidth: 0,
           height: 80,
           display: 'flex',

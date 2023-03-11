@@ -1,18 +1,18 @@
 import { useRouter } from 'expo-router'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Dimensions, Platform, ScrollView, StyleSheet } from 'react-native'
+import { Dimensions, Platform, StyleSheet } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
-import { BASE_DONATION_INFO, MORPHOLOGY_INDICATORS, PREVIOUS_DONATIONS_DATA } from '../../../assets/data/dataArrays'
+import { DataContext } from '../../../data/DataContext'
 import { ControlledTextInput, DatePicker, Text, View } from '../../atoms'
 
 
 export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, id?: string }) => {
-  const donation = PREVIOUS_DONATIONS_DATA.find((el: Donation) => el.id === id)
+  const { BASE_DONATION_INFO, MORPHOLOGY_INDICATORS, PREVIOUS_DONATIONS_DATA, setPreviousDonationsData } = useContext(DataContext)
+  const donation = id ? PREVIOUS_DONATIONS_DATA.find((el: Donation) => el.id === id) : null
   const [editable, setEditable] = useState(false)
   const [activeFields, setActiveFields] = useState(id === '')
-
-  console.log('editable', editable, 'activeFields', activeFields, 'id', id)
 
   const [visible, setVisible] = useState(false)
   const router = useRouter()
@@ -50,14 +50,36 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
   }, [register])
 
   const onSubmit = (val: any) => {
-    console.log('onSubmit', val)
-    setEditable(false)
-    setActiveFields(false)
-    console.log('editable', editable, 'activeFields', activeFields)
+    console.log(val)
+    setPreviousDonationsData([...PREVIOUS_DONATIONS_DATA, {
+      id: Math.random().toString(36).toString(),
+      baseDonationInfo: {
+        type: val.type,
+        date: val?.date?.nativeEvent?.timestamp ? new Date(val.date.nativeEvent.timestamp) : new Date(val.date),
+        volume: val.volume,
+        blood_pressure: val.blood_pressure,
+      },
+      morphology: {
+        Hb: val.Hb,
+        Ht: val.Ht,
+        MCV: val.NCV,
+        MCH: val.MCH,
+        MCHC: val.MCHC,
+        RDW: val.RDW,
+        WBC: val.WBC,
+        PLT: val.PLT,
+        MPV: val.MPV,
+        PCT: val.PCT,
+        PDW: val.PDW,
+        MO: val.MO,
+      },
+    }])
+    console.log(PREVIOUS_DONATIONS_DATA)
+    router.back()
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} >
       <Appbar.Header style={styles.appbarContainer}>
         <Appbar.BackAction onPress={() => router.back()} />
         <Menu
@@ -77,9 +99,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
       </Appbar.Header>
       <Text variant='h2' align='flex-start'>{nameOfDonation}</Text>
       <View style={styles.headerWrapper}>
-        <ScrollView
-          contentContainerStyle={styles.headFormContainer}
-          showsVerticalScrollIndicator={false}>
+        <View style={styles.formContainer}>
           {BASE_DONATION_INFO.map((item: BaseDonationIndicator) => item.id === 'date' ?
             <DatePicker
               key={item.id}
@@ -95,24 +115,22 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
               style={styles.item}
             />
           )}
-        </ScrollView >
+        </View >
       </View>
-      <View style={styles.formWrapper}>
-        <Text variant='h2' align='flex-start'>Morphology results</Text>
-        <ScrollView
-          contentContainerStyle={styles.formContainer}
-          showsVerticalScrollIndicator={false}>
-          {MORPHOLOGY_INDICATORS.map((item: Indicator) => (
-            <ControlledTextInput
-              disabled={!activeFields}
-              key={item.id}
-              name={item.id}
-              control={control}
-              style={styles.item}
-            />
-          ))}
-        </ScrollView >
-      </View>
+      <Text variant='h2' align='flex-start'>Morphology results</Text>
+      <ScrollView
+        contentContainerStyle={styles.formContainer}
+        showsVerticalScrollIndicator={false}>
+        {MORPHOLOGY_INDICATORS.map((item: Indicator) => (
+          <ControlledTextInput
+            disabled={!activeFields}
+            key={item.id}
+            name={item.id}
+            control={control}
+            style={styles.item}
+          />
+        ))}
+      </ScrollView >
     </View >
   )
 }
@@ -120,7 +138,6 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 10,
   },
   appbarContainer: {
     flexDirection: 'row',
@@ -130,19 +147,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   headerWrapper: {
-    flex: 1
-  },
-  formWrapper: {
-    flex: 3
-  },
-  headFormContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    width: Platform.OS === 'web' ? '80vw' : Dimensions.get('window').width * 0.85,
-    gap: 16,
+    height: 150,
   },
   formContainer: {
     flex: 1,
@@ -150,7 +155,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    width: Platform.OS === 'web' ? '80vw' : Dimensions.get('window').width * 0.85,
+    width: Platform.OS === 'web' ? '85vw' : Dimensions.get('window').width * 0.85,
     gap: 16,
   },
   item: {

@@ -6,6 +6,7 @@ import { View } from 'react-native'
 import { TextInput } from 'react-native-paper'
 import { StyleProp, ViewStyle } from 'react-native/types'
 import { DATE_FORMAT } from '../../../constants/Constants'
+import { ResultPresentation } from '../resultPresentation/ResultPresentation'
 
 interface DatePickerProps {
   control: Control<any>
@@ -33,15 +34,17 @@ export const DatePicker = ({
         control={control}
         render={({ field: { onChange, value } }) => (
           <>
-            <TextInput
-              style={style}
-              mode='outlined'
-              label={name}
-              editable={false}
-              disabled={disabled}
-              value={value?.nativeEvent?.timestamp ? moment(new Date(value.nativeEvent.timestamp)).format(DATE_FORMAT) : moment(new Date(value)).format(DATE_FORMAT)}
-              right={<TextInput.Icon icon='calendar' onPress={!disabled ? togglePicker : () => null} />}
-            />
+            {disabled ?
+              <ResultPresentation label={name} value={value?.nativeEvent?.timestamp ? moment(new Date(value.nativeEvent.timestamp)).format(DATE_FORMAT) : moment(new Date(value)).format(DATE_FORMAT)} /> :
+              <TextInput
+                style={style}
+                mode='outlined'
+                label={name}
+                editable={false}
+                disabled={disabled}
+                value={value?.nativeEvent?.timestamp ? moment(new Date(value.nativeEvent.timestamp)).format(DATE_FORMAT) : moment(new Date(value)).format(DATE_FORMAT)}
+                right={<TextInput.Icon icon='calendar' onPress={!disabled ? togglePicker : () => null} />}
+              />}
             {showPicker && (
               <DateTimePicker
                 value={value?.nativeEvent?.timestamp ? new Date(value.nativeEvent.timestamp) : new Date(value)}
