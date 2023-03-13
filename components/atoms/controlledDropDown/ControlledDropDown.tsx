@@ -36,7 +36,8 @@ export function ControlledDropDown({ name, control, style, disabled, list }: Con
               showDropDown={toggleShowDropDown}
               list={list}
               value={value}
-              setValue={onChange} />
+              setValue={onChange}
+            />
         )}
       />
     </View>)

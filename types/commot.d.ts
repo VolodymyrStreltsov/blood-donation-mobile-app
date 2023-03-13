@@ -16,10 +16,11 @@ interface AuthContextData {
 }
 
 interface BaseDonationInfo {
-  type?: 'Whole_blood' | 'Plasma' | 'Platelets' | 'Disqualification'
+  type: 'Whole_blood' | 'Plasma' | 'Platelets' | 'Disqualification'
   date: string | Date
   volume: string
   blood_pressure: string
+  duration?: string
 }
 
 interface Morphology {

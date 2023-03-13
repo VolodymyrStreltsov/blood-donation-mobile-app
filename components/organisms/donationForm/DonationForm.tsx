@@ -10,6 +10,7 @@ import { ControlledDropDown, ControlledTextInput, DatePicker, Text, View } from 
 
 export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, id?: string }) => {
   const { BASE_DONATION_INFO, MORPHOLOGY_INDICATORS, PREVIOUS_DONATIONS_DATA, DONATION_TYPES, setPreviousDonationsData } = useContext(DataContext)
+  const disqualified = nameOfDonation === 'Disqualification'
 
   const dropdownActive = ['Whole_blood', 'Plasma', 'Platelets', 'Disqualification'].includes(nameOfDonation) ? false : true
 
@@ -34,7 +35,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
   }, [editable])
 
   const defaultValues: AddDonationFormDefaultValues = {
-    type: dropdownActive ? DONATION_TYPES[0] : nameOfDonation,
+    type: dropdownActive ? DONATION_TYPES[0].value : nameOfDonation,
   }
 
   MORPHOLOGY_INDICATORS.forEach((item: Indicator) =>
@@ -55,13 +56,14 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
 
   const onSubmit = (val: any) => {
     console.log(val)
-    setPreviousDonationsData([...PREVIOUS_DONATIONS_DATA, {
+    setPreviousDonationsData([{
       id: Math.random().toString(36).toString(),
       baseDonationInfo: {
-        type: dropdownActive ? val.type : nameOfDonation,
+        type: val.type,
         date: val.date,
         volume: val.volume,
         blood_pressure: val.blood_pressure,
+        duration: val.duration,
       },
       morphology: {
         Hb: val.Hb,
@@ -77,7 +79,8 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
         PDW: val.PDW,
         MO: val.MO,
       },
-    }])
+    }, ...PREVIOUS_DONATIONS_DATA])
+    // set disqualification (disqualification_duration: val?.disqualification_duration)
     router.back()
   }
 
@@ -103,21 +106,35 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
       <Text variant='h2' align='flex-start' style={{ marginBottom: 40 }}>{nameOfDonation}</Text>
       {dropdownActive && <ControlledDropDown style={styles.dropDownItem} control={control} name='type' list={DONATION_TYPES} />}
       <View style={styles.headerWrapper}>
-        {BASE_DONATION_INFO.map((item: BaseDonationIndicator) => item.id === 'date' ?
-          <DatePicker
-            key={item.id}
-            control={control}
-            name={item.id}
-            style={styles.item}
-            disabled={!activeFields} /> :
-          <ControlledTextInput
-            disabled={!activeFields}
-            key={item.id}
-            name={item.id}
-            control={control}
-            style={styles.item}
-          />
-        )}
+        {BASE_DONATION_INFO.map((item: BaseDonationIndicator) => {
+          if (item.id === 'date') {
+            return <DatePicker
+              key={item.id}
+              control={control}
+              name={item.id}
+              style={styles.item}
+              disabled={!activeFields} />
+          }
+          else if (item.id === 'duration' && disqualified) {
+            return <ControlledTextInput
+              disabled={!activeFields}
+              key={item.id}
+              name={item.id}
+              control={control}
+              style={styles.item}
+            />
+          }
+          else if (item.id === 'duration' && !disqualified) return null
+          else {
+            return <ControlledTextInput
+              disabled={!activeFields}
+              key={item.id}
+              name={item.id}
+              control={control}
+              style={styles.item}
+            />
+          }
+        })}
       </View >
       <Text variant='h4' bold align='flex-start' style={{ marginBottom: 20 }}>Morphology results</Text>
       <ScrollView

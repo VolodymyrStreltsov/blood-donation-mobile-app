@@ -50,6 +50,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     PREVIOUS_DONATIONS_DATA: previousDonationsData,
     BASE_DONATION_INFO: [
       { id: 'date', title: 'Date', initVal: new Date() },
+      { id: 'duration', title: 'Duration', initVal: '0' },
       { id: 'volume', title: 'Volume', unit: 'ml', initVal: '450' },
       { id: 'blood_pressure', title: 'Blood Pressure', initVal: '0' },
     ],
