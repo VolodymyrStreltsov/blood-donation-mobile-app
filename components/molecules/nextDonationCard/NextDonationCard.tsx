@@ -1,20 +1,29 @@
+import { useRouter } from 'expo-router'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import { Avatar, Card } from 'react-native-paper'
+import { Colors } from '../../../constants/Colors'
 import { Text } from '../../atoms'
 
 export const NextDonationCard = ({ title, index }: { title: string; index: number }) => {
+  const router = useRouter()
+
   return (
-    <Card style={[styles.card, { marginLeft: index === 0 ? 25 : 7 }]}>
+    <Card style={[styles.card, { marginLeft: index === 0 ? 26 : 7 }]}>
       <Card.Content style={styles.content}>
         <View style={styles.header}>
           <Avatar.Text size={40} label={title[0]} />
-          <Avatar.Icon
-            size={30}
-            icon='information-outline'
-            style={{ backgroundColor: 'transparent' }}
-            color='#130b0b'
-          />
+          <Pressable
+            onPress={() => {
+              router.push({ pathname: 'modal', params: { name: title, info: 'true' } })
+            }}>
+            <Avatar.Icon
+              size={30}
+              icon='information-outline'
+              style={{ backgroundColor: 'transparent' }}
+              color='#130b0b'
+            />
+          </Pressable>
         </View>
         <View style={styles.text}>
           <Text darkColor='#130b0b' align='flex-start' variant='h4'>
@@ -35,10 +44,9 @@ const styles = StyleSheet.create({
     height: 150,
     margin: 7,
     borderRadius: 12,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.TintColorLight,
   },
   content: {
-    display: 'flex',
     justifyContent: 'space-between',
     height: 150,
   },

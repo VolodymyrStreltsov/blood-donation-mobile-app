@@ -7,6 +7,10 @@ type User = { name: string; email: string } | null
 
 type RecordValue = string | number | Date
 
+type DropdownType = { label: string; value: string }
+
+type infoScreenData = { id: string; paragraphs: string[] }
+
 interface AuthContextData {
   signIn: (user: User) => void
   signOut: () => void
@@ -18,6 +22,7 @@ interface BaseDonationInfo {
   date: string | Date
   volume: string
   blood_pressure: string
+  duration?: string
 }
 
 interface Morphology {
@@ -47,7 +52,7 @@ interface BaseDonationIndicator extends Omit<Indicator, 'id'> {
 }
 
 interface AddDonationFormDefaultValues {
-  [key: string]: RecordValue
+  [key: string]: RecordValue | DropdownType
 }
 
 interface Donation {

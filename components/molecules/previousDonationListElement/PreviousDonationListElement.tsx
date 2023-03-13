@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import moment from 'moment'
 import React from 'react'
-import { Dimensions, Platform, Pressable, StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import { Avatar } from 'react-native-paper'
 import { DATE_FORMAT } from '../../../constants/Constants'
 import { Text } from '../../atoms'
@@ -33,11 +33,12 @@ export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    display: 'flex',
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: Platform.OS === 'web' ? '80vw' : Dimensions.get('window').width * 0.8,
+    width: '100%',
+    padding: 16,
     height: 72,
   },
   text: {

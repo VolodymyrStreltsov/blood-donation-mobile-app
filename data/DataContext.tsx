@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from 'react'
 import { DataContext, DefaultContextValuesInterface } from './CreateDataContext'
+import { BASE_DONATION_INFO, DONATION_TYPES, INFO_SCREENS, MORPHOLOGY_INDICATORS, NEXT_DONATIONS_DATA } from './staticData'
 
 export const DataProvider = ({ children }: { children: ReactNode }) => {
   const [previousDonationsData, setPreviousDonationsData] = useState<Donation[]>([
@@ -29,45 +30,12 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
   ])
 
   const values: DefaultContextValuesInterface = {
-    NEXT_DONATIONS_DATA: [
-      {
-        id: 'bd7acbea',
-        title: 'Whole blood',
-      },
-      {
-        id: '3ac68afc',
-        title: 'Plates',
-      },
-      {
-        id: '58694a0f',
-        title: 'Plasma',
-      },
-      {
-        id: '58694dsf',
-        title: 'Shmasma',
-      },
-    ],
+    NEXT_DONATIONS_DATA: NEXT_DONATIONS_DATA,
+    BASE_DONATION_INFO: BASE_DONATION_INFO,
+    MORPHOLOGY_INDICATORS: MORPHOLOGY_INDICATORS,
+    DONATION_TYPES: DONATION_TYPES,
+    INFO_SCREENS: INFO_SCREENS,
     PREVIOUS_DONATIONS_DATA: previousDonationsData,
-    BASE_DONATION_INFO: [
-      { id: 'date', title: 'Date', initVal: new Date() },
-      { id: 'type', title: 'Type', initVal: 'Whole_blood' },
-      { id: 'volume', title: 'Volume', unit: 'ml', initVal: '450' },
-      { id: 'blood_pressure', title: 'Blood Pressure', initVal: '0' },
-    ],
-    MORPHOLOGY_INDICATORS: [
-      { id: 'Hb', title: 'Hb', unit: 'g/dL', initVal: '0' },
-      { id: 'Ht', title: 'Ht', unit: '%', initVal: '0' },
-      { id: 'MCV', title: 'MCV', unit: 'fL', initVal: '0' },
-      { id: 'MCH', title: 'MCH', unit: 'pg', initVal: '0' },
-      { id: 'MCHC', title: 'MCHC', unit: 'g/dL', initVal: '0' },
-      { id: 'RDW', title: 'RDW', unit: '%', initVal: '0' },
-      { id: 'WBC', title: 'WBC', unit: '10^3/μL', initVal: '0' },
-      { id: 'PLT', title: 'PLT', unit: '10^3/μL', initVal: '0' },
-      { id: 'MPV', title: 'MPV', unit: 'fL', initVal: '0' },
-      { id: 'PCT', title: 'PCT', unit: '%', initVal: '0' },
-      { id: 'PDW', title: 'PDW', unit: '%', initVal: '0' },
-      { id: 'MO', title: 'MO', unit: '%', initVal: '0' },
-    ],
     setPreviousDonationsData,
   }
 
