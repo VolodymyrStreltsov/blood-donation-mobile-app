@@ -6,6 +6,7 @@ export interface DefaultContextValuesInterface {
   PREVIOUS_DONATIONS_DATA: Donation[]
   BASE_DONATION_INFO: BaseDonationIndicator[]
   MORPHOLOGY_INDICATORS: Indicator[]
+  INFO_SCREENS: infoScreenData[]
   setPreviousDonationsData: (arg: Donation[]) => void
 }
 

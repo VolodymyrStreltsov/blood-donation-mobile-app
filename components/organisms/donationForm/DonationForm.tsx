@@ -103,7 +103,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
           <Menu.Item onPress={() => null} title='Share' />
         </Menu>
       </Appbar.Header>
-      <Text variant='h2' align='flex-start' style={{ marginBottom: 40 }}>{nameOfDonation}</Text>
+      <Text variant='h2' align='flex-start' style={{ marginBottom: 30 }}>{nameOfDonation}</Text>
       {dropdownActive && <ControlledDropDown style={styles.dropDownItem} control={control} name='type' list={DONATION_TYPES} />}
       <View style={styles.headerWrapper}>
         {BASE_DONATION_INFO.map((item: BaseDonationIndicator) => {

@@ -9,6 +9,8 @@ type RecordValue = string | number | Date
 
 type DropdownType = { label: string; value: string }
 
+type infoScreenData = { id: string; paragraphs: string[] }
+
 interface AuthContextData {
   signIn: (user: User) => void
   signOut: () => void
