@@ -23,7 +23,7 @@ export const DonationInfoScreen = ({ nameOfDonation }: { nameOfDonation: string 
       <View style={styles.container}>
         <Text variant='h2' align='flex-start' style={{ marginBottom: 30 }}>{nameOfDonation}</Text>
         <View style={styles.cardsContainer}>
-          <InfoDateCard title='Last donation' date='20.01.2019' />
+          <InfoDateCard title='Last donation' date='20.01.2019' withBorder />
           <InfoDateCard color={Colors.TintColorLight} title='Next donation' date='03.04.2023' />
         </View>
         <ScrollView

@@ -140,7 +140,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
             />
           }
         })}
-      </View >
+      </View>
       <Text variant='h4' bold align='flex-start' style={{ marginBottom: 20 }}>Morphology results</Text>
       <ScrollView
         contentContainerStyle={styles.formContainer}
@@ -154,7 +154,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
             style={styles.item}
           />
         ))}
-      </ScrollView >
+      </ScrollView>
     </ >
   )
 }

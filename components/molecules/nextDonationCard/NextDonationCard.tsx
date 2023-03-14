@@ -9,7 +9,7 @@ export const NextDonationCard = ({ title, index }: { title: string; index: numbe
   const router = useRouter()
 
   return (
-    <Card style={[styles.card, { marginLeft: index === 0 ? 26 : 7 }]}>
+    <Card style={[styles.card, { marginLeft: index === 0 ? 26 : 7 }]} theme={{ roundness: 4 }}>
       <Card.Content style={styles.content}>
         <View style={styles.header}>
           <Avatar.Text size={40} label={title[0]} />
@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     margin: 7,
-    borderRadius: 12,
     backgroundColor: Colors.TintColorLight,
+    boxShadow: 'none',
   },
   content: {
     justifyContent: 'space-between',

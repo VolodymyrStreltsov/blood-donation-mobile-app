@@ -1,10 +1,10 @@
 import React from 'react'
-import { PageWrapper, Text } from '../../components'
+import { PageWrapper, ProfileForm } from '../../components'
 
 export default function TabProfileScreen() {
   return (
     <PageWrapper>
-      <Text>Profile</Text>
+      <ProfileForm />
     </PageWrapper>
   )
 }

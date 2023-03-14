@@ -40,6 +40,14 @@ interface Morphology {
   MO: RecordValue
 }
 
+interface Profile {
+  weight: RecordValue
+  height: RecordValue
+  BMI: RecordValue
+  age: RecordValue
+  gender: RecordValue
+}
+
 interface Indicator {
   id: keyof Morphology
   title: string
@@ -55,8 +63,24 @@ interface AddDonationFormDefaultValues {
   [key: string]: RecordValue | DropdownType
 }
 
+interface ProfileDataRecord {
+  id: keyof Profile
+  title: string
+  unit?: string
+  value: RecordValue
+}
+
 interface Donation {
   id: string
   baseDonationInfo: BaseDonationInfo
   morphology: Morphology
+}
+
+interface Achievement {
+  id: string
+  required: number
+  title: string
+  progress: number
+  remainder: string
+  img: string
 }

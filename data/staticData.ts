@@ -74,3 +74,65 @@ export const INFO_SCREENS: infoScreenData[] = [
     ],
   },
 ]
+
+export const ACHIEVEMENTS: Achievement[] = [
+  {
+    id: 'first',
+    title: `Odznaka Zasłużony Honorowy\nDawca Krwi za 5/6 litrów`,
+    required: 6,
+    progress: 1,
+    remainder: '2',
+    img: 'I',
+  },
+  {
+    id: 'second',
+    title: `Odznaka Zasłużony Honorowy\nDawca Krwi za 10/12 litrów`,
+    required: 12,
+    progress: 0.4,
+    remainder: '5',
+    img: 'I,',
+  },
+  {
+    id: 'third',
+    title: `Odznaka Zasłużony Honorowy\nDawca Krwi za 15/18 litrów`,
+    required: 18,
+    progress: 0.3,
+    remainder: '10',
+    img: 'I',
+  },
+  {
+    id: 'fourth',
+    required: 20,
+    title: `Honorowy Dawca Krwi —\nZasłużony dla Zdrowia Narodu`,
+    progress: 0.1,
+    remainder: '16',
+    img: 'I',
+  },
+]
+
+export const PROFILE_DATA: ProfileDataRecord[] = [
+  {
+    id: 'weight',
+    title: 'Weight',
+    unit: 'kg',
+    value: '0',
+  },
+  {
+    id: 'height',
+    title: 'Height',
+    unit: 'cm',
+    value: '0',
+  },
+  {
+    id: 'age',
+    title: 'Age',
+    unit: 'years',
+    value: '0',
+  },
+  {
+    id: 'gender',
+    title: 'Gender',
+    unit: '',
+    value: 'male',
+  },
+]
