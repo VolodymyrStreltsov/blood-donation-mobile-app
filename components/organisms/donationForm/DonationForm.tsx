@@ -84,6 +84,11 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
     router.back()
   }
 
+  const deleteDonationHandler = () => {
+    setPreviousDonationsData(PREVIOUS_DONATIONS_DATA.filter((el: Donation) => el.id !== id))
+    router.back()
+  }
+
   return (
     <>
       <Appbar.Header style={styles.appbarContainer}>
@@ -98,9 +103,9 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
             />
           }
         >
-          <Menu.Item onPress={switchEditable} title='Edit' />
-          <Menu.Item onPress={() => null} title='Delete' />
-          <Menu.Item onPress={() => null} title='Share' />
+          <Menu.Item onPress={switchEditable} title='Edit' leadingIcon='pencil-outline' />
+          <Menu.Item onPress={deleteDonationHandler} title='Delete' leadingIcon='trash-can-outline' />
+          {/* <Menu.Item onPress={() => null} title='Share' leadingIcon='check' /> */}
         </Menu>
       </Appbar.Header>
       <Text variant='h2' align='flex-start' style={{ marginBottom: 30 }}>{nameOfDonation}</Text>
