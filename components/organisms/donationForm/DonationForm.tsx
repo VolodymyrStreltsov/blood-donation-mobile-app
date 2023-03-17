@@ -6,25 +6,29 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
 import { DataContext } from '../../../data/DataContext'
 import { ControlledDropDown, ControlledTextInput, DatePicker, Text, View } from '../../atoms'
-import { donationHelper } from './donationHelper'
+import { donationHelper, getBaseValue, getMorphologyValue, getVolume } from './donationHelper'
 
-export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string; id?: string }) => {
+export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: DonationName; id?: string }) => {
   const {
-    BASE_DONATION_INFO,
+    BASE_DONATION_INDICATORS,
     MORPHOLOGY_INDICATORS,
     PREVIOUS_DONATIONS_DATA,
-    DONATION_TYPES,
+    BASE_DONATION_NAMES,
+    EXTENDED_DONATION_NAMES,
     setPreviousDonationsData,
   } = useContext(DataContext)
   const disqualified = nameOfDonation === 'Disqualification'
 
-  const dropdownActive = ['Whole_blood', 'Plasma', 'Platelets', 'Disqualification'].includes(
+  const DONATION_TYPES = EXTENDED_DONATION_NAMES.map((el: string) => ({ label: el, value: el }))
+
+  const dropdownActive = BASE_DONATION_NAMES.includes(
     nameOfDonation,
   )
     ? false
     : true
 
   const donation = id ? PREVIOUS_DONATIONS_DATA.find((el: Donation) => el.id === id) : null
+
   const [editable, setEditable] = useState(false)
   const [activeFields, setActiveFields] = useState(id === '')
 
@@ -45,18 +49,18 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string; i
   }, [editable])
 
   const defaultValues: AddDonationFormDefaultValues = {
-    type: dropdownActive ? DONATION_TYPES[0].value : nameOfDonation,
+    type: dropdownActive && !id ? EXTENDED_DONATION_NAMES[0] : nameOfDonation,
   }
 
   MORPHOLOGY_INDICATORS.forEach(
-    (item: Indicator) => (defaultValues[item.id] = donation?.morphology[item.id] || item.initVal),
+    (item: Indicator<MorphologyIndicators>) => (defaultValues[item.id] = getMorphologyValue(donation?.morphology || {} as MorphologyIndicators, item.id)),
   )
-  BASE_DONATION_INFO.forEach(
-    (item: BaseDonationIndicator) =>
-      (defaultValues[item.id] = donation?.baseDonationInfo[item.id] || item.initVal),
+  BASE_DONATION_INDICATORS.forEach(
+    (item: Indicator<BaseDonationInfo>) =>
+      (defaultValues[item.id] = getBaseValue(donation?.baseDonationInfo || {} as BaseDonationInfo, item.id, nameOfDonation !== 'Donation' ? nameOfDonation : EXTENDED_DONATION_NAMES[0])),
   )
 
-  const { handleSubmit, control, register } = useForm({
+  const { handleSubmit, control, register, watch, setValue } = useForm({
     mode: 'onSubmit',
     criteriaMode: 'firstError',
     defaultValues,
@@ -94,6 +98,10 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string; i
     router.back()
   }
 
+  useEffect(() => {
+    setValue('volume', getVolume(watch('type')), { shouldValidate: true })
+  }, [watch('type')])
+
   return (
     <>
       <Appbar.Header style={styles.appbarContainer}>
@@ -119,7 +127,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string; i
       <Text variant='h2' align='flex-start' style={{ marginBottom: 30 }}>
         {nameOfDonation}
       </Text>
-      {dropdownActive && (
+      {dropdownActive && activeFields && (
         <ControlledDropDown
           style={styles.dropDownItem}
           control={control}
@@ -128,7 +136,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string; i
         />
       )}
       <View style={styles.headerWrapper}>
-        {BASE_DONATION_INFO.map((item: BaseDonationIndicator) => {
+        {BASE_DONATION_INDICATORS.map((item: Indicator<BaseDonationInfo>) => {
           if (item.id === 'date') {
             return (
               <DatePicker
@@ -139,18 +147,9 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string; i
                 disabled={!activeFields}
               />
             )
-          } else if (item.id === 'duration' && disqualified) {
-            return (
-              <ControlledTextInput
-                disabled={!activeFields}
-                key={item.id}
-                name={item.id}
-                control={control}
-                style={styles.item}
-                right='Days'
-              />
-            )
-          } else if (item.id === 'duration' && !disqualified) return null
+          }
+          else if (item.id === 'volume' && disqualified) return null
+          else if (item.id === 'duration' && !disqualified) return null
           else {
             return (
               <ControlledTextInput
@@ -169,7 +168,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string; i
         Morphology results
       </Text>
       <ScrollView contentContainerStyle={styles.formContainer} showsVerticalScrollIndicator={false}>
-        {MORPHOLOGY_INDICATORS.map((item: Indicator) => (
+        {MORPHOLOGY_INDICATORS.map((item: Indicator<MorphologyIndicators>) => (
           <ControlledTextInput
             disabled={!activeFields}
             key={item.id}

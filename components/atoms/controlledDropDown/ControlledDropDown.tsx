@@ -10,7 +10,8 @@ interface ControlledDropDownProps {
   name: string
   style?: StyleProp<ViewStyle>
   disabled?: boolean
-  list: DropdownType[]
+  list: { value: string, label: string }[]
+  right?: string
 }
 
 export function ControlledDropDown({
@@ -19,6 +20,7 @@ export function ControlledDropDown({
   style,
   disabled,
   list,
+  right
 }: ControlledDropDownProps) {
   const [showDropDown, setShowDropDown] = useState(false)
 
@@ -33,7 +35,7 @@ export function ControlledDropDown({
         control={control}
         render={({ field: { onChange, value } }) =>
           disabled ? (
-            <ResultPresentation label={name} value={value} />
+            <ResultPresentation label={name} value={value} right={right} />
           ) : (
             <DropDown
               label={name}

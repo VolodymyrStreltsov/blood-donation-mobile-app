@@ -29,7 +29,7 @@ export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
       </View>
       <View style={styles.right}>
         <Text variant='h4' bold>
-          450ml
+          {item.baseDonationInfo.volume !== '' ? item.baseDonationInfo.volume + ' ml' : '🤏🏼'}
         </Text>
       </View>
     </Pressable>

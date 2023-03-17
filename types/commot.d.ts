@@ -3,77 +3,59 @@ type ThemeProps = {
   darkColor?: string
 }
 
-type User = { name: string; email: string } | null
+type DonationName =
+  | 'Whole_blood'
+  | 'Platelets'
+  | 'Disqualification'
+  | 'Plasma'
+  | 'Erythrocytes'
+  | 'Leukocytes'
+  | 'Plasma_Platelets'
+  | 'Donation'
 
-type RecordValue = string | number | Date
-
-type DropdownType = { label: string; value: string }
-
-type infoScreenData = { id: string; paragraphs: string[] }
-
-interface AuthContextData {
-  signIn: (user: User) => void
-  signOut: () => void
-  user: User
+interface MorphologyIndicators {
+  Hb: string
+  Ht: string
+  MCV: string
+  MCH: string
+  MCHC: string
+  RDW: string
+  WBC: string
+  PLT: string
+  MPV: string
+  PCT: string
+  PDW: string
+  MO: string
 }
 
+type infoScreenData = { id: DonationName; paragraphs: string[] }
+
 interface BaseDonationInfo {
-  type: 'Whole_blood' | 'Plasma' | 'Platelets' | 'Disqualification'
+  type: DonationName
   date: string | Date
   volume: string
   blood_pressure: string
   duration?: string
 }
 
-interface Morphology {
-  Hb: RecordValue
-  Ht: RecordValue
-  MCV: RecordValue
-  MCH: RecordValue
-  MCHC: RecordValue
-  RDW: RecordValue
-  WBC: RecordValue
-  PLT: RecordValue
-  MPV: RecordValue
-  PCT: RecordValue
-  PDW: RecordValue
-  MO: RecordValue
+interface ProfileDataRecord {
+  id: string
+  value: string
 }
 
-interface Profile {
-  weight: RecordValue
-  height: RecordValue
-  BMI: RecordValue
-  age: RecordValue
-  gender: RecordValue
-}
-
-interface Indicator {
-  id: keyof Morphology
-  title: string
+interface Indicator<T> {
+  id: keyof T
   unit?: string
-  initVal: RecordValue
-}
-
-interface BaseDonationIndicator extends Omit<Indicator, 'id'> {
-  id: keyof BaseDonationInfo
 }
 
 interface AddDonationFormDefaultValues {
-  [key: string]: RecordValue | DropdownType
-}
-
-interface ProfileDataRecord {
-  id: keyof Profile
-  title: string
-  unit?: string
-  value: RecordValue
+  [key: string]: any
 }
 
 interface Donation {
   id: string
   baseDonationInfo: BaseDonationInfo
-  morphology: Morphology
+  morphology: MorphologyIndicators
 }
 
 interface Achievement {

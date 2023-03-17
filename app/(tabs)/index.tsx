@@ -6,7 +6,7 @@ import {
   PageWrapper,
   PreviousDonationListElement,
   Text,
-  View,
+  View
 } from '../../components'
 import { DataContext } from '../../data/DataContext'
 
@@ -21,8 +21,8 @@ export default function TabDonationsScreen() {
         <FlatList
           horizontal
           data={NEXT_DONATIONS_DATA}
-          renderItem={({ item, index }) => <NextDonationCard title={item.title} index={index} />}
-          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => <NextDonationCard title={item} index={index} />}
+          keyExtractor={(item) => item}
           showsHorizontalScrollIndicator={false}
         />
       </View>
