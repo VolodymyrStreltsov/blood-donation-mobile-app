@@ -1,20 +1,34 @@
 import { useRouter } from 'expo-router'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dimensions, Platform, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
 import { DataContext } from '../../../data/DataContext'
 import { ControlledDropDown, ControlledTextInput, DatePicker, Text, View } from '../../atoms'
+import { donationHelper, getBaseValue, getMorphologyValue, getVolume } from './donationHelper'
 
-
-export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, id?: string }) => {
-  const { BASE_DONATION_INFO, MORPHOLOGY_INDICATORS, PREVIOUS_DONATIONS_DATA, DONATION_TYPES, setPreviousDonationsData } = useContext(DataContext)
+export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: DonationName; id?: string }) => {
+  const {
+    BASE_DONATION_INDICATORS,
+    MORPHOLOGY_INDICATORS,
+    PREVIOUS_DONATIONS_DATA,
+    BASE_DONATION_NAMES,
+    EXTENDED_DONATION_NAMES,
+    setPreviousDonationsData,
+  } = useContext(DataContext)
   const disqualified = nameOfDonation === 'Disqualification'
 
-  const dropdownActive = ['Whole_blood', 'Plasma', 'Platelets', 'Disqualification'].includes(nameOfDonation) ? false : true
+  const DONATION_TYPES = EXTENDED_DONATION_NAMES.map((el: string) => ({ label: el, value: el }))
+
+  const dropdownActive = BASE_DONATION_NAMES.includes(
+    nameOfDonation,
+  )
+    ? false
+    : true
 
   const donation = id ? PREVIOUS_DONATIONS_DATA.find((el: Donation) => el.id === id) : null
+
   const [editable, setEditable] = useState(false)
   const [activeFields, setActiveFields] = useState(id === '')
 
@@ -35,14 +49,18 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
   }, [editable])
 
   const defaultValues: AddDonationFormDefaultValues = {
-    type: dropdownActive ? DONATION_TYPES[0].value : nameOfDonation,
+    type: dropdownActive && !id ? EXTENDED_DONATION_NAMES[0] : nameOfDonation,
   }
 
-  MORPHOLOGY_INDICATORS.forEach((item: Indicator) =>
-    defaultValues[item.id] = donation?.morphology[item.id] || item.initVal)
-  BASE_DONATION_INFO.forEach((item: BaseDonationIndicator) => defaultValues[item.id] = donation?.baseDonationInfo[item.id] || item.initVal)
+  MORPHOLOGY_INDICATORS.forEach(
+    (item: Indicator<MorphologyIndicators>) => (defaultValues[item.id] = getMorphologyValue(donation?.morphology || {} as MorphologyIndicators, item.id)),
+  )
+  BASE_DONATION_INDICATORS.forEach(
+    (item: Indicator<BaseDonationInfo>) =>
+      (defaultValues[item.id] = getBaseValue(donation?.baseDonationInfo || {} as BaseDonationInfo, item.id, nameOfDonation !== 'Donation' ? nameOfDonation : EXTENDED_DONATION_NAMES[0])),
+  )
 
-  const { handleSubmit, control, register } = useForm({
+  const { handleSubmit, control, register, watch, setValue } = useForm({
     mode: 'onSubmit',
     criteriaMode: 'firstError',
     defaultValues,
@@ -55,32 +73,23 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
   }, [register])
 
   const onSubmit = (val: any) => {
-    console.log(val)
-    setPreviousDonationsData([{
-      id: Math.random().toString(36).toString(),
-      baseDonationInfo: {
-        type: val.type,
-        date: val.date,
-        volume: val.volume,
-        blood_pressure: val.blood_pressure,
-        duration: val.duration,
-      },
-      morphology: {
-        Hb: val.Hb,
-        Ht: val.Ht,
-        MCV: val.NCV,
-        MCH: val.MCH,
-        MCHC: val.MCHC,
-        RDW: val.RDW,
-        WBC: val.WBC,
-        PLT: val.PLT,
-        MPV: val.MPV,
-        PCT: val.PCT,
-        PDW: val.PDW,
-        MO: val.MO,
-      },
-    }, ...PREVIOUS_DONATIONS_DATA])
-    // set disqualification (disqualification_duration: val?.disqualification_duration)
+    if (id) {
+      const updatedDonationsData = PREVIOUS_DONATIONS_DATA.map((el: Donation) =>
+        el.id === id ? donationHelper(val, id) : el,
+      )
+      updatedDonationsData.sort(
+        (a: Donation, b: Donation) =>
+          new Date(b.baseDonationInfo.date).getTime() - new Date(a.baseDonationInfo.date).getTime(),
+      )
+      setPreviousDonationsData(updatedDonationsData)
+    } else {
+      const updatedDonationsData = [...PREVIOUS_DONATIONS_DATA, donationHelper(val)]
+      updatedDonationsData.sort(
+        (a: Donation, b: Donation) =>
+          new Date(b.baseDonationInfo.date).getTime() - new Date(a.baseDonationInfo.date).getTime(),
+      )
+      setPreviousDonationsData(updatedDonationsData)
+    }
     router.back()
   }
 
@@ -88,6 +97,10 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
     setPreviousDonationsData(PREVIOUS_DONATIONS_DATA.filter((el: Donation) => el.id !== id))
     router.back()
   }
+
+  useEffect(() => {
+    setValue('volume', getVolume(watch('type')), { shouldValidate: true })
+  }, [watch('type')])
 
   return (
     <>
@@ -101,61 +114,72 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
               icon={activeFields ? 'check' : 'dots-vertical'}
               onPress={!activeFields ? switchMenuVisible : handleSubmit(onSubmit)}
             />
-          }
-        >
+          }>
           <Menu.Item onPress={switchEditable} title='Edit' leadingIcon='pencil-outline' />
-          <Menu.Item onPress={deleteDonationHandler} title='Delete' leadingIcon='trash-can-outline' />
+          <Menu.Item
+            onPress={deleteDonationHandler}
+            title='Delete'
+            leadingIcon='trash-can-outline'
+          />
           {/* <Menu.Item onPress={() => null} title='Share' leadingIcon='check' /> */}
         </Menu>
       </Appbar.Header>
-      <Text variant='h2' align='flex-start' style={{ marginBottom: 30 }}>{nameOfDonation}</Text>
-      {dropdownActive && <ControlledDropDown style={styles.dropDownItem} control={control} name='type' list={DONATION_TYPES} />}
+      <Text variant='h2' align='flex-start' style={{ marginBottom: 30 }}>
+        {nameOfDonation}
+      </Text>
+      {dropdownActive && activeFields && (
+        <ControlledDropDown
+          style={styles.dropDownItem}
+          control={control}
+          name='type'
+          list={DONATION_TYPES}
+        />
+      )}
       <View style={styles.headerWrapper}>
-        {BASE_DONATION_INFO.map((item: BaseDonationIndicator) => {
+        {BASE_DONATION_INDICATORS.map((item: Indicator<BaseDonationInfo>) => {
           if (item.id === 'date') {
-            return <DatePicker
-              key={item.id}
-              control={control}
-              name={item.id}
-              style={styles.item}
-              disabled={!activeFields} />
+            return (
+              <DatePicker
+                key={item.id}
+                control={control}
+                name={item.id}
+                style={styles.item}
+                disabled={!activeFields}
+              />
+            )
           }
-          else if (item.id === 'duration' && disqualified) {
-            return <ControlledTextInput
-              disabled={!activeFields}
-              key={item.id}
-              name={item.id}
-              control={control}
-              style={styles.item}
-            />
-          }
+          else if (item.id === 'volume' && disqualified) return null
           else if (item.id === 'duration' && !disqualified) return null
           else {
-            return <ControlledTextInput
-              disabled={!activeFields}
-              key={item.id}
-              name={item.id}
-              control={control}
-              style={styles.item}
-            />
+            return (
+              <ControlledTextInput
+                disabled={!activeFields}
+                key={item.id}
+                name={item.id}
+                control={control}
+                style={styles.item}
+                right={item.unit}
+              />
+            )
           }
         })}
-      </View >
-      <Text variant='h4' bold align='flex-start' style={{ marginBottom: 20 }}>Morphology results</Text>
-      <ScrollView
-        contentContainerStyle={styles.formContainer}
-        showsVerticalScrollIndicator={false}>
-        {MORPHOLOGY_INDICATORS.map((item: Indicator) => (
+      </View>
+      <Text variant='h4' bold align='flex-start' style={{ marginBottom: 20 }}>
+        Morphology results
+      </Text>
+      <ScrollView contentContainerStyle={styles.formContainer} showsVerticalScrollIndicator={false}>
+        {MORPHOLOGY_INDICATORS.map((item: Indicator<MorphologyIndicators>) => (
           <ControlledTextInput
             disabled={!activeFields}
             key={item.id}
             name={item.id}
             control={control}
             style={styles.item}
+            right={item.unit}
           />
         ))}
-      </ScrollView >
-    </ >
+      </ScrollView>
+    </>
   )
 }
 
@@ -188,6 +212,7 @@ const styles = StyleSheet.create({
   },
   item: {
     minWidth: '47%',
+    maxWidth: '47%',
   },
   dropDownItem: {
     width: '100%',

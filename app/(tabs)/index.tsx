@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { FlatList } from 'react-native'
 import {
   MenuFAB,
@@ -21,8 +21,8 @@ export default function TabDonationsScreen() {
         <FlatList
           horizontal
           data={NEXT_DONATIONS_DATA}
-          renderItem={({ item, index }) => <NextDonationCard title={item.title} index={index} />}
-          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => <NextDonationCard title={item} index={index} />}
+          keyExtractor={(item) => item}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -32,9 +32,7 @@ export default function TabDonationsScreen() {
       <View style={{ flex: 1 }}>
         <FlatList
           data={PREVIOUS_DONATIONS_DATA}
-          renderItem={({ item }) => (
-            <PreviousDonationListElement item={item} />
-          )}
+          renderItem={({ item }) => <PreviousDonationListElement item={item} />}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         />

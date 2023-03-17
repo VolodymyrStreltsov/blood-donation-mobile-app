@@ -1,21 +1,26 @@
 import { useRouter } from 'expo-router'
-import moment from 'moment'
-import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { Avatar } from 'react-native-paper'
-import { DATE_FORMAT } from '../../../constants/Constants'
+import { formattingDate } from '../../../functions'
 import { Text } from '../../atoms'
 
 export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
   const router = useRouter()
 
   return (
-    <Pressable style={styles.wrapper} onPress={() => router.push({ pathname: 'modal', params: { name: item.baseDonationInfo.type, id: item.id } })}>
+    <Pressable
+      style={styles.wrapper}
+      onPress={() =>
+        router.push({
+          pathname: 'modal',
+          params: { name: item.baseDonationInfo.type, id: item.id },
+        })
+      }>
       <View style={styles.left}>
         <Avatar.Text size={40} label={item.baseDonationInfo.type[0]} />
         <View style={styles.text}>
           <Text align='flex-start' variant='h5' bold>
-            {moment(item.baseDonationInfo.date).format(DATE_FORMAT)}
+            {formattingDate(item.baseDonationInfo.date)}
           </Text>
           <Text align='flex-start' variant='h4'>
             {item.baseDonationInfo.type}
@@ -24,7 +29,7 @@ export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
       </View>
       <View style={styles.right}>
         <Text variant='h4' bold>
-          450ml
+          {item.baseDonationInfo.volume !== '' ? item.baseDonationInfo.volume + ' ml' : '🤏🏼'}
         </Text>
       </View>
     </Pressable>

@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Dimensions, Platform, ScrollView, StyleSheet } from 'react-native'
 import { Appbar } from 'react-native-paper'
 import { Colors } from '../../../constants/Colors'
@@ -7,11 +7,11 @@ import { DataContext } from '../../../data/CreateDataContext'
 import { Text, View } from '../../atoms'
 import { InfoDateCard, InfoParagraph } from '../../molecules'
 
-
 export const DonationInfoScreen = ({ nameOfDonation }: { nameOfDonation: string }) => {
   const { INFO_SCREENS } = useContext(DataContext)
 
-  const screenInfo = INFO_SCREENS.find((el: infoScreenData) => el.id === nameOfDonation)?.paragraphs || []
+  const screenInfo =
+    INFO_SCREENS.find((el: infoScreenData) => el.id === nameOfDonation)?.paragraphs || []
 
   const router = useRouter()
 
@@ -21,9 +21,11 @@ export const DonationInfoScreen = ({ nameOfDonation }: { nameOfDonation: string 
         <Appbar.BackAction onPress={() => router.back()} />
       </Appbar.Header>
       <View style={styles.container}>
-        <Text variant='h2' align='flex-start' style={{ marginBottom: 30 }}>{nameOfDonation}</Text>
+        <Text variant='h2' align='flex-start' style={{ marginBottom: 30 }}>
+          {nameOfDonation}
+        </Text>
         <View style={styles.cardsContainer}>
-          <InfoDateCard title='Last donation' date='20.01.2019' />
+          <InfoDateCard title='Last donation' date='20.01.2019' withBorder />
           <InfoDateCard color={Colors.TintColorLight} title='Next donation' date='03.04.2023' />
         </View>
         <ScrollView
@@ -32,7 +34,7 @@ export const DonationInfoScreen = ({ nameOfDonation }: { nameOfDonation: string 
           {screenInfo.map((item: string, idx) => (
             <InfoParagraph key={nameOfDonation + idx} text={item} idx={idx} />
           ))}
-        </ScrollView >
+        </ScrollView>
       </View>
     </>
   )
@@ -58,11 +60,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '100%',
     height: 115,
-    rowGap: 16,
   },
   paragraphsContainer: {
     flex: 1,
     width: '100%',
-    rowGap: 16,
+    rowGap: 7,
   },
 })

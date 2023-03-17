@@ -1,7 +1,7 @@
 export enum Colors {
   DarkAlarm = '#B3261E',
   LightAlarm = '#efb8c8',
-  TintColorLight = '#E8DEF8',
+  TintColorLight = '#e7e0ec',
   TintColorDark = '#000',
 }
 
@@ -12,7 +12,7 @@ export default {
     navBar: '#f3edf7',
     tint: Colors.TintColorLight,
     tabIconDefault: Colors.TintColorDark,
-    tabIconSelected: Colors.TintColorLight,
+    tabIconSelected: '#e8def8',
   },
   dark: {
     text: '#fff',

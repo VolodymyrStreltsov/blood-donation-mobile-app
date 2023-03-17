@@ -1,6 +1,6 @@
 import { useSearchParams } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+
 import { Platform } from 'react-native'
 import { DonationForm, DonationInfoScreen, PageWrapper } from '../components'
 
@@ -11,7 +11,7 @@ export default function ModalScreen() {
   const infoOfDonation = info === 'true'
   return (
     <PageWrapper type='modal'>
-      {!infoOfDonation && <DonationForm nameOfDonation={nameOfDonation} id={idOfDonation} />}
+      {!infoOfDonation && <DonationForm nameOfDonation={nameOfDonation as DonationName} id={idOfDonation} />}
       {infoOfDonation && <DonationInfoScreen nameOfDonation={nameOfDonation} />}
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />

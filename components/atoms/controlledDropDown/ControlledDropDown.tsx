@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import DropDown from 'react-native-paper-dropdown'
 import { StyleProp, ViewStyle } from 'react-native/types'
@@ -10,10 +10,18 @@ interface ControlledDropDownProps {
   name: string
   style?: StyleProp<ViewStyle>
   disabled?: boolean
-  list: DropdownType[]
+  list: { value: string, label: string }[]
+  right?: string
 }
 
-export function ControlledDropDown({ name, control, style, disabled, list }: ControlledDropDownProps) {
+export function ControlledDropDown({
+  name,
+  control,
+  style,
+  disabled,
+  list,
+  right
+}: ControlledDropDownProps) {
   const [showDropDown, setShowDropDown] = useState(false)
 
   const toggleShowDropDown = () => {
@@ -25,10 +33,11 @@ export function ControlledDropDown({ name, control, style, disabled, list }: Con
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value } }) => (
-          disabled ?
-            <ResultPresentation label={name} value={value} />
-            : <DropDown
+        render={({ field: { onChange, value } }) =>
+          disabled ? (
+            <ResultPresentation label={name} value={value} right={right} />
+          ) : (
+            <DropDown
               label={name}
               mode='outlined'
               visible={showDropDown}
@@ -38,7 +47,9 @@ export function ControlledDropDown({ name, control, style, disabled, list }: Con
               value={value}
               setValue={onChange}
             />
-        )}
+          )
+        }
       />
-    </View>)
+    </View>
+  )
 }
