@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import { TextInput } from 'react-native-paper'
 import { StyleProp, ViewStyle } from 'react-native/types'
+import { formattingDate } from '../../../functions'
 import { ResultPresentation } from '../resultPresentation/ResultPresentation'
 
 interface DatePickerProps {
@@ -12,12 +13,7 @@ interface DatePickerProps {
   disabled?: boolean
 }
 
-export const DatePicker = ({
-  control,
-  name,
-  style,
-  disabled,
-}: DatePickerProps) => {
+export const DatePicker = ({ control, name, style, disabled }: DatePickerProps) => {
   const [showPicker, setShowPicker] = useState(false)
 
   const togglePicker = () => {
@@ -30,17 +26,21 @@ export const DatePicker = ({
       control={control}
       render={({ field: { onChange, value } }) => (
         <>
-          {disabled ?
-            <ResultPresentation label={name} value={new Date(value).toLocaleDateString()} /> :
+          {disabled ? (
+            <ResultPresentation label={name} value={formattingDate(value)} />
+          ) : (
             <TextInput
               style={style}
               mode='outlined'
               label={name}
               editable={false}
               disabled={disabled}
-              value={new Date(value).toLocaleDateString()}
-              right={<TextInput.Icon icon='calendar' onPress={!disabled ? togglePicker : () => null} />}
-            />}
+              value={formattingDate(value)}
+              right={
+                <TextInput.Icon icon='calendar' onPress={!disabled ? togglePicker : () => null} />
+              }
+            />
+          )}
           {showPicker && (
             <DateTimePicker
               value={new Date(value)}
@@ -50,8 +50,7 @@ export const DatePicker = ({
               maximumDate={new Date()}
               minimumDate={new Date(1990, 0, 1)}
               onChange={(e, val) => {
-                togglePicker(),
-                  onChange(val)
+                togglePicker(), onChange(val)
               }}
             />
           )}

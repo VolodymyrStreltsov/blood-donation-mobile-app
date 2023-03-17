@@ -6,7 +6,7 @@ import {
   PageWrapper,
   PreviousDonationListElement,
   Text,
-  View
+  View,
 } from '../../components'
 import { DataContext } from '../../data/DataContext'
 
@@ -32,9 +32,7 @@ export default function TabDonationsScreen() {
       <View style={{ flex: 1 }}>
         <FlatList
           data={PREVIOUS_DONATIONS_DATA}
-          renderItem={({ item }) => (
-            <PreviousDonationListElement item={item} />
-          )}
+          renderItem={({ item }) => <PreviousDonationListElement item={item} />}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         />

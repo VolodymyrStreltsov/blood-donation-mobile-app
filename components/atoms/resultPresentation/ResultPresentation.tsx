@@ -1,15 +1,28 @@
-
 import { StyleSheet } from 'react-native'
 import { Text } from '../text/Text'
 import { View } from '../view/View'
 
-export const ResultPresentation = ({ label, value, right }: { label: string, value: string, right?: string }) => {
+export const ResultPresentation = ({
+  label,
+  value,
+  right,
+}: {
+  label: string
+  value: string
+  right?: string
+}) => {
   return (
     <View style={styles.container}>
-      <Text variant='h5' align='flex-start'>{label}</Text>
+      <Text variant='h5' align='flex-start'>
+        {label}
+      </Text>
       <View style={styles.valueContainer}>
-        <Text variant='h4' align='flex-start'>{value}</Text>
-        <Text variant='h4' align='flex-start' style={{ color: 'gray' }}>{right}</Text>
+        <Text variant='h4' align='flex-start'>
+          {value}
+        </Text>
+        <Text variant='h4' align='flex-start' style={{ color: 'gray' }}>
+          {right}
+        </Text>
       </View>
     </View>
   )

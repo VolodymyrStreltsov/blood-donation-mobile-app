@@ -6,7 +6,6 @@ import { Appbar } from 'react-native-paper'
 import { DataContext } from '../../../data/DataContext'
 import { ControlledTextInput } from '../../atoms'
 
-
 export const ProfileForm = () => {
   const { PROFILE_DATA } = useContext(DataContext)
   const [editable, setEditable] = useState(false)
@@ -15,10 +14,9 @@ export const ProfileForm = () => {
     setEditable(!editable)
   }
 
-  const defaultValues: AddDonationFormDefaultValues = {
-  }
+  const defaultValues: AddDonationFormDefaultValues = {}
 
-  PROFILE_DATA.forEach((item: ProfileDataRecord) => defaultValues[item.id] = item.value)
+  PROFILE_DATA.forEach((item: ProfileDataRecord) => (defaultValues[item.id] = item.value))
 
   const { handleSubmit, control, register } = useForm({
     mode: 'onSubmit',
@@ -45,9 +43,7 @@ export const ProfileForm = () => {
           onPress={!editable ? switchEditable : handleSubmit(onSubmit)}
         />
       </Appbar.Header>
-      <ScrollView
-        contentContainerStyle={styles.formContainer}
-        showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={styles.formContainer} showsVerticalScrollIndicator={false}>
         {PROFILE_DATA.map((item: ProfileDataRecord) => (
           <ControlledTextInput
             disabled={!editable}
@@ -58,7 +54,7 @@ export const ProfileForm = () => {
           />
         ))}
       </ScrollView>
-    </ >
+    </>
   )
 }
 

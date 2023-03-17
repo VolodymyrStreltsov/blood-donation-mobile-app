@@ -1,21 +1,30 @@
-
 import { Dimensions, Image, Platform, StyleSheet, View } from 'react-native'
 import { Card, ProgressBar } from 'react-native-paper'
 import { Colors } from '../../../constants/Colors'
 import { Text } from '../../atoms'
 
-export const AchievementCard = ({ title, progress, remainder, img }: { title: string, progress: number, remainder: string, img: string }) => {
+export const AchievementCard = ({
+  title,
+  progress,
+  remainder,
+  img,
+}: {
+  title: string
+  progress: number
+  remainder: string
+  img: string
+}) => {
   const achieved = progress === 1
   return (
     <Card
       theme={{ roundness: 4 }}
-      style={[styles.card, achieved && { backgroundColor: Colors.TintColorLight, borderColor: Colors.TintColorLight }]}>
+      style={[
+        styles.card,
+        achieved && { backgroundColor: Colors.TintColorLight, borderColor: Colors.TintColorLight },
+      ]}>
       <Card.Content style={styles.content}>
         <View style={styles.contentContainer}>
-          <Image
-            style={styles.img}
-            source={require('../../../assets/images/icon.png')}
-          />
+          <Image style={styles.img} source={require('../../../assets/images/icon.png')} />
           <View style={styles.text}>
             <View>
               <Text align='flex-start' bold variant='h4' style={{ marginBottom: 6 }}>
@@ -57,5 +66,5 @@ const styles = StyleSheet.create({
   img: {
     width: 60,
     height: 88,
-  }
+  },
 })

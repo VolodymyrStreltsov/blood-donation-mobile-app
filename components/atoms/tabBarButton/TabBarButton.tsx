@@ -1,4 +1,3 @@
-
 import { useColorScheme } from 'react-native'
 import { Avatar } from 'react-native-paper'
 import Colors from '../../../constants/Colors'

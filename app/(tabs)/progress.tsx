@@ -11,14 +11,15 @@ export default function TabProgressScreen() {
         Progress
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {ACHIEVEMENTS.map((item: Achievement) =>
+        {ACHIEVEMENTS.map((item: Achievement) => (
           <AchievementCard
             key={item.id}
             title={item.title}
             progress={item.progress}
             remainder={item.remainder}
             img={item.img}
-          />)}
+          />
+        ))}
       </ScrollView>
     </PageWrapper>
   )
