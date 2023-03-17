@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Dimensions, Image, Platform, StyleSheet, View } from 'react-native'
 import { Card, ProgressBar } from 'react-native-paper'
 import { Colors } from '../../../constants/Colors'

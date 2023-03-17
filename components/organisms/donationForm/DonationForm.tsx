@@ -1,11 +1,12 @@
 import { useRouter } from 'expo-router'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dimensions, Platform, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
 import { DataContext } from '../../../data/DataContext'
 import { ControlledDropDown, ControlledTextInput, DatePicker, Text, View } from '../../atoms'
+import { donationHelper } from './donationHelper'
 
 
 export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, id?: string }) => {
@@ -55,31 +56,17 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
   }, [register])
 
   const onSubmit = (val: any) => {
-    console.log(val)
-    setPreviousDonationsData([{
-      id: Math.random().toString(36).toString(),
-      baseDonationInfo: {
-        type: val.type,
-        date: val.date,
-        volume: val.volume,
-        blood_pressure: val.blood_pressure,
-        duration: val.duration,
-      },
-      morphology: {
-        Hb: val.Hb,
-        Ht: val.Ht,
-        MCV: val.NCV,
-        MCH: val.MCH,
-        MCHC: val.MCHC,
-        RDW: val.RDW,
-        WBC: val.WBC,
-        PLT: val.PLT,
-        MPV: val.MPV,
-        PCT: val.PCT,
-        PDW: val.PDW,
-        MO: val.MO,
-      },
-    }, ...PREVIOUS_DONATIONS_DATA])
+    if (id) setPreviousDonationsData(PREVIOUS_DONATIONS_DATA.map((el: Donation) => el.id === id ? donationHelper(val) : el))
+    else {
+      const indexToInsert = PREVIOUS_DONATIONS_DATA.findIndex(
+        (donation: Donation) => new Date(donation.baseDonationInfo.date) > new Date(val.date)
+      )
+      const updatedDonationsData = [...PREVIOUS_DONATIONS_DATA]
+      updatedDonationsData.splice(indexToInsert, 0, donationHelper(val))
+      setPreviousDonationsData(updatedDonationsData)
+    }
+    console.log(PREVIOUS_DONATIONS_DATA)
+    // setPreviousDonationsData([donationHelper(val), ...PREVIOUS_DONATIONS_DATA])
     // set disqualification (disqualification_duration: val?.disqualification_duration)
     router.back()
   }
@@ -127,6 +114,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
               name={item.id}
               control={control}
               style={styles.item}
+              right='Days'
             />
           }
           else if (item.id === 'duration' && !disqualified) return null
@@ -137,6 +125,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
               name={item.id}
               control={control}
               style={styles.item}
+              right={item.unit}
             />
           }
         })}
@@ -152,6 +141,7 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: string, i
             name={item.id}
             control={control}
             style={styles.item}
+            right={item.unit}
           />
         ))}
       </ScrollView>
@@ -188,6 +178,7 @@ const styles = StyleSheet.create({
   },
   item: {
     minWidth: '47%',
+    maxWidth: '47%',
   },
   dropDownItem: {
     width: '100%',

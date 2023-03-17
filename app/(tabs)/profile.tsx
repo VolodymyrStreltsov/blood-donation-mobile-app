@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { PageWrapper, ProfileForm } from '../../components'
 
 export default function TabProfileScreen() {

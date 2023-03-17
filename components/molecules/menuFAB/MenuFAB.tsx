@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from 'expo-router'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FAB, Portal } from 'react-native-paper'
 import { Colors } from '../../../constants/Colors'
 

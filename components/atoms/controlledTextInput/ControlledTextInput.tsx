@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Control, Controller } from 'react-hook-form'
 import { TextInput } from 'react-native-paper'
 import { StyleProp, ViewStyle } from 'react-native/types'
@@ -10,9 +10,11 @@ interface ControlledTextInputProps {
   name: string
   style?: StyleProp<ViewStyle>
   disabled?: boolean
+  right?: string
+  keyboardType?: 'default' | 'number-pad' | 'decimal-pad' | 'numeric' | 'email-address' | 'phone-pad'
 }
 
-export function ControlledTextInput({ name, control, style, disabled }: ControlledTextInputProps) {
+export function ControlledTextInput({ name, control, style, disabled, right, keyboardType = 'numeric' }: ControlledTextInputProps) {
   return (
     <View style={style}>
       <Controller
@@ -20,13 +22,16 @@ export function ControlledTextInput({ name, control, style, disabled }: Controll
         control={control}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           disabled ?
-            <ResultPresentation label={name} value={value} />
+            <ResultPresentation label={name} value={value} right={right} />
             : <TextInput
               error={error ? true : false}
               mode='outlined'
+              outlineStyle={{ borderColor: error ? 'red' : 'gray' }}
               label={name}
               onChangeText={onChange}
               value={value}
+              right={<TextInput.Affix text={right} />}
+              keyboardType={keyboardType}
             />
         )}
       />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import DropDown from 'react-native-paper-dropdown'
 import { StyleProp, ViewStyle } from 'react-native/types'

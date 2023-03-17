@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Dimensions, Platform, ScrollView, StyleSheet } from 'react-native'
 import { Appbar } from 'react-native-paper'
 import { Colors } from '../../../constants/Colors'
@@ -58,11 +58,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '100%',
     height: 115,
-    rowGap: 16,
   },
   paragraphsContainer: {
     flex: 1,
     width: '100%',
-    rowGap: 16,
+    rowGap: 7,
   },
 })

@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { StyleSheet } from 'react-native'
 import { Avatar } from 'react-native-paper'
 import { Text, View } from '../../atoms'
@@ -13,8 +13,8 @@ export const InfoParagraph = ({ text, idx }: { text: string, idx: number }) => {
         icon={zero ? 'alarm' : 'adjust'}
         color='#130b0b'
       />
-      <View style={{ paddingHorizontal: 16, width: '90%' }}>
-        <Text variant='p'>{text}</Text>
+      <View style={{ paddingHorizontal: 16, flex: 1 }}>
+        <Text variant='p' style={{ width: '100%' }}>{text}</Text>
       </View>
     </View>
   )
@@ -23,10 +23,11 @@ export const InfoParagraph = ({ text, idx }: { text: string, idx: number }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
+    padding: 7,
   },
   icon: {
+    alignItems: 'center',
     backgroundColor: 'transparent',
+    width: 50,
   }
 })

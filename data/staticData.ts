@@ -19,24 +19,24 @@ export const NEXT_DONATIONS_DATA: any[] = [
 
 export const BASE_DONATION_INFO: BaseDonationIndicator[] = [
   { id: 'date', title: 'Date', initVal: new Date() },
-  { id: 'duration', title: 'Duration', initVal: '0' },
+  { id: 'duration', title: 'Duration', initVal: ' ' },
   { id: 'volume', title: 'Volume', unit: 'ml', initVal: '450' },
-  { id: 'blood_pressure', title: 'Blood Pressure', initVal: '0' },
+  { id: 'blood_pressure', title: 'Blood Pressure', initVal: ' ' },
 ]
 
 export const MORPHOLOGY_INDICATORS: Indicator[] = [
-  { id: 'Hb', title: 'Hb', unit: 'g/dL', initVal: '0' },
-  { id: 'Ht', title: 'Ht', unit: '%', initVal: '0' },
-  { id: 'MCV', title: 'MCV', unit: 'fL', initVal: '0' },
-  { id: 'MCH', title: 'MCH', unit: 'pg', initVal: '0' },
-  { id: 'MCHC', title: 'MCHC', unit: 'g/dL', initVal: '0' },
-  { id: 'RDW', title: 'RDW', unit: '%', initVal: '0' },
-  { id: 'WBC', title: 'WBC', unit: '10^3/μL', initVal: '0' },
-  { id: 'PLT', title: 'PLT', unit: '10^3/μL', initVal: '0' },
-  { id: 'MPV', title: 'MPV', unit: 'fL', initVal: '0' },
-  { id: 'PCT', title: 'PCT', unit: '%', initVal: '0' },
-  { id: 'PDW', title: 'PDW', unit: '%', initVal: '0' },
-  { id: 'MO', title: 'MO', unit: '%', initVal: '0' },
+  { id: 'Hb', title: 'Hb', unit: 'g/dL', initVal: ' ' },
+  { id: 'Ht', title: 'Ht', unit: '%', initVal: ' ' },
+  { id: 'MCV', title: 'MCV', unit: 'fL', initVal: ' ' },
+  { id: 'MCH', title: 'MCH', unit: 'pg', initVal: ' ' },
+  { id: 'MCHC', title: 'MCHC', unit: 'g/dL', initVal: ' ' },
+  { id: 'RDW', title: 'RDW', unit: '%', initVal: ' ' },
+  { id: 'WBC', title: 'WBC', unit: '10^3/μL', initVal: ' ' },
+  { id: 'PLT', title: 'PLT', unit: '10^3/μL', initVal: ' ' },
+  { id: 'MPV', title: 'MPV', unit: 'fL', initVal: ' ' },
+  { id: 'PCT', title: 'PCT', unit: '%', initVal: ' ' },
+  { id: 'PDW', title: 'PDW', unit: '%', initVal: ' ' },
+  { id: 'MO', title: 'MO', unit: '%', initVal: ' ' },
 ]
 
 export const DONATION_TYPES: DropdownType[] = [

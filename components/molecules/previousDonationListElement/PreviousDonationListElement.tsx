@@ -1,9 +1,6 @@
 import { useRouter } from 'expo-router'
-import moment from 'moment'
-import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { Avatar } from 'react-native-paper'
-import { DATE_FORMAT } from '../../../constants/Constants'
 import { Text } from '../../atoms'
 
 export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
@@ -15,7 +12,7 @@ export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
         <Avatar.Text size={40} label={item.baseDonationInfo.type[0]} />
         <View style={styles.text}>
           <Text align='flex-start' variant='h5' bold>
-            {moment(item.baseDonationInfo.date).format(DATE_FORMAT)}
+            {new Date(item.baseDonationInfo.date).toLocaleDateString()}
           </Text>
           <Text align='flex-start' variant='h4'>
             {item.baseDonationInfo.type}

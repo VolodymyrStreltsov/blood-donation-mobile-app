@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router'
-import React from 'react'
+
 import { Pressable, StyleSheet, View } from 'react-native'
 import { Avatar, Card } from 'react-native-paper'
 import { Colors } from '../../../constants/Colors'

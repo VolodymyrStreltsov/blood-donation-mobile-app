@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useColorScheme } from 'react-native'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { DataProvider } from '../data/DataContext'

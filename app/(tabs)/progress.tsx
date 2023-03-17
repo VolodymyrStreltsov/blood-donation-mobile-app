@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { AchievementCard, PageWrapper, Text } from '../../components'
 import { DataContext } from '../../data/CreateDataContext'
