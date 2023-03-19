@@ -12,6 +12,12 @@ import { DataContext } from '../../data/DataContext'
 
 export default function TabDonationsScreen() {
   const { NEXT_DONATIONS_DATA, PREVIOUS_DONATIONS_DATA } = useContext(DataContext)
+
+  fetch('http://192.168.1.1:3000/')
+    .then((response) => response.text())
+    .then((responseText) => console.log(responseText))
+    .catch((error) => console.error(error))
+
   return (
     <PageWrapper>
       <Text variant='h3' align='flex-start' style={{ marginBottom: 18, marginLeft: 16 }}>

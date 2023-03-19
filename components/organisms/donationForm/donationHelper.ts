@@ -1,6 +1,6 @@
 export const donationHelper = (val: any, id?: string) => {
   return {
-    id: id || Math.random().toString(36).toString(),
+    id: id || '',
     baseDonationInfo: {
       type: val.type,
       date: val.date,
