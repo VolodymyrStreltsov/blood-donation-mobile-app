@@ -83,12 +83,44 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: DonationN
       )
       setPreviousDonationsData(updatedDonationsData)
     } else {
-      const updatedDonationsData = [...PREVIOUS_DONATIONS_DATA, donationHelper(val)]
-      updatedDonationsData.sort(
-        (a: Donation, b: Donation) =>
-          new Date(b.baseDonationInfo.date).getTime() - new Date(a.baseDonationInfo.date).getTime(),
-      )
-      setPreviousDonationsData(updatedDonationsData)
+      // const updatedDonationsData = [...PREVIOUS_DONATIONS_DATA, donationHelper(val)]
+      // updatedDonationsData.sort(
+      //   (a: Donation, b: Donation) =>
+      //     new Date(b.baseDonationInfo.date).getTime() - new Date(a.baseDonationInfo.date).getTime(),
+      // )
+      // setPreviousDonationsData(updatedDonationsData)
+      fetch('http://localhost:3000/donations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          baseDonationInfo: {
+            type: "whole",
+            date: "2022-03-18",
+            volume: "450",
+            blood_pressure: "120/80",
+            duration: "30"
+          },
+          morphology: {
+            Hb: "13",
+            Ht: "39",
+            MCV: "80",
+            MCH: "27",
+            MCHC: "33.75",
+            RDW: "12",
+            WBC: "7.6",
+            PLT: "200",
+            MPV: "9.6",
+            PCT: "0.2",
+            PDW: "11.5",
+            MO: "0.5"
+          }
+        })
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error))
     }
     router.back()
   }

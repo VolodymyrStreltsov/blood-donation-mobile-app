@@ -24,7 +24,8 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "android.permission.READ_CALENDAR"
+        "android.permission.READ_CALENDAR",
+        "android.permission.INTERNET"
       ],
       "package": "com.st.vladimir.sangon"
     },
