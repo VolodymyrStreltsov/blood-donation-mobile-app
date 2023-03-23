@@ -1,30 +1,3 @@
-export const donationHelper = (val: any, id?: string) => {
-  return {
-    id: id || '',
-    baseDonationInfo: {
-      type: val.type,
-      date: val.date,
-      volume: val.volume?.trim(),
-      blood_pressure: val.blood_pressure?.trim(),
-      duration: val.duration?.trim(),
-    },
-    morphology: {
-      Hb: val.Hb?.trim(),
-      Ht: val.Ht?.trim(),
-      MCV: val.NCV?.trim(),
-      MCH: val.MCH?.trim(),
-      MCHC: val.MCHC?.trim(),
-      RDW: val.RDW?.trim(),
-      WBC: val.WBC?.trim(),
-      PLT: val.PLT?.trim(),
-      MPV: val.MPV?.trim(),
-      PCT: val.PCT?.trim(),
-      PDW: val.PDW?.trim(),
-      MO: val.MO?.trim(),
-    },
-  }
-} // TODO
-
 export const getVolume = (type?: string) => {
   switch (type) {
     case 'Whole_blood':

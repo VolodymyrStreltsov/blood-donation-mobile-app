@@ -24,19 +24,12 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "android.permission.READ_CALENDAR",
-        "android.permission.INTERNET"
-      ],
-      "package": "com.st.vladimir.sangon"
+        "INTERNET"
+      ]
     },
     "web": {
       "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "46b90c1d-547c-4429-ae28-ab5cfc4bd65e"
-      }
     }
   }
 }

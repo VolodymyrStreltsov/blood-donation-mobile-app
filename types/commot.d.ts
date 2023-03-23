@@ -48,14 +48,8 @@ interface Indicator<T> {
   unit?: string
 }
 
-interface AddDonationFormDefaultValues {
-  [key: string]: any
-}
-
-interface Donation {
-  id: string
-  baseDonationInfo: BaseDonationInfo
-  morphology: MorphologyIndicators
+interface Donation extends BaseDonationInfo, MorphologyIndicators {
+  id?: string
 }
 
 interface Achievement {
