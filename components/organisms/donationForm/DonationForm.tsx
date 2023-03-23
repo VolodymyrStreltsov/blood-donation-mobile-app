@@ -4,18 +4,17 @@ import { useForm } from 'react-hook-form'
 import { Dimensions, Platform, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
+import { addDonation, deleteDonation, getDonationById, updateDonation } from '../../../data/database'
 import { DataContext } from '../../../data/DataContext'
 import { ControlledDropDown, ControlledTextInput, DatePicker, Text, View } from '../../atoms'
-import { donationHelper, getBaseValue, getMorphologyValue, getVolume } from './donationHelper'
+import { getVolume } from './donationHelper'
 
 export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: DonationName; id?: string }) => {
   const {
     BASE_DONATION_INDICATORS,
     MORPHOLOGY_INDICATORS,
-    PREVIOUS_DONATIONS_DATA,
     BASE_DONATION_NAMES,
     EXTENDED_DONATION_NAMES,
-    setPreviousDonationsData,
   } = useContext(DataContext)
   const disqualified = nameOfDonation === 'Disqualification'
 
@@ -27,7 +26,19 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: DonationN
     ? false
     : true
 
-  const donation = id ? PREVIOUS_DONATIONS_DATA.find((el: Donation) => el.id === id) : null
+  const [donation, setDonation] = useState<Donation | null>(null)
+
+  useEffect(() => {
+    if (id) {
+      getDonationById(id)
+        .then((donation: Donation) => {
+          setDonation(donation)
+        })
+        .catch((error: Error) => {
+          console.log(error)
+        })
+    }
+  }, [id])
 
   const [editable, setEditable] = useState(false)
   const [activeFields, setActiveFields] = useState(id === '')
@@ -48,17 +59,25 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: DonationN
     editable && setActiveFields(true)
   }, [editable])
 
-  const defaultValues: AddDonationFormDefaultValues = {
+  const defaultValues: Donation = {
     type: dropdownActive && !id ? EXTENDED_DONATION_NAMES[0] : nameOfDonation,
+    date: donation?.date || new Date().toISOString(),
+    volume: donation?.volume || getVolume(nameOfDonation),
+    blood_pressure: donation?.blood_pressure || ' ',
+    duration: donation?.duration || ' ',
+    Hb: donation?.Hb || ' ',
+    Ht: donation?.Ht || ' ',
+    MCV: donation?.MCV || ' ',
+    MCH: donation?.MCH || ' ',
+    MCHC: donation?.MCHC || ' ',
+    RDW: donation?.RDW || ' ',
+    WBC: donation?.WBC || ' ',
+    PLT: donation?.PLT || ' ',
+    MPV: donation?.MPV || ' ',
+    PCT: donation?.PCT || ' ',
+    PDW: donation?.PDW || ' ',
+    MO: donation?.MO || ' ',
   }
-
-  MORPHOLOGY_INDICATORS.forEach(
-    (item: Indicator<MorphologyIndicators>) => (defaultValues[item.id] = getMorphologyValue(donation?.morphology || {} as MorphologyIndicators, item.id)),
-  )
-  BASE_DONATION_INDICATORS.forEach(
-    (item: Indicator<BaseDonationInfo>) =>
-      (defaultValues[item.id] = getBaseValue(donation?.baseDonationInfo || {} as BaseDonationInfo, item.id, nameOfDonation !== 'Donation' ? nameOfDonation : EXTENDED_DONATION_NAMES[0])),
-  )
 
   const { handleSubmit, control, register, watch, setValue } = useForm({
     mode: 'onSubmit',
@@ -67,66 +86,37 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: DonationN
   })
 
   useEffect(() => {
-    Object.keys(defaultValues).map((item) => {
-      register(item)
-    })
+    register('type')
+    register('date')
+    register('volume')
+    register('blood_pressure')
+    register('duration')
+    register('Hb')
+    register('Ht')
+    register('MCV')
+    register('MCH')
+    register('MCHC')
+    register('RDW')
+    register('WBC')
+    register('PLT')
+    register('MPV')
+    register('PCT')
+    register('PDW')
+    register('MO')
   }, [register])
 
-  const onSubmit = (val: any) => {
+  const onSubmit = (val: Donation) => {
+    console.log('form', id, val)
     if (id) {
-      const updatedDonationsData = PREVIOUS_DONATIONS_DATA.map((el: Donation) =>
-        el.id === id ? donationHelper(val, id) : el,
-      )
-      updatedDonationsData.sort(
-        (a: Donation, b: Donation) =>
-          new Date(b.baseDonationInfo.date).getTime() - new Date(a.baseDonationInfo.date).getTime(),
-      )
-      setPreviousDonationsData(updatedDonationsData)
+      updateDonation(id, val)
     } else {
-      // const updatedDonationsData = [...PREVIOUS_DONATIONS_DATA, donationHelper(val)]
-      // updatedDonationsData.sort(
-      //   (a: Donation, b: Donation) =>
-      //     new Date(b.baseDonationInfo.date).getTime() - new Date(a.baseDonationInfo.date).getTime(),
-      // )
-      // setPreviousDonationsData(updatedDonationsData)
-      fetch('http://localhost:3000/donations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          baseDonationInfo: {
-            type: "whole",
-            date: "2022-03-18",
-            volume: "450",
-            blood_pressure: "120/80",
-            duration: "30"
-          },
-          morphology: {
-            Hb: "13",
-            Ht: "39",
-            MCV: "80",
-            MCH: "27",
-            MCHC: "33.75",
-            RDW: "12",
-            WBC: "7.6",
-            PLT: "200",
-            MPV: "9.6",
-            PCT: "0.2",
-            PDW: "11.5",
-            MO: "0.5"
-          }
-        })
-      })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error))
+      addDonation(val)
     }
     router.back()
   }
 
   const deleteDonationHandler = () => {
-    setPreviousDonationsData(PREVIOUS_DONATIONS_DATA.filter((el: Donation) => el.id !== id))
+    if (id) deleteDonation(id)
     router.back()
   }
 

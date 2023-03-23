@@ -14,7 +14,7 @@ export const ProfileForm = () => {
     setEditable(!editable)
   }
 
-  const defaultValues: AddDonationFormDefaultValues = {}
+  const defaultValues: any = {}
 
   PROFILE_DATA.forEach((item: ProfileDataRecord) => (defaultValues[item.id] = item.value))
 

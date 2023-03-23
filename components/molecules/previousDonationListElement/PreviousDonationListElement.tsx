@@ -13,23 +13,23 @@ export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
       onPress={() =>
         router.push({
           pathname: 'modal',
-          params: { name: item.baseDonationInfo.type, id: item.id },
+          params: { name: item.type, id: item.id },
         })
       }>
       <View style={styles.left}>
-        <Avatar.Text size={40} label={item.baseDonationInfo.type[0]} />
+        <Avatar.Text size={40} label={item.type[0]} />
         <View style={styles.text}>
           <Text align='flex-start' variant='h5' bold>
-            {formattingDate(item.baseDonationInfo.date)}
+            {formattingDate(item.date)}
           </Text>
           <Text align='flex-start' variant='h4'>
-            {item.baseDonationInfo.type}
+            {item.type}
           </Text>
         </View>
       </View>
       <View style={styles.right}>
         <Text variant='h4' bold>
-          {item.baseDonationInfo.volume !== '' ? item.baseDonationInfo.volume + ' ml' : '🤏🏼'}
+          {item.volume !== '' ? item.volume + ' ml' : '🤏🏼'}
         </Text>
       </View>
     </Pressable>
