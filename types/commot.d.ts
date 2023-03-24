@@ -32,7 +32,7 @@ type infoScreenData = { id: DonationName; paragraphs: string[] }
 
 interface BaseDonationInfo {
   type: DonationName
-  date: string | Date
+  date: number | Date | string
   volume: string
   blood_pressure: string
   duration?: string

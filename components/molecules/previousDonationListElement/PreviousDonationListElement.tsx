@@ -29,7 +29,7 @@ export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
       </View>
       <View style={styles.right}>
         <Text variant='h4' bold>
-          {item.volume !== '' ? item.volume + ' ml' : '🤏🏼'}
+          {item.type === 'Disqualification' ? '🤏🏼' : item.volume + ' ml'}
         </Text>
       </View>
     </Pressable>

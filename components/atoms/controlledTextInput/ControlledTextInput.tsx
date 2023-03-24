@@ -10,13 +10,6 @@ interface ControlledTextInputProps {
   style?: StyleProp<ViewStyle>
   disabled?: boolean
   right?: string
-  keyboardType?:
-    | 'default'
-    | 'number-pad'
-    | 'decimal-pad'
-    | 'numeric'
-    | 'email-address'
-    | 'phone-pad'
 }
 
 export function ControlledTextInput({
@@ -25,7 +18,6 @@ export function ControlledTextInput({
   style,
   disabled,
   right,
-  keyboardType = 'numeric',
 }: ControlledTextInputProps) {
   return (
     <View style={style}>
@@ -42,9 +34,9 @@ export function ControlledTextInput({
               outlineStyle={{ borderColor: error ? 'red' : 'gray' }}
               label={name}
               onChangeText={onChange}
-              value={value}
+              value={String(value)}
               right={<TextInput.Affix text={right} />}
-              keyboardType={keyboardType}
+              keyboardType='numeric'
             />
           )
         }
