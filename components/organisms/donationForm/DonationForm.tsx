@@ -1,140 +1,83 @@
 import { useRouter } from 'expo-router'
-import { useContext, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useContext } from 'react'
+import { Control } from 'react-hook-form'
 import { Dimensions, Platform, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
-import { addDonation, deleteDonation, getDonationById, updateDonation } from '../../../data/database'
 import { DataContext } from '../../../data/DataContext'
-import { ControlledDropDown, ControlledTextInput, DatePicker, Text, View } from '../../atoms'
-import { getVolume } from './donationHelper'
+import { ControlledDropDown, ControlledTextInput, DatePicker, Loader, Text, View } from '../../atoms'
 
-export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: DonationName; id?: string }) => {
-  const {
-    BASE_DONATION_INDICATORS,
-    MORPHOLOGY_INDICATORS,
-    BASE_DONATION_NAMES,
-    EXTENDED_DONATION_NAMES,
-  } = useContext(DataContext)
+interface DonationFormProps {
+  nameOfDonation: DonationName
+  visible?: boolean
+  control: Control<any>
+  switchMenuVisible?: () => void
+  activeFields?: boolean
+  onSubmit: () => void
+  switchEditable?: () => void
+  deleteDonationHandler?: () => void
+}
+
+export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisible, activeFields, onSubmit, switchEditable, deleteDonationHandler }: DonationFormProps) => {
+  const { BASE_DONATION_NAMES, EXTENDED_DONATION_NAMES, BASE_DONATION_INDICATORS, MORPHOLOGY_INDICATORS } = useContext(DataContext)
+  const router = useRouter()
+
   const disqualified = nameOfDonation === 'Disqualification'
 
   const DONATION_TYPES = EXTENDED_DONATION_NAMES.map((el: string) => ({ label: el, value: el }))
 
-  const dropdownActive = BASE_DONATION_NAMES.includes(
-    nameOfDonation,
-  )
-    ? false
-    : true
+  const dropdownActive = !BASE_DONATION_NAMES.includes(nameOfDonation)
 
-  const [donation, setDonation] = useState<Donation | null>(null)
-
-  useEffect(() => {
-    if (id) {
-      getDonationById(id)
-        .then((donation: Donation) => {
-          setDonation(donation)
-        })
-        .catch((error: Error) => {
-          console.log(error)
-        })
+  const HEADER = BASE_DONATION_INDICATORS.map((item: Indicator<BaseDonationInfo>) => {
+    if (item.id === 'date') {
+      return (
+        <DatePicker
+          key={item.id}
+          control={control}
+          name={item.id}
+          style={styles.item}
+          disabled={!activeFields}
+        />
+      )
     }
-  }, [id])
-
-  const [editable, setEditable] = useState(false)
-  const [activeFields, setActiveFields] = useState(id === '')
-
-  const [visible, setVisible] = useState(false)
-  const router = useRouter()
-
-  const switchMenuVisible = () => {
-    setVisible(!visible)
-  }
-
-  const switchEditable = () => {
-    setEditable(!editable)
-    setVisible(false)
-  }
-
-  useEffect(() => {
-    editable && setActiveFields(true)
-  }, [editable])
-
-  const defaultValues: Donation = {
-    type: dropdownActive && !id ? EXTENDED_DONATION_NAMES[0] : nameOfDonation,
-    date: donation?.date || new Date().toISOString(),
-    volume: donation?.volume || getVolume(nameOfDonation),
-    blood_pressure: donation?.blood_pressure || ' ',
-    duration: donation?.duration || ' ',
-    Hb: donation?.Hb || ' ',
-    Ht: donation?.Ht || ' ',
-    MCV: donation?.MCV || ' ',
-    MCH: donation?.MCH || ' ',
-    MCHC: donation?.MCHC || ' ',
-    RDW: donation?.RDW || ' ',
-    WBC: donation?.WBC || ' ',
-    PLT: donation?.PLT || ' ',
-    MPV: donation?.MPV || ' ',
-    PCT: donation?.PCT || ' ',
-    PDW: donation?.PDW || ' ',
-    MO: donation?.MO || ' ',
-  }
-
-  const { handleSubmit, control, register, watch, setValue } = useForm({
-    mode: 'onSubmit',
-    criteriaMode: 'firstError',
-    defaultValues,
-  })
-
-  useEffect(() => {
-    register('type')
-    register('date')
-    register('volume')
-    register('blood_pressure')
-    register('duration')
-    register('Hb')
-    register('Ht')
-    register('MCV')
-    register('MCH')
-    register('MCHC')
-    register('RDW')
-    register('WBC')
-    register('PLT')
-    register('MPV')
-    register('PCT')
-    register('PDW')
-    register('MO')
-  }, [register])
-
-  const onSubmit = (val: Donation) => {
-    console.log('form', id, val)
-    if (id) {
-      updateDonation(id, val)
-    } else {
-      addDonation(val)
+    else if (item.id === 'volume' && disqualified) return null
+    else if (item.id === 'duration' && !disqualified) return null
+    else {
+      return (
+        <ControlledTextInput
+          disabled={!activeFields}
+          key={item.id}
+          name={item.id}
+          control={control}
+          style={styles.item}
+          right={item.unit}
+        />
+      )
     }
-    router.back()
-  }
+  }) ?? <Loader />
 
-  const deleteDonationHandler = () => {
-    if (id) deleteDonation(id)
-    router.back()
-  }
-
-  useEffect(() => {
-    setValue('volume', getVolume(watch('type')), { shouldValidate: true })
-  }, [watch('type')])
+  const MORPHOLOGY = MORPHOLOGY_INDICATORS.map((item: Indicator<MorphologyIndicators>) => (
+    <ControlledTextInput
+      disabled={!activeFields}
+      key={item.id}
+      name={item.id}
+      control={control}
+      style={styles.item}
+      right={item.unit}
+    />
+  )) ?? <Loader />
 
   return (
     <>
       <Appbar.Header style={styles.appbarContainer}>
         <Appbar.BackAction onPress={() => router.back()} />
         <Menu
-          visible={visible}
+          visible={!!visible}
           onDismiss={switchMenuVisible}
           anchor={
             <Appbar.Action
               icon={activeFields ? 'check' : 'dots-vertical'}
-              onPress={!activeFields ? switchMenuVisible : handleSubmit(onSubmit)}
+              onPress={!activeFields ? switchMenuVisible : onSubmit}
             />
           }>
           <Menu.Item onPress={switchEditable} title='Edit' leadingIcon='pencil-outline' />
@@ -158,48 +101,13 @@ export const DonationForm = ({ nameOfDonation, id }: { nameOfDonation: DonationN
         />
       )}
       <View style={styles.headerWrapper}>
-        {BASE_DONATION_INDICATORS.map((item: Indicator<BaseDonationInfo>) => {
-          if (item.id === 'date') {
-            return (
-              <DatePicker
-                key={item.id}
-                control={control}
-                name={item.id}
-                style={styles.item}
-                disabled={!activeFields}
-              />
-            )
-          }
-          else if (item.id === 'volume' && disqualified) return null
-          else if (item.id === 'duration' && !disqualified) return null
-          else {
-            return (
-              <ControlledTextInput
-                disabled={!activeFields}
-                key={item.id}
-                name={item.id}
-                control={control}
-                style={styles.item}
-                right={item.unit}
-              />
-            )
-          }
-        })}
+        {HEADER}
       </View>
       <Text variant='h4' bold align='flex-start' style={{ marginBottom: 20 }}>
         Morphology results
       </Text>
       <ScrollView contentContainerStyle={styles.formContainer} showsVerticalScrollIndicator={false}>
-        {MORPHOLOGY_INDICATORS.map((item: Indicator<MorphologyIndicators>) => (
-          <ControlledTextInput
-            disabled={!activeFields}
-            key={item.id}
-            name={item.id}
-            control={control}
-            style={styles.item}
-            right={item.unit}
-          />
-        ))}
+        {MORPHOLOGY}
       </ScrollView>
     </>
   )

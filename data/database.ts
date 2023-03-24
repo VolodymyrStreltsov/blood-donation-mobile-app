@@ -5,7 +5,7 @@ const db = SQLite.openDatabase('bloodDonations.db')
 const initDB = () => {
   db.transaction((tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS donations (id INTEGER PRIMARY KEY, type TEXT, date TEXT, volume INTEGER, blood_pressure TEXT, duration INTEGER, Hb REAL, Ht REAL, MCV REAL, MCH REAL, MCHC REAL, RDW REAL, WBC REAL, PLT REAL, MPV REAL, PCT REAL, PDW REAL, MO REAL)',
+      'CREATE TABLE IF NOT EXISTS donations (id INTEGER PRIMARY KEY, type TEXT, date INTEGER, volume REAL, blood_pressure TEXT, duration REAL, Hb REAL, Ht REAL, MCV REAL, MCH REAL, MCHC REAL, RDW REAL, WBC REAL, PLT REAL, MPV REAL, PCT REAL, PDW REAL, MO REAL)',
       [],
       () => console.log('Donations table created successfully.'),
       (_tx, error) => {
@@ -23,8 +23,8 @@ export const addDonation = (donation: Donation) => {
       'INSERT INTO donations (type, date, volume, blood_pressure, duration, Hb, Ht, MCV, MCH, MCHC, RDW, WBC, PLT, MPV, PCT, PDW, MO) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [
         donation.type,
-        donation.date.toString(),
-        donation.volume,
+        new Date(donation.date).getTime(),
+        donation.volume || 0,
         donation.blood_pressure,
         donation.duration || 0,
         donation.Hb,
@@ -97,7 +97,7 @@ export const getAllDonations = () => {
   return new Promise((resolve) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT * FROM donations',
+        'SELECT * FROM donations ORDER BY date DESC',
         [],
         (_tx, results) => {
           resolve(results.rows._array)
@@ -116,8 +116,8 @@ export const updateDonation = (id: string, updatedDonation: Donation) => {
       'UPDATE donations SET type = ?, date = ?, volume = ?, blood_pressure = ?, duration = ?, Hb = ?, Ht = ?, MCV = ?, MCH = ?, MCHC = ?, RDW = ?, WBC = ?, PLT = ?, MPV = ?, PCT = ?, PDW = ?, MO = ? WHERE id = ?',
       [
         updatedDonation.type,
-        updatedDonation.date.toString(),
-        updatedDonation.volume,
+        new Date(updatedDonation.date).getTime(),
+        updatedDonation.volume || 0,
         updatedDonation.blood_pressure,
         updatedDonation.duration || 0,
         updatedDonation.Hb,
@@ -135,7 +135,7 @@ export const updateDonation = (id: string, updatedDonation: Donation) => {
         id,
       ],
       (_tx, results) => {
-        console.log('Record changed', results.rowsAffected)
+        console.log(`Record ${id} changed`, results.rowsAffected)
       },
       (_tx, error) => {
         throw new Error(error.message)
@@ -143,3 +143,5 @@ export const updateDonation = (id: string, updatedDonation: Donation) => {
     )
   })
 }
+
+export default db

@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+import { DataContext } from '../../../data/CreateDataContext'
 export const getVolume = (type?: string) => {
   switch (type) {
     case 'Whole_blood':
@@ -17,17 +19,30 @@ export const getVolume = (type?: string) => {
   }
 }
 
-export const getBaseValue = (
-  obj: BaseDonationInfo,
-  id: keyof BaseDonationInfo,
-  type: DonationName,
-) => {
-  if (obj[id]) return obj[id]
-  else if (id === 'volume') return getVolume(type)
-  else if (id === 'date') return new Date()
-  else return ' '
-}
+export const useGetDonationDefaultValues = (nameOfDonation: DonationName) => {
+  const { BASE_DONATION_NAMES, EXTENDED_DONATION_NAMES } = useContext(DataContext)
 
-export const getMorphologyValue = (obj: MorphologyIndicators, id: keyof MorphologyIndicators) => {
-  return obj[id] || ' '
+  const defaultValues: Donation = {
+    type: BASE_DONATION_NAMES.includes(nameOfDonation)
+      ? nameOfDonation
+      : EXTENDED_DONATION_NAMES[0],
+    date: new Date().toISOString(),
+    volume: getVolume(nameOfDonation),
+    blood_pressure: ' ',
+    duration: ' ',
+    Hb: ' ',
+    Ht: ' ',
+    MCV: ' ',
+    MCH: ' ',
+    MCHC: ' ',
+    RDW: ' ',
+    WBC: ' ',
+    PLT: ' ',
+    MPV: ' ',
+    PCT: ' ',
+    PDW: ' ',
+    MO: ' ',
+  }
+
+  return defaultValues
 }

@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
+import { useFocusEffect } from 'expo-router'
+import { useCallback, useContext, useState } from 'react'
 import { FlatList } from 'react-native'
 import {
   MenuFAB,
@@ -14,9 +15,21 @@ import { DataContext } from '../../data/DataContext'
 export default function TabDonationsScreen() {
   const [PREVIOUS_DONATIONS_DATA, setPREVIOUS_DONATIONS_DATA] = useState<Donation[] | null>(null)
 
-  useEffect(() => {
-    getAllDonations().then((res) => res ? setPREVIOUS_DONATIONS_DATA(res as Donation[]) : null) // TODO: fix this
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      const unsubscribe = getAllDonations()
+        .then((res) => {
+          if (res) {
+            setPREVIOUS_DONATIONS_DATA(res as Donation[])
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+      return () => unsubscribe
+    }, [])
+  )
+
   console.log(PREVIOUS_DONATIONS_DATA)
 
   const { NEXT_DONATIONS_DATA } = useContext(DataContext)
