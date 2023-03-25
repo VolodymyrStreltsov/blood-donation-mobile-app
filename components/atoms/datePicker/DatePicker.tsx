@@ -1,10 +1,11 @@
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
-import { TextInput } from 'react-native-paper'
+import { IconButton } from 'react-native-paper'
 import { StyleProp, ViewStyle } from 'react-native/types'
 import { formattingDate } from '../../../functions'
-import { ResultPresentation } from '../resultPresentation/ResultPresentation'
+import { CustomTextInput } from '../customTextInput/CustomTextInput'
+import { View } from '../view/View'
 
 interface DatePickerProps {
   control: Control<any>
@@ -25,22 +26,15 @@ export const DatePicker = ({ control, name, style, disabled }: DatePickerProps) 
       name={name}
       control={control}
       render={({ field: { onChange, value } }) => (
-        <>
-          {disabled ? (
-            <ResultPresentation label={name} value={formattingDate(value)} />
-          ) : (
-            <TextInput
-              style={style}
-              mode='outlined'
-              label={name}
-              editable={false}
-              disabled={disabled}
-              value={formattingDate(value)}
-              right={
-                <TextInput.Icon icon='calendar' onPress={!disabled ? togglePicker : () => null} />
-              }
-            />
-          )}
+        <View style={style}>
+          <CustomTextInput
+            disabled={disabled}
+            label={name}
+            onChange={onChange}
+            value={formattingDate(value)}
+            right={<IconButton size={18} icon='calendar' onPress={!disabled ? togglePicker : () => null} />}
+            calendar
+          />
           {showPicker && (
             <DateTimePicker
               value={new Date(value)}
@@ -54,7 +48,7 @@ export const DatePicker = ({ control, name, style, disabled }: DatePickerProps) 
               }}
             />
           )}
-        </>
+        </View>
       )}
     />
   )

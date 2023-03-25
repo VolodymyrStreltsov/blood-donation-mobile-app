@@ -5,7 +5,7 @@ const db = SQLite.openDatabase('bloodDonations.db')
 const initDB = () => {
   db.transaction((tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS donations (id INTEGER PRIMARY KEY, type TEXT, date INTEGER, volume REAL, blood_pressure TEXT, duration REAL, Hb REAL, Ht REAL, MCV REAL, MCH REAL, MCHC REAL, RDW REAL, WBC REAL, PLT REAL, MPV REAL, PCT REAL, PDW REAL, MO REAL)',
+      'CREATE TABLE IF NOT EXISTS donations (id INTEGER PRIMARY KEY, type TEXT, date INTEGER, volume INTEGER, blood_pressure TEXT, duration INTEGER, Hb REAL, Ht REAL, MCV REAL, MCH REAL, MCHC REAL, RDW REAL, WBC REAL, PLT REAL, MPV REAL, PCT REAL, PDW REAL, MO REAL)',
       [],
       () => console.log('Donations table created successfully.'),
       (_tx, error) => {

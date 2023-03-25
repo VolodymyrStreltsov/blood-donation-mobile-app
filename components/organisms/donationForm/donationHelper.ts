@@ -1,5 +1,34 @@
-import { useContext } from 'react'
-import { DataContext } from '../../../data/CreateDataContext'
+export const BASE_DONATION_NAMES: DonationName[] = ['Whole_blood', 'Platelets', 'Disqualification']
+
+export const EXTENDED_DONATION_NAMES: DonationName[] = [
+  'Plasma',
+  'Erythrocytes',
+  'Leukocytes',
+  'Plasma_Platelets',
+]
+
+export const BASE_DONATION_INDICATORS: Indicator<BaseDonationInfo>[] = [
+  { id: 'date' },
+  { id: 'duration', unit: 'days' },
+  { id: 'volume', unit: 'ml' },
+  { id: 'blood_pressure', unit: 'mmHg' },
+]
+
+export const MORPHOLOGY_INDICATORS: Indicator<MorphologyIndicators>[] = [
+  { id: 'Hb', unit: 'g/dL' },
+  { id: 'Ht', unit: '%' },
+  { id: 'MCV', unit: 'fL' },
+  { id: 'MCH', unit: 'pg' },
+  { id: 'MCHC', unit: 'g/dL' },
+  { id: 'RDW', unit: '%' },
+  { id: 'WBC', unit: '10^3/μL' },
+  { id: 'PLT', unit: '10^3/μL' },
+  { id: 'MPV', unit: 'fL' },
+  { id: 'PCT', unit: '%' },
+  { id: 'PDW', unit: '%' },
+  { id: 'MO', unit: '%' },
+]
+
 export const getVolume = (type?: string) => {
   switch (type) {
     case 'Whole_blood':
@@ -20,8 +49,6 @@ export const getVolume = (type?: string) => {
 }
 
 export const useGetDonationDefaultValues = (nameOfDonation: DonationName) => {
-  const { BASE_DONATION_NAMES, EXTENDED_DONATION_NAMES } = useContext(DataContext)
-
   const defaultValues: Donation = {
     type: BASE_DONATION_NAMES.includes(nameOfDonation)
       ? nameOfDonation

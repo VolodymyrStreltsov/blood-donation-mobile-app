@@ -75,7 +75,7 @@ export const ExistingDonationForm = ({ nameOfDonation, id }: ExistingDonationFor
     register('MPV')
     register('PCT')
     register('PDW')
-    register('MO')
+    register('MO') // TODo: rewrite this
   }, [register])
 
   const onSubmit = (val: Donation) => {

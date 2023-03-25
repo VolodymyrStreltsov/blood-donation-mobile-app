@@ -37,7 +37,7 @@ export const NewDonationForm = ({ nameOfDonation }: NewDonationFormProps) => {
     register('MPV')
     register('PCT')
     register('PDW')
-    register('MO')
+    register('MO') // TODo: rewrite this
   }, [register])
 
   useEffect(() => {

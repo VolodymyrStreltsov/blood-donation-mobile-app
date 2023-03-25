@@ -1,13 +1,18 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dimensions, Platform, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar } from 'react-native-paper'
-import { DataContext } from '../../../data/DataContext'
 import { ControlledTextInput } from '../../atoms'
 
+const PROFILE_DATA: ProfileDataRecord[] = [
+  {
+    id: 'gender',
+    value: 'male',
+  },
+]
+
 export const ProfileForm = () => {
-  const { PROFILE_DATA } = useContext(DataContext)
   const [editable, setEditable] = useState(false)
 
   const switchEditable = () => {

@@ -1,5 +1,5 @@
 import { useFocusEffect } from 'expo-router'
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { FlatList } from 'react-native'
 import {
   MenuFAB,
@@ -10,7 +10,14 @@ import {
   View
 } from '../../components'
 import { getAllDonations } from '../../data/database'
-import { DataContext } from '../../data/DataContext'
+
+const NEXT_DONATIONS_DATA: DonationName[] = [
+  'Whole_blood',
+  'Platelets',
+  'Plasma',
+  'Erythrocytes',
+  'Leukocytes',
+]
 
 export default function TabDonationsScreen() {
   const [PREVIOUS_DONATIONS_DATA, setPREVIOUS_DONATIONS_DATA] = useState<Donation[] | null>(null)
@@ -29,10 +36,6 @@ export default function TabDonationsScreen() {
       return () => unsubscribe
     }, [])
   )
-
-  console.log(PREVIOUS_DONATIONS_DATA)
-
-  const { NEXT_DONATIONS_DATA } = useContext(DataContext)
 
 
   return (
@@ -57,7 +60,7 @@ export default function TabDonationsScreen() {
           <FlatList
             data={PREVIOUS_DONATIONS_DATA}
             renderItem={({ item }) => <PreviousDonationListElement item={item} />}
-            keyExtractor={(item) => item.id ?? item.id + ''} // TODO: fix this
+            keyExtractor={(item) => String(item.id)}
             showsVerticalScrollIndicator={false}
           />}
       </View>

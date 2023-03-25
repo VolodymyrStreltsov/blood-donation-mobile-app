@@ -1,11 +1,10 @@
 import { useRouter } from 'expo-router'
-import { useContext } from 'react'
 import { Control } from 'react-hook-form'
 import { Dimensions, Platform, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
-import { DataContext } from '../../../data/DataContext'
 import { ControlledDropDown, ControlledTextInput, DatePicker, Loader, Text, View } from '../../atoms'
+import { BASE_DONATION_INDICATORS, BASE_DONATION_NAMES, EXTENDED_DONATION_NAMES, MORPHOLOGY_INDICATORS } from './donationHelper'
 
 interface DonationFormProps {
   nameOfDonation: DonationName
@@ -19,7 +18,7 @@ interface DonationFormProps {
 }
 
 export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisible, activeFields, onSubmit, switchEditable, deleteDonationHandler }: DonationFormProps) => {
-  const { BASE_DONATION_NAMES, EXTENDED_DONATION_NAMES, BASE_DONATION_INDICATORS, MORPHOLOGY_INDICATORS } = useContext(DataContext)
+
   const router = useRouter()
 
   const disqualified = nameOfDonation === 'Disqualification'
@@ -103,7 +102,7 @@ export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisib
       <View style={styles.headerWrapper}>
         {HEADER}
       </View>
-      <Text variant='h4' bold align='flex-start' style={{ marginBottom: 20 }}>
+      <Text variant='h4' bold align='flex-start' style={{ marginBottom: 10 }}>
         Morphology results
       </Text>
       <ScrollView contentContainerStyle={styles.formContainer} showsVerticalScrollIndicator={false}>
@@ -139,10 +138,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '100%',
     rowGap: 16,
+    paddingTop: 20,
   },
   item: {
-    minWidth: '47%',
-    maxWidth: '47%',
+    width: '47%',
   },
   dropDownItem: {
     width: '100%',
