@@ -9,9 +9,9 @@ import {
   Text,
   View
 } from '../../components'
-import { getAllDonations } from '../../data/database'
+import { getAllDonations } from '../../data/donations'
 
-const NEXT_DONATIONS_DATA: DonationName[] = [
+const nextDonations: DonationName[] = [
   'Whole_blood',
   'Platelets',
   'Plasma',
@@ -20,23 +20,30 @@ const NEXT_DONATIONS_DATA: DonationName[] = [
 ]
 
 export default function TabDonationsScreen() {
-  const [PREVIOUS_DONATIONS_DATA, setPREVIOUS_DONATIONS_DATA] = useState<Donation[] | null>(null)
+  const [previousDonations, setPreviousDonations] = useState<Partial<Donation>[]>([])
 
   useFocusEffect(
     useCallback(() => {
-      const unsubscribe = getAllDonations()
+      let unsubscribe: (() => void) | undefined
+      getAllDonations()
         .then((res) => {
           if (res) {
-            setPREVIOUS_DONATIONS_DATA(res as Donation[])
+            setPreviousDonations(res)
           }
         })
         .catch((error) => {
           console.error(error)
         })
-      return () => unsubscribe
+        .finally(() => {
+          if (unsubscribe) {
+            unsubscribe()
+          }
+        })
+      return () => {
+        unsubscribe = undefined
+      }
     }, [])
   )
-
 
   return (
     <PageWrapper>
@@ -46,23 +53,23 @@ export default function TabDonationsScreen() {
       <View style={{ height: 175, marginHorizontal: -26 }}>
         <FlatList
           horizontal
-          data={NEXT_DONATIONS_DATA}
+          data={nextDonations}
           renderItem={({ item, index }) => <NextDonationCard title={item} index={index} />}
           keyExtractor={(item) => item}
           showsHorizontalScrollIndicator={false}
         />
       </View>
       <Text variant='h3' align='flex-start' style={{ marginBottom: 18, marginLeft: 16 }}>
-        Previous donation
+        Previous donations
       </Text>
       <View style={{ flex: 1 }}>
-        {PREVIOUS_DONATIONS_DATA &&
+        {previousDonations.length > 0 ?
           <FlatList
-            data={PREVIOUS_DONATIONS_DATA}
+            data={previousDonations}
             renderItem={({ item }) => <PreviousDonationListElement item={item} />}
             keyExtractor={(item) => String(item.id)}
             showsVerticalScrollIndicator={false}
-          />}
+          /> : null}
       </View>
       <MenuFAB />
     </PageWrapper>

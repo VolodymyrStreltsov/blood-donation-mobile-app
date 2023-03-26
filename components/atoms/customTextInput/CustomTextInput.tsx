@@ -10,11 +10,12 @@ interface CustomTextInputProps {
   right?: ReactNode
   disabled?: boolean
   calendar?: boolean
+  height?: number
 }
 
-export const CustomTextInput = ({ value, onChange, label, right, disabled, calendar }: CustomTextInputProps) => {
+export const CustomTextInput = ({ value, onChange, label, right, disabled, calendar, height }: CustomTextInputProps) => {
   return (
-    <View style={styles.container}>
+    <View style={{ height: height || 48 }}>
       <View style={styles.label}>
         <Text variant='h5' style={styles.label_text}>{label}</Text>
       </View>
@@ -34,9 +35,6 @@ export const CustomTextInput = ({ value, onChange, label, right, disabled, calen
 
 
 const styles = StyleSheet.create({
-  container: {
-    height: 48,
-  },
   label: {
     position: 'absolute',
     top: -15,
@@ -54,7 +52,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingLeft: 14,
     borderColor: 'gray',
-    color: 'white'
   },
   disabled: {
     backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -68,6 +65,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     bottom: 1,
-    right: 1,
+    right: 3,
   },
 })

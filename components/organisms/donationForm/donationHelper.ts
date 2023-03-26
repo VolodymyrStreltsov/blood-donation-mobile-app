@@ -1,20 +1,21 @@
-export const BASE_DONATION_NAMES: DonationName[] = ['Whole_blood', 'Platelets', 'Disqualification']
+export const baseDonationNames: DonationName[] = ['Whole_blood', 'Platelets', 'Disqualification']
 
-export const EXTENDED_DONATION_NAMES: DonationName[] = [
+export const extendedDonationNames: DonationName[] = [
   'Plasma',
   'Erythrocytes',
   'Leukocytes',
   'Plasma_Platelets',
+  'Erythrocytes_Platelets',
 ]
 
-export const BASE_DONATION_INDICATORS: Indicator<BaseDonationInfo>[] = [
+export const baseDonationIndicators: Indicator<BaseDonationInfo>[] = [
   { id: 'date' },
   { id: 'duration', unit: 'days' },
   { id: 'volume', unit: 'ml' },
   { id: 'blood_pressure', unit: 'mmHg' },
 ]
 
-export const MORPHOLOGY_INDICATORS: Indicator<MorphologyIndicators>[] = [
+export const morphologyIndicators: Indicator<MorphologyIndicators>[] = [
   { id: 'Hb', unit: 'g/dL' },
   { id: 'Ht', unit: '%' },
   { id: 'MCV', unit: 'fL' },
@@ -40,9 +41,11 @@ export const getVolume = (type?: string) => {
     case 'Erythrocytes':
       return '300'
     case 'Leukocytes':
-      return '200'
+      return '150'
     case 'Plasma_Platelets':
       return '800'
+    case 'Erythrocytes_Platelets':
+      return '450'
     default:
       return ' '
   }
@@ -50,25 +53,23 @@ export const getVolume = (type?: string) => {
 
 export const useGetDonationDefaultValues = (nameOfDonation: DonationName) => {
   const defaultValues: Donation = {
-    type: BASE_DONATION_NAMES.includes(nameOfDonation)
-      ? nameOfDonation
-      : EXTENDED_DONATION_NAMES[0],
+    type: baseDonationNames.includes(nameOfDonation) ? nameOfDonation : extendedDonationNames[0],
     date: new Date().toISOString(),
     volume: getVolume(nameOfDonation),
-    blood_pressure: ' ',
-    duration: ' ',
-    Hb: ' ',
-    Ht: ' ',
-    MCV: ' ',
-    MCH: ' ',
-    MCHC: ' ',
-    RDW: ' ',
-    WBC: ' ',
-    PLT: ' ',
-    MPV: ' ',
-    PCT: ' ',
-    PDW: ' ',
-    MO: ' ',
+    blood_pressure: '',
+    duration: '',
+    Hb: '',
+    Ht: '',
+    MCV: '',
+    MCH: '',
+    MCHC: '',
+    RDW: '',
+    WBC: '',
+    PLT: '',
+    MPV: '',
+    PCT: '',
+    PDW: '',
+    MO: '',
   }
 
   return defaultValues

@@ -12,7 +12,7 @@ export const AchievementCard = ({
   title: string
   progress: number
   remainder: string
-  img: string
+  img: number
 }) => {
   const achieved = progress === 1
   return (

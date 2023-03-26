@@ -11,6 +11,7 @@ type DonationName =
   | 'Erythrocytes'
   | 'Leukocytes'
   | 'Plasma_Platelets'
+  | 'Erythrocytes_Platelets'
   | 'Donation'
 
 interface MorphologyIndicators {
@@ -28,7 +29,7 @@ interface MorphologyIndicators {
   MO: string
 }
 
-type infoScreenData = { id: DonationName; paragraphs: string[] }
+type InfoScreenData = { id: DonationName; paragraphs: string[] }
 
 interface BaseDonationInfo {
   type: DonationName
@@ -38,9 +39,12 @@ interface BaseDonationInfo {
   duration?: string
 }
 
-interface ProfileDataRecord {
-  id: string
-  value: string
+interface ProfileData {
+  language: 'PL' | 'EN' | 'UA'
+  country: 'Polska' | 'Україна'
+  gender: string
+  height: string
+  weight: string
 }
 
 interface Indicator<T> {
@@ -56,7 +60,5 @@ interface Achievement {
   id: string
   required: number
   title: string
-  progress: number
-  remainder: string
-  img: string
+  img: number
 }

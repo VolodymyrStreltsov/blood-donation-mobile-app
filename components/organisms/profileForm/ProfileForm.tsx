@@ -1,29 +1,92 @@
-import { useEffect, useState } from 'react'
+import { useFocusEffect } from 'expo-router'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Dimensions, Platform, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar } from 'react-native-paper'
-import { ControlledTextInput } from '../../atoms'
+import { getProfile, updateProfile } from '../../../data/profile'
+import { ControlledDropDown, ControlledRadioButton, ControlledTextInput } from '../../atoms'
 
-const PROFILE_DATA: ProfileDataRecord[] = [
+const profileDataWithUnits: Indicator<ProfileData>[] = [
+  {
+    id: 'language',
+  },
+  {
+    id: 'country'
+  },
   {
     id: 'gender',
-    value: 'male',
+  },
+  {
+    id: 'height',
+    unit: 'cm',
+  },
+  {
+    id: 'weight',
+    unit: 'kg',
   },
 ]
 
+const radioOptions = [
+  { label: 'male', value: 'male' },
+  { label: 'female', value: 'female' },
+]
+
+const countriesOptions = [
+  { label: 'Polska', value: 'Polska' },
+  { label: 'Україна', value: 'Україна' },
+]
+
+const langOptions = [
+  { label: 'PL', value: 'PL' },
+  { label: 'EN', value: 'EN' },
+  { label: 'UA', value: 'UA' },
+]
+
 export const ProfileForm = () => {
+  const [profileData, setProfileData] = useState<ProfileData | null>({} as ProfileData)
+
+  useEffect(() => {
+    getProfile()
+      .then((data) => {
+        setProfileData(data)
+      })
+      .catch((error: Error) => {
+        console.log(error)
+      })
+  }, [])
+
   const [editable, setEditable] = useState(false)
 
   const switchEditable = () => {
     setEditable(!editable)
   }
 
-  const defaultValues: any = {}
+  useEffect(() => {
+    setEditable(false)
+  }, [])
 
-  PROFILE_DATA.forEach((item: ProfileDataRecord) => (defaultValues[item.id] = item.value))
+  useFocusEffect(
+    useCallback(() => {
+      setEditable(false)
+    }, [])
+  )
 
-  const { handleSubmit, control, register } = useForm({
+  const defaultValues: ProfileData = {
+    language: 'EN',
+    country: 'Polska',
+    gender: 'male',
+    height: '',
+    weight: '',
+  }
+
+  useEffect(() => {
+    if (profileData) {
+      reset(profileData)
+    }
+  }, [profileData])
+
+  const { handleSubmit, control, register, reset } = useForm({
     mode: 'onSubmit',
     criteriaMode: 'firstError',
     defaultValues,
@@ -31,12 +94,12 @@ export const ProfileForm = () => {
 
   useEffect(() => {
     Object.keys(defaultValues).map((item) => {
-      register(item)
+      register(item as keyof ProfileData)
     })
   }, [register])
 
-  const onSubmit = (val: any) => {
-    console.log(val)
+  const onSubmit = (val: ProfileData) => {
+    updateProfile(val)
     switchEditable()
   }
 
@@ -49,15 +112,53 @@ export const ProfileForm = () => {
         />
       </Appbar.Header>
       <ScrollView contentContainerStyle={styles.formContainer} showsVerticalScrollIndicator={false}>
-        {PROFILE_DATA.map((item: ProfileDataRecord) => (
-          <ControlledTextInput
-            disabled={!editable}
-            key={item.id}
-            name={item.id}
-            control={control}
-            style={styles.item}
-          />
-        ))}
+        {profileDataWithUnits.map((item) => {
+          if (item.id === 'language') {
+            return (
+              <ControlledDropDown
+                key={item.id}
+                style={styles.item}
+                control={control}
+                name={item.id}
+                list={langOptions}
+                disabled={!editable}
+              />
+            )
+          }
+          if (item.id === 'country') {
+            return (
+              <ControlledDropDown
+                key={item.id}
+                style={styles.item}
+                control={control}
+                name={item.id}
+                list={countriesOptions}
+                disabled={!editable}
+              />
+            )
+          }
+          if (item.id === 'gender') {
+            return (
+              <ControlledRadioButton
+                key={item.id}
+                control={control}
+                name={item.id}
+                options={radioOptions}
+                disabled={!editable} />
+            )
+          } else {
+            return (
+              <ControlledTextInput
+                disabled={!editable}
+                key={item.id}
+                name={item.id}
+                control={control}
+                style={styles.item}
+                right={item.unit}
+              />
+            )
+          }
+        })}
       </ScrollView>
     </>
   )
@@ -69,8 +170,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    width: Platform.OS === 'web' ? '100vw' : Dimensions.get('window').width,
-    marginTop: Platform.OS === 'web' ? 0 : -25,
+    width: Dimensions.get('window').width,
+    marginTop: -25,
   },
   formContainer: {
     flex: 1,
@@ -80,8 +181,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '100%',
     rowGap: 16,
+    paddingTop: 16,
   },
   item: {
-    minWidth: '100%',
+    width: '46%',
   },
 })

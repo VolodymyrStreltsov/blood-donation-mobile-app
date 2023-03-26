@@ -5,7 +5,7 @@ import { Colors } from '../../../constants/Colors'
 import { Text, View } from '../../atoms'
 import { InfoDateCard, InfoParagraph } from '../../molecules'
 
-const INFO_SCREENS: infoScreenData[] = [
+const infoScreensData: InfoScreenData[] = [
   {
     id: 'Whole_blood',
     paragraphs: [
@@ -55,7 +55,7 @@ const INFO_SCREENS: infoScreenData[] = [
 
 export const DonationInfoScreen = ({ nameOfDonation }: { nameOfDonation: string }) => {
   const screenInfo =
-    INFO_SCREENS.find((el: infoScreenData) => el.id === nameOfDonation)?.paragraphs || []
+    infoScreensData.find((el: InfoScreenData) => el.id === nameOfDonation)?.paragraphs || []
 
   const router = useRouter()
 

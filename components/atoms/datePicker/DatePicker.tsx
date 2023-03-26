@@ -32,7 +32,7 @@ export const DatePicker = ({ control, name, style, disabled }: DatePickerProps) 
             label={name}
             onChange={onChange}
             value={formattingDate(value)}
-            right={<IconButton size={18} icon='calendar' onPress={!disabled ? togglePicker : () => null} />}
+            right={<IconButton size={17} icon='calendar' onPress={!disabled ? togglePicker : () => null} />}
             calendar
           />
           {showPicker && (

@@ -4,7 +4,7 @@ import { Avatar } from 'react-native-paper'
 import { formattingDate } from '../../../functions'
 import { Text } from '../../atoms'
 
-export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
+export const PreviousDonationListElement = ({ item }: { item: Partial<Donation> }) => {
   const router = useRouter()
 
   return (
@@ -17,10 +17,10 @@ export const PreviousDonationListElement = ({ item }: { item: Donation }) => {
         })
       }>
       <View style={styles.left}>
-        <Avatar.Text size={40} label={item.type[0]} />
+        <Avatar.Text size={40} label={item?.type?.[0] || ''} />
         <View style={styles.text}>
           <Text align='flex-start' variant='h5' bold>
-            {formattingDate(item.date)}
+            {formattingDate(item.date || new Date())}
           </Text>
           <Text align='flex-start' variant='h4'>
             {item.type}
