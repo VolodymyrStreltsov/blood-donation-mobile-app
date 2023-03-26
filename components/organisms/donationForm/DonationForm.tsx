@@ -1,11 +1,10 @@
 import { useRouter } from 'expo-router'
-import { useContext } from 'react'
 import { Control } from 'react-hook-form'
-import { Dimensions, Platform, StyleSheet } from 'react-native'
+import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
-import { DataContext } from '../../../data/DataContext'
 import { ControlledDropDown, ControlledTextInput, DatePicker, Loader, Text, View } from '../../atoms'
+import { baseDonationIndicators, baseDonationNames, extendedDonationNames, morphologyIndicators } from './donationHelper'
 
 interface DonationFormProps {
   nameOfDonation: DonationName
@@ -14,21 +13,21 @@ interface DonationFormProps {
   switchMenuVisible?: () => void
   activeFields?: boolean
   onSubmit: () => void
-  switchEditable?: () => void
+  switchActive?: () => void
   deleteDonationHandler?: () => void
 }
 
-export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisible, activeFields, onSubmit, switchEditable, deleteDonationHandler }: DonationFormProps) => {
-  const { BASE_DONATION_NAMES, EXTENDED_DONATION_NAMES, BASE_DONATION_INDICATORS, MORPHOLOGY_INDICATORS } = useContext(DataContext)
+export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisible, activeFields, switchActive, onSubmit, deleteDonationHandler }: DonationFormProps) => {
+
   const router = useRouter()
 
   const disqualified = nameOfDonation === 'Disqualification'
 
-  const DONATION_TYPES = EXTENDED_DONATION_NAMES.map((el: string) => ({ label: el, value: el }))
+  const donationTypes = extendedDonationNames.map((el: string) => ({ label: el, value: el }))
 
-  const dropdownActive = !BASE_DONATION_NAMES.includes(nameOfDonation)
+  const dropdownActive = !baseDonationNames.includes(nameOfDonation)
 
-  const HEADER = BASE_DONATION_INDICATORS.map((item: Indicator<BaseDonationInfo>) => {
+  const header = baseDonationIndicators.map((item: Indicator<BaseDonationInfo>) => {
     if (item.id === 'date') {
       return (
         <DatePicker
@@ -56,7 +55,7 @@ export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisib
     }
   }) ?? <Loader />
 
-  const MORPHOLOGY = MORPHOLOGY_INDICATORS.map((item: Indicator<MorphologyIndicators>) => (
+  const morphology = morphologyIndicators.map((item: Indicator<MorphologyIndicators>) => (
     <ControlledTextInput
       disabled={!activeFields}
       key={item.id}
@@ -80,7 +79,7 @@ export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisib
               onPress={!activeFields ? switchMenuVisible : onSubmit}
             />
           }>
-          <Menu.Item onPress={switchEditable} title='Edit' leadingIcon='pencil-outline' />
+          <Menu.Item onPress={switchActive} title='Edit' leadingIcon='pencil-outline' />
           <Menu.Item
             onPress={deleteDonationHandler}
             title='Delete'
@@ -97,17 +96,23 @@ export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisib
           style={styles.dropDownItem}
           control={control}
           name='type'
-          list={DONATION_TYPES}
+          list={donationTypes}
         />
       )}
       <View style={styles.headerWrapper}>
-        {HEADER}
+        {header}
       </View>
-      <Text variant='h4' bold align='flex-start' style={{ marginBottom: 20 }}>
+      <Text variant='h4' bold align='flex-start' style={{ marginBottom: 10 }}>
         Morphology results
       </Text>
-      <ScrollView contentContainerStyle={styles.formContainer} showsVerticalScrollIndicator={false}>
-        {MORPHOLOGY}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <KeyboardAvoidingView
+          style={styles.formContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -260} // adjust as needed
+        >
+          {morphology}
+        </KeyboardAvoidingView>
       </ScrollView>
     </>
   )
@@ -119,8 +124,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
-    width: Platform.OS === 'web' ? '100vw' : Dimensions.get('window').width,
-    marginTop: Platform.OS === 'web' ? 0 : -25,
+    width: Dimensions.get('window').width,
+    marginTop: -25,
   },
   headerWrapper: {
     height: 160,
@@ -137,12 +142,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    width: '100%',
+    width: '97%',
     rowGap: 16,
+    paddingTop: 20,
   },
   item: {
-    minWidth: '47%',
-    maxWidth: '47%',
+    width: '47%',
   },
   dropDownItem: {
     width: '100%',

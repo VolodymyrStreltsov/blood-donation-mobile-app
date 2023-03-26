@@ -1,62 +1,44 @@
-import { useRouter } from 'expo-router'
+import { useFocusEffect } from 'expo-router'
+import { useCallback, useState } from 'react'
 
-import { Pressable, StyleSheet, View } from 'react-native'
-import { Avatar, Card } from 'react-native-paper'
-import { Colors } from '../../../constants/Colors'
-import { Text } from '../../atoms'
+import { getNextDonationDate } from '../../../data/donations'
+import { NextDonationCardMock } from './NextDonationCardMock'
 
-export const NextDonationCard = ({ title, index }: { title: string; index: number }) => {
-  const router = useRouter()
+export const NextDonationCard = ({ title, index }: { title: DonationName; index: number }) => {
+  const [daysUntilNextDonation, setDaysUntilNextDonation] = useState<number | null>(null)
+
+  if (title === 'Leukocytes') {
+    return (
+      <NextDonationCardMock title={title} index={index} text='Ask doctor' />
+    )
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      let unsubscribe: (() => void) | undefined
+      getNextDonationDate(title)
+        .then((res) => {
+          if (res) {
+            const timeDiff = res.getTime() - new Date().getTime()
+            const daysUntilNext = Math.ceil(timeDiff / (1000 * 3600 * 24))
+            setDaysUntilNextDonation(daysUntilNext)
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+        .finally(() => {
+          if (unsubscribe) {
+            unsubscribe()
+          }
+        })
+      return () => {
+        unsubscribe = undefined
+      }
+    }, [])
+  )
 
   return (
-    <Card style={[styles.card, { marginLeft: index === 0 ? 26 : 7 }]} theme={{ roundness: 4 }}>
-      <Card.Content style={styles.content}>
-        <View style={styles.header}>
-          <Avatar.Text size={40} label={title[0]} />
-          <Pressable
-            onPress={() => {
-              router.push({ pathname: 'modal', params: { name: title, info: 'true' } })
-            }}>
-            <Avatar.Icon
-              size={30}
-              icon='information-outline'
-              style={{ backgroundColor: 'transparent' }}
-              color='#130b0b'
-            />
-          </Pressable>
-        </View>
-        <View style={styles.text}>
-          <Text darkColor='#130b0b' align='flex-start' variant='h4'>
-            {title}
-          </Text>
-          <Text darkColor='#130b0b' align='flex-start' variant='p'>
-            in 3 days
-          </Text>
-        </View>
-      </Card.Content>
-    </Card>
+    <NextDonationCardMock title={title} index={index} text={daysUntilNextDonation === null ? '' : daysUntilNextDonation <= 0 ? 'You can donate' : `in ${daysUntilNextDonation} days`} />
   )
 }
-
-const styles = StyleSheet.create({
-  card: {
-    width: 150,
-    height: 150,
-    margin: 7,
-    backgroundColor: Colors.TintColorLight,
-    boxShadow: 'none',
-  },
-  content: {
-    justifyContent: 'space-between',
-    height: 150,
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  text: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-})

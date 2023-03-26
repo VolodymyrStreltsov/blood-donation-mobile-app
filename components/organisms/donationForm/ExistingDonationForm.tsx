@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { deleteDonation, getDonationById, updateDonation } from '../../../data/database'
+import { deleteDonation, getDonationById, updateDonation } from '../../../data/donations'
 import { Loader } from '../../atoms'
 import { DonationForm } from './DonationForm'
 import { useGetDonationDefaultValues } from './donationHelper'
@@ -17,30 +17,25 @@ export const ExistingDonationForm = ({ nameOfDonation, id }: ExistingDonationFor
 
   useEffect(() => {
     getDonationById(id)
-      .then((donation: Donation) => {
+      .then((donation) => {
         setDonation(donation)
       })
       .catch((error: Error) => {
         console.log(error)
       })
-  }, [])
+  }, [id])
 
-  const [editable, setEditable] = useState(false)
-  const [activeFields, setActiveFields] = useState(id === '')
+  const [activeFields, setActiveFields] = useState(false)
   const [visible, setVisible] = useState(false)
 
   const switchMenuVisible = () => {
     setVisible(!visible)
   }
 
-  const switchEditable = () => {
-    setEditable(!editable)
+  const switchActive = () => {
+    setActiveFields(!activeFields)
     setVisible(false)
   }
-
-  useEffect(() => {
-    editable && setActiveFields(true)
-  }, [editable])
 
   const defaultValues = useGetDonationDefaultValues(nameOfDonation)
   useEffect(() => {
@@ -59,28 +54,14 @@ export const ExistingDonationForm = ({ nameOfDonation, id }: ExistingDonationFor
   })
 
   useEffect(() => {
-    register('type')
-    register('date')
-    register('volume')
-    register('blood_pressure')
-    register('duration')
-    register('Hb')
-    register('Ht')
-    register('MCV')
-    register('MCH')
-    register('MCHC')
-    register('RDW')
-    register('WBC')
-    register('PLT')
-    register('MPV')
-    register('PCT')
-    register('PDW')
-    register('MO')
+    Object.keys(defaultValues).map((item) => {
+      register(item as keyof Donation)
+    })
   }, [register])
 
   const onSubmit = (val: Donation) => {
     updateDonation(id, val)
-    router.back()
+    switchActive()
   }
 
   const deleteDonationHandler = () => {
@@ -97,7 +78,7 @@ export const ExistingDonationForm = ({ nameOfDonation, id }: ExistingDonationFor
       control={control}
       activeFields={activeFields}
       onSubmit={handleSubmit(onSubmit)}
-      switchEditable={switchEditable}
+      switchActive={switchActive}
       switchMenuVisible={switchMenuVisible}
       deleteDonationHandler={deleteDonationHandler} />
   )

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import DropDown from 'react-native-paper-dropdown'
 import { StyleProp, ViewStyle } from 'react-native/types'
-import { ResultPresentation } from '../resultPresentation/ResultPresentation'
+import { CustomTextInput } from '../customTextInput/CustomTextInput'
 import { View } from '../view/View'
 
 interface ControlledDropDownProps {
@@ -18,9 +18,8 @@ export function ControlledDropDown({
   name,
   control,
   style,
-  disabled,
   list,
-  right
+  disabled,
 }: ControlledDropDownProps) {
   const [showDropDown, setShowDropDown] = useState(false)
 
@@ -33,21 +32,19 @@ export function ControlledDropDown({
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value } }) =>
-          disabled ? (
-            <ResultPresentation label={name} value={value} right={right} />
-          ) : (
-            <DropDown
-              label={name}
-              mode='outlined'
-              visible={showDropDown}
-              onDismiss={toggleShowDropDown}
-              showDropDown={toggleShowDropDown}
-              list={list}
-              value={value}
-              setValue={onChange}
-            />
-          )
+        render={({ field: { onChange, value } }) => disabled ?
+          <CustomTextInput value={value} onChange={onChange} label={name} height={56} disabled />
+          :
+          <DropDown
+            label={name}
+            mode='outlined'
+            visible={showDropDown}
+            onDismiss={toggleShowDropDown}
+            showDropDown={toggleShowDropDown}
+            list={list}
+            value={value}
+            setValue={onChange}
+          />
         }
       />
     </View>

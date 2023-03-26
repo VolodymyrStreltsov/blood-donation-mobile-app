@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { addDonation } from '../../../data/database'
+import { addDonation } from '../../../data/donations'
 import { DonationForm } from './DonationForm'
 import { getVolume, useGetDonationDefaultValues } from './donationHelper'
 
@@ -21,28 +21,14 @@ export const NewDonationForm = ({ nameOfDonation }: NewDonationFormProps) => {
   })
 
   useEffect(() => {
-    register('type')
-    register('date')
-    register('volume')
-    register('blood_pressure')
-    register('duration')
-    register('Hb')
-    register('Ht')
-    register('MCV')
-    register('MCH')
-    register('MCHC')
-    register('RDW')
-    register('WBC')
-    register('PLT')
-    register('MPV')
-    register('PCT')
-    register('PDW')
-    register('MO')
+    Object.keys(defaultValues).map((item) => {
+      register(item as keyof Donation)
+    })
   }, [register])
 
   useEffect(() => {
     setValue('volume', getVolume(watch('type')), { shouldValidate: true })
-  }, [watch('type')])
+  }, [watch('type'), setValue])
 
   const onSubmit = (val: Donation) => {
     addDonation(val)
