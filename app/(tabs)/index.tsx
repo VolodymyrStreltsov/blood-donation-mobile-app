@@ -1,13 +1,12 @@
 import { useFocusEffect } from 'expo-router'
 import { useCallback, useState } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 import {
   MenuFAB,
   NextDonationCard,
   PageWrapper,
   PreviousDonationListElement,
-  Text,
-  View
+  Text
 } from '../../components'
 import { getAllDonations } from '../../data/donations'
 

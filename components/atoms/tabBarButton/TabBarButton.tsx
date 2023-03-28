@@ -1,6 +1,4 @@
-import { useColorScheme } from 'react-native'
-import { Avatar } from 'react-native-paper'
-import Colors from '../../../constants/Colors'
+import { Avatar, useTheme } from 'react-native-paper'
 import { Text } from '../text/Text'
 
 interface TabBarButtonProps {
@@ -10,17 +8,18 @@ interface TabBarButtonProps {
 }
 
 export const TabBarButton = ({ iconName, color, tabName }: TabBarButtonProps) => {
-  const colorScheme = useColorScheme()
+  const { colors } = useTheme()
+
   return (
     <>
       <Avatar.Icon
         size={32}
         icon={iconName}
-        color={Colors[colorScheme ?? 'light'].tabIconDefault}
+        color={colors.inverseSurface}
         style={{
           width: 64,
           backgroundColor:
-            color === Colors[colorScheme ?? 'light'].tabIconDefault ? 'transparent' : color,
+            color === colors.inverseSurface ? 'transparent' : color,
         }}
       />
       <Text variant='h5' bold>

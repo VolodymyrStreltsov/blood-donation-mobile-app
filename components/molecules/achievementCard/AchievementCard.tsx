@@ -1,6 +1,5 @@
-import { Dimensions, Image, Platform, StyleSheet, View } from 'react-native'
-import { Card, ProgressBar } from 'react-native-paper'
-import { Colors } from '../../../constants/Colors'
+import { Dimensions, Image, StyleSheet, View } from 'react-native'
+import { Card, ProgressBar, useTheme } from 'react-native-paper'
 import { Text } from '../../atoms'
 
 export const AchievementCard = ({
@@ -14,13 +13,16 @@ export const AchievementCard = ({
   remainder: string
   img: number
 }) => {
-  const achieved = progress === 1
+  const achieved = progress >= 1
+  const { colors } = useTheme()
+
   return (
     <Card
       theme={{ roundness: 4 }}
       style={[
         styles.card,
-        achieved && { backgroundColor: Colors.TintColorLight, borderColor: Colors.TintColorLight },
+        achieved ? { backgroundColor: colors.primaryContainer, borderColor: colors.primaryContainer } :
+          { backgroundColor: colors.background, borderColor: colors.outlineVariant }
       ]}>
       <Card.Content style={styles.content}>
         <View style={styles.contentContainer}>
@@ -45,9 +47,8 @@ export const AchievementCard = ({
 const styles = StyleSheet.create({
   card: {
     minHeight: 120,
-    width: Platform.OS === 'web' ? 'calc(100vw - 52px)' : Dimensions.get('window').width - 52,
+    width: Dimensions.get('window').width - 52,
     marginVertical: 8,
-    borderColor: '#cac4d0',
     borderWidth: 1,
     boxShadow: 'none',
   },

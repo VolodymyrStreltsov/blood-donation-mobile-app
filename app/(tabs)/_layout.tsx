@@ -1,21 +1,19 @@
 import { Tabs } from 'expo-router'
+import { useTheme } from 'react-native-paper'
 
-import { useColorScheme } from 'react-native'
 import { TabBarButton } from '../../components'
 
-import Colors from '../../constants/Colors'
-
 export default function TabLayout() {
-  const colorScheme = useColorScheme()
+  const { colors } = useTheme()
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tabIconSelected,
-        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
+        tabBarActiveTintColor: colors.inversePrimary,
+        tabBarInactiveTintColor: colors.inverseOnSurface,
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].navBar,
+          backgroundColor: colors.inverseOnSurface,
           borderTopWidth: 0,
           height: 80,
           display: 'flex',

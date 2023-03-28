@@ -47,21 +47,31 @@ const donationEligibility: DonationEligibility = {
     Plasma_Platelets: 112,
     Erythrocytes_Platelets: 112,
   },
+  Leukocytes: {
+    Whole_blood: 84,
+    Plasma: 84,
+    Platelets: 84,
+    Erythrocytes: 84,
+    Plasma_Platelets: 84,
+    Erythrocytes_Platelets: 84,
+    Leukocytes: 84,
+  },
 }
 
 export const getEligibilityPeriodInDays = (
   lastDonation: DonationName,
   nextDonation: DonationName,
-): number | null => {
+): number => {
+  if (lastDonation === 'Disqualification') return 0
   const from = donationEligibility[lastDonation]
   if (!from) {
     console.error(`Unknown last donation type: ${lastDonation}`)
-    return null
+    return 0
   }
   const days = from[nextDonation]
   if (days === undefined) {
     console.error(`Unknown donation type: ${nextDonation}`)
-    return null
+    return 0
   }
   return days
 }

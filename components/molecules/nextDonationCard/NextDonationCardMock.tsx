@@ -1,12 +1,12 @@
 import { useRouter } from 'expo-router'
 
 import { Pressable, StyleSheet, View } from 'react-native'
-import { Avatar, Card } from 'react-native-paper'
-import { Colors } from '../../../constants/Colors'
+import { Avatar, Card, useTheme } from 'react-native-paper'
 import { Text } from '../../atoms'
 
 export const NextDonationCardMock = ({ title, index, text }: { title: DonationName, index: number, text: string }) => {
   const router = useRouter()
+  const { colors } = useTheme()
 
   return (
     <Card style={[styles.card, { marginLeft: index === 0 ? 26 : 7 }]} theme={{ roundness: 4 }}>
@@ -21,15 +21,15 @@ export const NextDonationCardMock = ({ title, index, text }: { title: DonationNa
               size={30}
               icon='information-outline'
               style={{ backgroundColor: 'transparent' }}
-              color='#130b0b'
+              color={colors.primary}
             />
           </Pressable>
         </View>
         <View style={styles.text}>
-          <Text darkColor='#130b0b' align='flex-start' variant='h4'>
+          <Text align='flex-start' variant='h4'>
             {title}
           </Text>
-          <Text darkColor='#130b0b' align='flex-start' variant='p'>
+          <Text align='flex-start' variant='p'>
             {text}
           </Text>
         </View>
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     margin: 7,
-    backgroundColor: Colors.TintColorLight,
     boxShadow: 'none',
   },
   content: {

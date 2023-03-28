@@ -1,11 +1,12 @@
 import { useRouter } from 'expo-router'
 import { Pressable, StyleSheet, View } from 'react-native'
-import { Avatar } from 'react-native-paper'
+import { Avatar, useTheme } from 'react-native-paper'
 import { formattingDate } from '../../../functions'
 import { Text } from '../../atoms'
 
 export const PreviousDonationListElement = ({ item }: { item: Partial<Donation> }) => {
   const router = useRouter()
+  const { colors } = useTheme()
 
   return (
     <Pressable
@@ -17,7 +18,7 @@ export const PreviousDonationListElement = ({ item }: { item: Partial<Donation> 
         })
       }>
       <View style={styles.left}>
-        <Avatar.Text size={40} label={item?.type?.[0] || ''} />
+        <Avatar.Text size={40} label={item?.type?.[0] || ''} style={{ backgroundColor: colors.inversePrimary }} />
         <View style={styles.text}>
           <Text align='flex-start' variant='h5' bold>
             {formattingDate(item.date || new Date())}

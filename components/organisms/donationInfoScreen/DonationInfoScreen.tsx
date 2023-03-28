@@ -1,8 +1,7 @@
 import { useRouter } from 'expo-router'
-import { Dimensions, Platform, ScrollView, StyleSheet } from 'react-native'
-import { Appbar } from 'react-native-paper'
-import { Colors } from '../../../constants/Colors'
-import { Text, View } from '../../atoms'
+import { Dimensions, Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { Appbar, useTheme } from 'react-native-paper'
+import { Text } from '../../atoms'
 import { InfoDateCard, InfoParagraph } from '../../molecules'
 
 const infoScreensData: InfoScreenData[] = [
@@ -58,6 +57,7 @@ export const DonationInfoScreen = ({ nameOfDonation }: { nameOfDonation: string 
     infoScreensData.find((el: InfoScreenData) => el.id === nameOfDonation)?.paragraphs || []
 
   const router = useRouter()
+  const { colors } = useTheme()
 
   return (
     <>
@@ -70,7 +70,7 @@ export const DonationInfoScreen = ({ nameOfDonation }: { nameOfDonation: string 
         </Text>
         <View style={styles.cardsContainer}>
           <InfoDateCard title='Last donation' date='20.01.2019' withBorder />
-          <InfoDateCard color={Colors.TintColorLight} title='Next donation' date='03.04.2023' />
+          <InfoDateCard color={colors.inverseOnSurface} title='Next donation' date='03.04.2023' />
         </View>
         <ScrollView
           contentContainerStyle={styles.paragraphsContainer}

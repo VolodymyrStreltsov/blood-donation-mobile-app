@@ -19,9 +19,7 @@ export const NextDonationCard = ({ title, index }: { title: DonationName; index:
       getNextDonationDate(title)
         .then((res) => {
           if (res) {
-            const timeDiff = res.getTime() - new Date().getTime()
-            const daysUntilNext = Math.ceil(timeDiff / (1000 * 3600 * 24))
-            setDaysUntilNextDonation(daysUntilNext)
+            setDaysUntilNextDonation(res)
           }
         })
         .catch((error) => {
@@ -39,6 +37,6 @@ export const NextDonationCard = ({ title, index }: { title: DonationName; index:
   )
 
   return (
-    <NextDonationCardMock title={title} index={index} text={daysUntilNextDonation === null ? '' : daysUntilNextDonation <= 0 ? 'You can donate' : `in ${daysUntilNextDonation} days`} />
+    <NextDonationCardMock title={title} index={index} text={daysUntilNextDonation === null || daysUntilNextDonation <= 0 ? 'You can donate' : `in ${daysUntilNextDonation} days`} />
   )
 }

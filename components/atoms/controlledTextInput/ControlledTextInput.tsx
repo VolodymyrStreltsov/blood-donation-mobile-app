@@ -1,8 +1,8 @@
 import { Control, Controller } from 'react-hook-form'
+import { View } from 'react-native'
 import { StyleProp, ViewStyle } from 'react-native/types'
 import { CustomTextInput } from '../customTextInput/CustomTextInput'
 import { Text } from '../text/Text'
-import { View } from '../view/View'
 
 interface ControlledTextInputProps {
   control: Control<any>
