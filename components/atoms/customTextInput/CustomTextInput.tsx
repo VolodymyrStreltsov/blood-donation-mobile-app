@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
-import { StyleSheet, TextInput as Input } from 'react-native'
+import { StyleSheet, TextInput as Input, View } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { Text } from '../text/Text'
-import { View } from '../view/View'
 
 interface CustomTextInputProps {
   value: string | number
@@ -14,9 +14,11 @@ interface CustomTextInputProps {
 }
 
 export const CustomTextInput = ({ value, onChange, label, right, disabled, calendar, height }: CustomTextInputProps) => {
+  const { colors } = useTheme()
+
   return (
     <View style={{ height: height || 48 }}>
-      <View style={styles.label}>
+      <View style={[styles.label, { backgroundColor: colors.surface }]}>
         <Text variant='h5' style={styles.label_text}>{label}</Text>
       </View>
       <Input
@@ -61,7 +63,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 12,
     right: 10,
-    color: 'gray'
   },
   icon: {
     bottom: 1,

@@ -1,12 +1,12 @@
 import { StyleSheet, View } from 'react-native'
-import { Card } from 'react-native-paper'
+import { Card, useTheme } from 'react-native-paper'
 import { Text } from '../../atoms'
 
 export const InfoDateCard = ({
   title,
   date,
   width = '45%',
-  color = '#FFFBFE',
+  color,
   withBorder,
 }: {
   title: string
@@ -15,11 +15,13 @@ export const InfoDateCard = ({
   color?: string
   withBorder?: boolean
 }) => {
+  const { colors } = useTheme()
+
   return (
     <Card
       style={[
         styles.card,
-        { width: width, backgroundColor: color, borderColor: withBorder ? '#cac4d0' : color },
+        { width: width, backgroundColor: color ?? colors.background, borderColor: withBorder ? colors.background : color },
       ]}
       theme={{ roundness: 4 }}>
       <Card.Content style={styles.content}>

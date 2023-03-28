@@ -62,10 +62,6 @@ export const ProfileForm = () => {
     setEditable(!editable)
   }
 
-  useEffect(() => {
-    setEditable(false)
-  }, [])
-
   useFocusEffect(
     useCallback(() => {
       setEditable(false)

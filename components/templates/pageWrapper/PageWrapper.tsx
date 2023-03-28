@@ -1,29 +1,23 @@
 import { ReactNode } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useThemeColor } from '../../../functions'
-import { View } from '../../atoms'
 
 type PageWrapperProps = {
   children: ReactNode
   type?: 'default' | 'modal'
-  lightColor?: string
-  darkColor?: string
 }
 
 export const PageWrapper = ({
   children,
   type = 'default',
-  lightColor,
-  darkColor,
 }: PageWrapperProps) => {
-  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background')
+  const { colors } = useTheme()
   return (
     <SafeAreaView
       style={[
         styles.wrapper,
-        { paddingHorizontal: type === 'modal' ? 16 : 26 },
-        { backgroundColor },
+        { backgroundColor: colors.background, paddingHorizontal: type === 'modal' ? 16 : 26 },
       ]}>
       <View style={styles.container}>{children}</View>
     </SafeAreaView>

@@ -1,7 +1,6 @@
 import { StyleSheet, Text as DefaultText } from 'react-native'
-import { useThemeColor } from '../../../functions'
 
-export type TextProps = ThemeProps &
+export type TextProps =
   DefaultText['props'] & {
     variant?: 'h2' | 'h3' | 'h4' | 'h5' | 'p'
     bold?: boolean
@@ -11,19 +10,15 @@ export type TextProps = ThemeProps &
 export const Text = (props: TextProps) => {
   const {
     style,
-    lightColor,
-    darkColor,
     variant = 'h4',
     bold,
     align = 'center',
     ...otherProps
   } = props
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text')
 
   return (
     <DefaultText
       style={[
-        { color },
         style,
         styles[variant],
         { alignSelf: align, fontWeight: bold ? '500' : '400' },

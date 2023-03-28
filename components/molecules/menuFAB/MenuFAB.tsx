@@ -1,16 +1,16 @@
 import { usePathname, useRouter } from 'expo-router'
 import { useCallback, useMemo, useState } from 'react'
-import { FAB, FABGroupProps, Portal } from 'react-native-paper'
-import { Colors } from '../../../constants/Colors'
+import { FAB, FABGroupProps, Portal, useTheme } from 'react-native-paper'
 
 type Action = Omit<FABGroupProps['actions'][0], 'onPress'> & { name: DonationName }
+const { colors } = useTheme()
 
 const actions: Action[] = [
   {
     icon: 'bandage',
     label: 'Disqualification',
-    style: { backgroundColor: Colors.DarkAlarm },
-    color: Colors.TintColorLight,
+    style: { backgroundColor: colors.error },
+    color: colors.background,
     name: 'Disqualification',
   },
   {
@@ -27,8 +27,8 @@ const actions: Action[] = [
     icon: 'cup-water',
     label: 'Donation',
     size: 'medium',
-    style: { backgroundColor: Colors.LightAlarm },
-    color: Colors.TintColorDark,
+    style: { backgroundColor: colors.tertiary },
+    color: colors.background,
     name: 'Donation',
   },
 ]

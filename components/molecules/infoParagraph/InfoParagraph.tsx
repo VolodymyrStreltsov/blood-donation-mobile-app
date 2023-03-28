@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Avatar } from 'react-native-paper'
-import { Text, View } from '../../atoms'
+import { Text } from '../../atoms'
 
 export const InfoParagraph = ({ text, idx }: { text: string; idx: number }) => {
   const zero = idx === 0

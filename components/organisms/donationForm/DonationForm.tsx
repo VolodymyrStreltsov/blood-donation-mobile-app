@@ -1,9 +1,9 @@
 import { useRouter } from 'expo-router'
 import { Control } from 'react-hook-form'
-import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native'
+import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
-import { ControlledDropDown, ControlledTextInput, DatePicker, Loader, Text, View } from '../../atoms'
+import { ControlledDropDown, ControlledTextInput, DatePicker, Loader, Text } from '../../atoms'
 import { baseDonationIndicators, baseDonationNames, extendedDonationNames, morphologyIndicators } from './donationHelper'
 
 interface DonationFormProps {
