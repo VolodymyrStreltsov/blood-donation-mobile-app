@@ -21,7 +21,7 @@ export const InfoDateCard = ({
     <Card
       style={[
         styles.card,
-        { width: width, backgroundColor: color ?? colors.background, borderColor: withBorder ? colors.background : color },
+        { width: width, backgroundColor: color ?? colors.surface, borderColor: withBorder ? colors.inverseOnSurface : color },
       ]}
       theme={{ roundness: 4 }}>
       <Card.Content style={styles.content}>

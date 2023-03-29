@@ -21,7 +21,7 @@ export const NextDonationCardMock = ({ title, index, text }: { title: DonationNa
               size={30}
               icon='information-outline'
               style={{ backgroundColor: 'transparent' }}
-              color={colors.primary}
+              color={colors.onSurfaceVariant}
             />
           </Pressable>
         </View>

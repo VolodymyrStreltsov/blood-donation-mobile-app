@@ -16,13 +16,13 @@ interface CustomTextInputProps {
 export const CustomTextInput = ({ value, onChange, label, right, disabled, calendar, height }: CustomTextInputProps) => {
   const { colors } = useTheme()
 
-  return (
+  return !value && disabled ? null : (
     <View style={{ height: height || 48 }}>
       <View style={[styles.label, { backgroundColor: colors.surface }]}>
         <Text variant='h5' style={styles.label_text}>{label}</Text>
       </View>
       <Input
-        style={[styles.input, disabled && styles.disabled]}
+        style={[styles.input, { borderColor: colors.onSurfaceVariant, color: colors.onSurfaceVariant }, disabled && styles.disabled]}
         onChangeText={onChange}
         value={String(value)}
         keyboardType='numeric'
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     paddingLeft: 14,
-    borderColor: 'gray',
   },
   disabled: {
     backgroundColor: 'rgba(0, 0, 0, 0)',

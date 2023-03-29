@@ -7,29 +7,25 @@ import { NextDonationCardMock } from './NextDonationCardMock'
 export const NextDonationCard = ({ title, index }: { title: DonationName; index: number }) => {
   const [daysUntilNextDonation, setDaysUntilNextDonation] = useState<number | null>(null)
 
-  if (title === 'Leukocytes') {
-    return (
-      <NextDonationCardMock title={title} index={index} text='Ask doctor' />
-    )
-  }
-
   useFocusEffect(
     useCallback(() => {
       let unsubscribe: (() => void) | undefined
-      getNextDonationDate(title)
-        .then((res) => {
-          if (res) {
-            setDaysUntilNextDonation(res)
-          }
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-        .finally(() => {
-          if (unsubscribe) {
-            unsubscribe()
-          }
-        })
+      if (title !== 'Leukocytes') {
+        getNextDonationDate(title)
+          .then((res) => {
+            if (res) {
+              setDaysUntilNextDonation(res)
+            }
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+          .finally(() => {
+            if (unsubscribe) {
+              unsubscribe()
+            }
+          })
+      }
       return () => {
         unsubscribe = undefined
       }
@@ -37,6 +33,6 @@ export const NextDonationCard = ({ title, index }: { title: DonationName; index:
   )
 
   return (
-    <NextDonationCardMock title={title} index={index} text={daysUntilNextDonation === null || daysUntilNextDonation <= 0 ? 'You can donate' : `in ${daysUntilNextDonation} days`} />
+    <NextDonationCardMock title={title} index={index} text={title === 'Leukocytes' ? 'Ask doctor' : daysUntilNextDonation === null || daysUntilNextDonation <= 0 ? 'You can donate' : `in ${daysUntilNextDonation} days`} />
   )
 }

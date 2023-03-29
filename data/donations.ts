@@ -1,5 +1,5 @@
-import { getEligibilityPeriodInDays } from '../functions/nextDonationDate'
-import { calculateDonationAmount } from '../functions/wholeBloodCalculator'
+import { calculateDonationAmount, getEligibilityPeriodInDays } from '../functions'
+
 import db from './database'
 import { getGender } from './profile'
 

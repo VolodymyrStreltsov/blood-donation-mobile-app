@@ -3,37 +3,36 @@ import { useCallback, useMemo, useState } from 'react'
 import { FAB, FABGroupProps, Portal, useTheme } from 'react-native-paper'
 
 type Action = Omit<FABGroupProps['actions'][0], 'onPress'> & { name: DonationName }
-const { colors } = useTheme()
-
-const actions: Action[] = [
-  {
-    icon: 'bandage',
-    label: 'Disqualification',
-    style: { backgroundColor: colors.error },
-    color: colors.background,
-    name: 'Disqualification',
-  },
-  {
-    icon: 'gauge',
-    label: 'Platelets',
-    name: 'Platelets',
-  },
-  {
-    icon: 'water-outline',
-    label: 'Whole blood',
-    name: 'Whole_blood',
-  },
-  {
-    icon: 'cup-water',
-    label: 'Donation',
-    size: 'medium',
-    style: { backgroundColor: colors.tertiary },
-    color: colors.background,
-    name: 'Donation',
-  },
-]
 
 export const MenuFAB = () => {
+  const { colors } = useTheme()
+  const actions: Action[] = [
+    {
+      icon: 'bandage',
+      label: 'Disqualification',
+      style: { backgroundColor: colors.error },
+      color: colors.background,
+      name: 'Disqualification',
+    },
+    {
+      icon: 'gauge',
+      label: 'Platelets',
+      name: 'Platelets',
+    },
+    {
+      icon: 'water-outline',
+      label: 'Whole blood',
+      name: 'Whole_blood',
+    },
+    {
+      icon: 'cup-water',
+      label: 'Donation',
+      size: 'medium',
+      style: { backgroundColor: colors.tertiary },
+      color: colors.background,
+      name: 'Donation',
+    },
+  ]
   const [open, setOpen] = useState<boolean>(false)
 
   const router = useRouter()

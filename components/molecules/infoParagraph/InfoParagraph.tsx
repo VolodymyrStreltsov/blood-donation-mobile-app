@@ -1,16 +1,17 @@
 import { StyleSheet, View } from 'react-native'
-import { Avatar } from 'react-native-paper'
+import { Avatar, useTheme } from 'react-native-paper'
 import { Text } from '../../atoms'
 
 export const InfoParagraph = ({ text, idx }: { text: string; idx: number }) => {
   const zero = idx === 0
+  const { colors } = useTheme()
   return (
     <View style={styles.container}>
       <Avatar.Icon
         style={styles.icon}
         size={zero ? 30 : 20}
         icon={zero ? 'alarm' : 'adjust'}
-        color='#130b0b'
+        color={colors.onSurfaceVariant}
       />
       <View style={{ paddingHorizontal: 16, flex: 1 }}>
         <Text variant='p' style={{ width: '100%' }}>
