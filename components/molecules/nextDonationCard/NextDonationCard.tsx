@@ -17,7 +17,7 @@ export const NextDonationCard = ({ item, index }: { item: [string, number]; inde
           <Avatar.Text size={40} label={item[0][0]} />
           <Pressable
             onPress={() => {
-              router.push({ pathname: 'modal', params: { name: item[0], info: 'true' } })
+              router.push({ pathname: 'modal', params: { name: item[0], info: 'true', nextDate: item[1] } })
             }}>
             <Avatar.Icon
               size={30}

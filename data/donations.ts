@@ -194,11 +194,34 @@ const getLastDisqualification = async (): Promise<number> => {
   })
 }
 
+export const getLastDonationWithType = (type: DonationName): Promise<Donation> => {
+  return new Promise((resolve) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT type, MAX(date) as date, id FROM donations WHERE type = '${type}'`,
+        [],
+        (_tx, result) => {
+          const lastDonation = result.rows.item(0)
+          if (!lastDonation) {
+            resolve({} as Donation)
+          } else {
+            resolve(lastDonation)
+          }
+        },
+        (_tx, error) => {
+          console.error('Error creating donations table', error.message)
+          return true
+        },
+      )
+    })
+  })
+}
+
 const getLastDonation = (): Promise<Donation> => {
   return new Promise((resolve) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `SELECT type, MAX(date) as lastDate, duration FROM donations WHERE type != 'disqualification'`,
+        `SELECT type, MAX(date) as date FROM donations WHERE type != 'disqualification'`,
         [],
         (_tx, result) => {
           const lastDonation = result.rows.item(0)
@@ -270,7 +293,7 @@ export const getNextDonationsDate = async (): Promise<Record<DonationName, numbe
     } else {
       const eligibilityPeriodInDays = getEligibilityPeriodInDays(lastDonation?.type, nextDonation)
       const nextDate = +lastDonation.date + eligibilityPeriodInDays * 24 * 60 * 60 * 1000
-      const timeDiff = +nextDate - new Date().getTime()
+      const timeDiff = nextDate - new Date().getTime()
 
       const daysUntilNext = Math.ceil(Math.max(disqualification, timeDiff / (1000 * 3600 * 24)))
       nextDonations[nextDonation] = daysUntilNext
