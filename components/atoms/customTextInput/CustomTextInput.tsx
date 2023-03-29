@@ -16,7 +16,7 @@ interface CustomTextInputProps {
 export const CustomTextInput = ({ value, onChange, label, right, disabled, calendar, height }: CustomTextInputProps) => {
   const { colors } = useTheme()
 
-  return !value && disabled ? null : (
+  return (
     <View style={{ height: height || 48 }}>
       <View style={[styles.label, { backgroundColor: colors.surface }]}>
         <Text variant='h5' style={styles.label_text}>{label}</Text>

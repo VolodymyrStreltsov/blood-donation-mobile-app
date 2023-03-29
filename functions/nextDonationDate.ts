@@ -31,12 +31,10 @@ const donationEligibility: DonationEligibility = {
   },
   Plasma_Platelets: {
     Whole_blood: 84,
-    Erythrocytes_Platelets: 84,
     Leukocytes: 84,
     Plasma: 7,
     Platelets: 7,
     Erythrocytes: 7,
-    Plasma_Platelets: 14,
   },
   Erythrocytes_Platelets: {
     Whole_blood: 84,
@@ -44,16 +42,12 @@ const donationEligibility: DonationEligibility = {
     Plasma: 56,
     Platelets: 56,
     Erythrocytes: 56,
-    Plasma_Platelets: 112,
-    Erythrocytes_Platelets: 112,
   },
   Leukocytes: {
     Whole_blood: 84,
     Plasma: 84,
     Platelets: 84,
     Erythrocytes: 84,
-    Plasma_Platelets: 84,
-    Erythrocytes_Platelets: 84,
     Leukocytes: 84,
   },
 }

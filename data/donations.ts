@@ -194,83 +194,88 @@ const getLastDisqualification = async (): Promise<number> => {
   })
 }
 
-export const getNextDonationDate = async (nextDonation: DonationName): Promise<number | null> => {
-  const getLastDonationQuery = `SELECT type, MAX(date) as lastDate, duration FROM donations WHERE type != 'disqualification'`
-
-  let gender: string | null = null
-  let disqualification = 0
-
-  getLastDisqualification().then((value) => {
-    disqualification = value
-  })
-  getGender().then((value) => {
-    gender = value
-  })
-
+const getLastDonation = (): Promise<Donation> => {
   return new Promise((resolve) => {
     db.transaction((tx) => {
       tx.executeSql(
-        getLastDonationQuery,
+        `SELECT type, MAX(date) as lastDate, duration FROM donations WHERE type != 'disqualification'`,
         [],
         (_tx, result) => {
           const lastDonation = result.rows.item(0)
           if (!lastDonation) {
-            resolve(null)
+            resolve({} as Donation)
           } else {
-            const { type, lastDate } = lastDonation
-            if (nextDonation === 'Whole_blood' && gender === 'female') {
-              const twelveMonthsAgo = new Date()
-              twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12)
-              const query = `SELECT COUNT(*) AS count, MIN(date) AS firstDate, MAX(date) AS lastDate, MAX(date) AS lastDonation FROM donations WHERE type = 'Whole_blood' AND date >= ${twelveMonthsAgo.getTime()}`
-              db.transaction((tx) => {
-                tx.executeSql(
-                  query,
-                  [],
-                  (_tx, result) => {
-                    const { count, firstDate, lastDate } = result.rows.item(0)
-                    if (count >= 4) {
-                      const today = new Date().getTime()
-                      const daysSinceFirstDonation = today - firstDate
-                      const daysToNextDonation = Math.ceil(
-                        Math.max(
-                          disqualification,
-                          (31536000000 - daysSinceFirstDonation) / (24 * 60 * 60 * 1000),
-                        ),
-                      )
-                      resolve(daysToNextDonation)
-                    } else {
-                      const nextDate = lastDate + 56 * 24 * 60 * 60 * 1000
-                      const timeDiff = nextDate - new Date().getTime() // TODO check if this is correct
-                      const daysUntilNext = Math.ceil(
-                        Math.max(disqualification, timeDiff / (1000 * 3600 * 24)),
-                      )
-                      resolve(daysUntilNext)
-                    }
-                  },
-                  (_tx, error) => {
-                    console.error('Error getting last donation', error.message)
-                    return true
-                  },
-                )
-              })
-            } else {
-              const eligibilityPeriodInDays = getEligibilityPeriodInDays(type, nextDonation)
-              const nextDate = lastDate + eligibilityPeriodInDays * 24 * 60 * 60 * 1000
-              const timeDiff = nextDate - new Date().getTime() // TODO check if this is correct
-
-              const daysUntilNext = Math.max(
-                disqualification,
-                Math.ceil(timeDiff / (1000 * 3600 * 24)),
-              )
-              resolve(daysUntilNext)
-            }
+            resolve(lastDonation)
           }
         },
         (_tx, error) => {
-          console.error('Error getting last donation', error.message)
+          console.error('Error creating donations table', error.message)
           return true
         },
       )
     })
   })
+}
+
+const getWholeBlood_LastTwelveMonth = async (): Promise<number> => {
+  return new Promise((resolve) => {
+    const twelveMonthsAgo = new Date()
+    twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12)
+    const query = `SELECT COUNT(*) AS count, MIN(date) AS firstDate, MAX(date) AS lastDate, MAX(date) AS lastDonation FROM donations WHERE type = 'Whole_blood' AND date >= ${twelveMonthsAgo.getTime()}`
+    db.transaction((tx) => {
+      tx.executeSql(
+        query,
+        [],
+        (_tx, result) => {
+          const { count, firstDate, lastDate } = result.rows.item(0)
+          if (count >= 4) {
+            const today = new Date().getTime()
+            const daysSinceFirstDonation = today - firstDate
+            const daysToNextDonation =
+              Math.ceil(31536000000 - daysSinceFirstDonation) / (24 * 60 * 60 * 1000)
+            resolve(daysToNextDonation)
+          } else {
+            const nextDate = lastDate + 56 * 24 * 60 * 60 * 1000
+            const timeDiff = nextDate - new Date().getTime() // TODO check if this is correct
+            const daysUntilNext = Math.ceil(timeDiff / (1000 * 3600 * 24))
+            resolve(daysUntilNext)
+          }
+        },
+        (_tx, error) => {
+          console.error(error.message)
+          return true
+        },
+      )
+    })
+  })
+}
+
+export const getNextDonationsDate = async (): Promise<Record<DonationName, number>> => {
+  const nextDonations: Record<string, number> = {
+    Whole_blood: 0,
+    Platelets: 0,
+    Plasma: 0,
+    Erythrocytes: 0,
+    Leukocytes: 0,
+  }
+
+  const gender = await getGender()
+  const disqualification = await getLastDisqualification()
+  const lastDonation = await getLastDonation()
+
+  for (const nextDonation of Object.keys(nextDonations) as DonationName[]) {
+    if (nextDonation === 'Whole_blood' && gender === 'female') {
+      const value = await getWholeBlood_LastTwelveMonth()
+      nextDonations[nextDonation] = Math.ceil(Math.max(disqualification, value))
+    } else {
+      const eligibilityPeriodInDays = getEligibilityPeriodInDays(lastDonation?.type, nextDonation)
+      const nextDate = +lastDonation.date + eligibilityPeriodInDays * 24 * 60 * 60 * 1000
+      const timeDiff = +nextDate - new Date().getTime()
+
+      const daysUntilNext = Math.ceil(Math.max(disqualification, timeDiff / (1000 * 3600 * 24)))
+      nextDonations[nextDonation] = daysUntilNext
+    }
+  }
+
+  return nextDonations
 }

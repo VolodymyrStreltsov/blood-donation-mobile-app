@@ -1,5 +1,5 @@
 import { useFocusEffect } from 'expo-router'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import {
   MenuFAB,
@@ -8,26 +8,22 @@ import {
   PreviousDonationListElement,
   Text
 } from '../../components'
-import { getAllDonations } from '../../data/donations'
-
-const nextDonations: DonationName[] = [
-  'Whole_blood',
-  'Platelets',
-  'Plasma',
-  'Erythrocytes',
-  'Leukocytes',
-]
+import { getAllDonations, getNextDonationsDate } from '../../data/donations'
 
 export default function TabDonationsScreen() {
+  const [nextDonations, setNextDonations] = useState<[string, number][]>([])
   const [previousDonations, setPreviousDonations] = useState<Partial<Donation>[]>([])
 
   useFocusEffect(
     useCallback(() => {
       let unsubscribe: (() => void) | undefined
-      getAllDonations()
-        .then((res) => {
-          if (res) {
-            setPreviousDonations(res)
+      Promise.all([getNextDonationsDate(), getAllDonations()])
+        .then(([nextDonationsData, previousDonationsData]) => {
+          if (nextDonationsData) {
+            setNextDonations(Object.entries(nextDonationsData))
+          }
+          if (previousDonationsData) {
+            setPreviousDonations(previousDonationsData)
           }
         })
         .catch((error) => {
@@ -44,6 +40,9 @@ export default function TabDonationsScreen() {
     }, [])
   )
 
+  const MemoizedNextDonationCard = memo(NextDonationCard)
+  const MemoizedPreviousDonationListElement = memo(PreviousDonationListElement)
+
   return (
     <PageWrapper>
       <Text variant='h3' align='flex-start' style={{ marginBottom: 18, marginLeft: 16 }}>
@@ -53,8 +52,8 @@ export default function TabDonationsScreen() {
         <FlatList
           horizontal
           data={nextDonations}
-          renderItem={({ item, index }) => <NextDonationCard title={item} index={index} />}
-          keyExtractor={(item) => item}
+          renderItem={({ item, index }) => <MemoizedNextDonationCard item={item} index={index} />}
+          keyExtractor={(item) => item[0]}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -62,13 +61,14 @@ export default function TabDonationsScreen() {
         Previous donations
       </Text>
       <View style={{ flex: 1 }}>
-        {previousDonations.length > 0 ?
+        {previousDonations.length > 0 ? (
           <FlatList
             data={previousDonations}
-            renderItem={({ item }) => <PreviousDonationListElement item={item} />}
+            renderItem={({ item }) => <MemoizedPreviousDonationListElement item={item} />}
             keyExtractor={(item) => String(item.id)}
             showsVerticalScrollIndicator={false}
-          /> : null}
+          />
+        ) : null}
       </View>
       <MenuFAB />
     </PageWrapper>

@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { deleteDonation, getDonationById, updateDonation } from '../../../data/donations'
 import { Loader } from '../../atoms'
@@ -16,36 +16,30 @@ export const ExistingDonationForm = ({ nameOfDonation, id }: ExistingDonationFor
   const [donation, setDonation] = useState<Donation | null>(null)
 
   useEffect(() => {
-    getDonationById(id)
-      .then((donation) => {
+    const fetchDonation = async () => {
+      try {
+        const donation = await getDonationById(id)
         setDonation(donation)
-      })
-      .catch((error: Error) => {
+      } catch (error) {
         console.log(error)
-      })
+      }
+    }
+    fetchDonation()
   }, [id])
 
   const [activeFields, setActiveFields] = useState(false)
   const [visible, setVisible] = useState(false)
 
-  const switchMenuVisible = () => {
-    setVisible(!visible)
-  }
+  const switchMenuVisible = useCallback(() => {
+    setVisible((visible) => !visible)
+  }, [])
 
-  const switchActive = () => {
-    setActiveFields(!activeFields)
+  const switchActive = useCallback(() => {
+    setActiveFields((activeFields) => !activeFields)
     setVisible(false)
-  }
+  }, [])
 
   const defaultValues = useGetDonationDefaultValues(nameOfDonation)
-  useEffect(() => {
-    if (donation) {
-      reset({
-        ...donation,
-        date: new Date(donation.date).toISOString(),
-      })
-    }
-  }, [donation])
 
   const { handleSubmit, control, register, reset } = useForm({
     mode: 'onSubmit',
@@ -54,10 +48,19 @@ export const ExistingDonationForm = ({ nameOfDonation, id }: ExistingDonationFor
   })
 
   useEffect(() => {
-    Object.keys(defaultValues).map((item) => {
+    if (donation) {
+      reset({
+        ...donation,
+        date: new Date(donation.date).toISOString(),
+      })
+    }
+  }, [donation, reset])
+
+  useEffect(() => {
+    Object.keys(defaultValues).forEach((item) => {
       register(item as keyof Donation)
     })
-  }, [register])
+  }, [defaultValues, register])
 
   const onSubmit = (val: Donation) => {
     updateDonation(id, val)

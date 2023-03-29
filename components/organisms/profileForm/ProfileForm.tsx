@@ -1,5 +1,5 @@
 import { useFocusEffect } from 'expo-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dimensions, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -68,19 +68,15 @@ export const ProfileForm = () => {
     }, [])
   )
 
-  const defaultValues: ProfileData = {
-    language: 'EN',
-    country: 'Polska',
-    gender: 'male',
-    height: '',
-    weight: '',
-  }
-
-  useEffect(() => {
-    if (profileData) {
-      reset(profileData)
+  const defaultValues: ProfileData = useMemo(() => {
+    return {
+      language: 'EN',
+      country: 'Polska',
+      gender: 'male',
+      height: '',
+      weight: '',
     }
-  }, [profileData])
+  }, [])
 
   const { handleSubmit, control, register, reset } = useForm({
     mode: 'onSubmit',
@@ -89,10 +85,16 @@ export const ProfileForm = () => {
   })
 
   useEffect(() => {
+    if (profileData) {
+      reset(profileData)
+    }
+  }, [profileData, reset])
+
+  useEffect(() => {
     Object.keys(defaultValues).map((item) => {
       register(item as keyof ProfileData)
     })
-  }, [register])
+  }, [defaultValues, register])
 
   const onSubmit = (val: ProfileData) => {
     updateProfile(val)

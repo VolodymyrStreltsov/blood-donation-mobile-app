@@ -1,5 +1,5 @@
 import { useFocusEffect } from 'expo-router'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { AchievementCard, PageWrapper, Text } from '../../components'
 import { getDonationsAmount } from '../../data/donations'
@@ -9,7 +9,7 @@ export default function TabProgressScreen() {
   const [amount, setAmount] = useState(0)
   const [isMale, setIsMale] = useState(false)
 
-  const achievements: Achievement[] = [
+  const achievements: Achievement[] = useMemo(() => [
     {
       id: 'first',
       title: `Odznaka Zasłużony Honorowy\nDawca Krwi za 5/6 litrów`,
@@ -34,21 +34,18 @@ export default function TabProgressScreen() {
       title: `Honorowy Dawca Krwi —\nZasłużony dla Zdrowia Narodu`,
       img: 4,
     },
-  ]
+  ], [isMale])
 
   useFocusEffect(
     useCallback(() => {
       let unsubscribe: (() => void) | undefined
-      getGender()
-        .then((res) => {
-          if (res) {
-            setIsMale(res === 'male')
+      Promise.all([getGender(), getDonationsAmount()])
+        .then(([gender, donationsAmount]) => {
+          if (gender) {
+            setIsMale(gender === 'male')
           }
-        })
-      getDonationsAmount()
-        .then((res) => {
-          if (res) {
-            setAmount(res)
+          if (donationsAmount) {
+            setAmount(donationsAmount)
           }
         })
         .catch((error) => {
@@ -64,7 +61,6 @@ export default function TabProgressScreen() {
       }
     }, [])
   )
-
 
   return (
     <PageWrapper>
