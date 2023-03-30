@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router'
 import { StyleSheet, View } from 'react-native'
 import { Card, useTheme } from 'react-native-paper'
 import { Text } from '../../atoms'
@@ -8,20 +9,30 @@ export const InfoDateCard = ({
   width = '45%',
   color,
   withBorder,
+  prev,
 }: {
   title: string
   date: string
   width?: string
   color?: string
   withBorder?: boolean
+  prev?: { id?: string, type: string }
 }) => {
+  const router = useRouter()
   const { colors } = useTheme()
 
   return (
     <Card
+      onPress={() => {
+        prev?.id &&
+          router.push({
+            pathname: 'modal',
+            params: { name: prev?.type, id: prev?.id },
+          })
+      }}
       style={[
         styles.card,
-        { width: width, backgroundColor: color ?? colors.background, borderColor: withBorder ? colors.background : color },
+        { width: width, backgroundColor: color, borderColor: withBorder ? colors.inverseOnSurface : color },
       ]}
       theme={{ roundness: 4 }}>
       <Card.Content style={styles.content}>

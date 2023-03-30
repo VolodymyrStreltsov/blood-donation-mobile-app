@@ -3,7 +3,7 @@ import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 
 import { useEffect } from 'react'
-import { ThemeProvider } from '../components/templates'
+import { ThemeProvider } from '../components'
 
 export { ErrorBoundary } from 'expo-router'
 

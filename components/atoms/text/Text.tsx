@@ -1,4 +1,5 @@
 import { StyleSheet, Text as DefaultText } from 'react-native'
+import { useTheme } from 'react-native-paper'
 
 export type TextProps =
   DefaultText['props'] & {
@@ -8,6 +9,7 @@ export type TextProps =
   }
 
 export const Text = (props: TextProps) => {
+  const { colors } = useTheme()
   const {
     style,
     variant = 'h4',
@@ -21,7 +23,7 @@ export const Text = (props: TextProps) => {
       style={[
         style,
         styles[variant],
-        { alignSelf: align, fontWeight: bold ? '500' : '400' },
+        { color: colors.onSurfaceVariant, alignSelf: align, fontWeight: bold ? '500' : '400' },
       ]}
       {...otherProps}
     />

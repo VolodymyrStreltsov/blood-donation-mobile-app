@@ -1,6 +1,9 @@
 import { useRouter } from 'expo-router'
+import { useEffect, useState } from 'react'
 import { Dimensions, Platform, ScrollView, StyleSheet, View } from 'react-native'
 import { Appbar, useTheme } from 'react-native-paper'
+import { getLastDonationWithType } from '../../../data/donations'
+import { formattingDate } from '../../../functions'
 import { Text } from '../../atoms'
 import { InfoDateCard, InfoParagraph } from '../../molecules'
 
@@ -52,10 +55,21 @@ const infoScreensData: InfoScreenData[] = [
   },
 ]
 
-export const DonationInfoScreen = ({ nameOfDonation }: { nameOfDonation: string }) => {
+export const DonationInfoScreen = ({ nameOfDonation, nextDate }: { nameOfDonation: string, nextDate: string }) => {
   const screenInfo =
     infoScreensData.find((el: InfoScreenData) => el.id === nameOfDonation)?.paragraphs || []
 
+  const [lastDonationOfType, setLastDonationOfType] = useState<Donation>({} as Donation)
+
+  useEffect(() => {
+    getLastDonationWithType(nameOfDonation as DonationName).then((res) => {
+      setLastDonationOfType(res)
+    })
+  }, [])
+
+
+  const date = new Date()
+  const next = date.setDate(date.getDate() + +nextDate)
   const router = useRouter()
   const { colors } = useTheme()
 
@@ -69,8 +83,8 @@ export const DonationInfoScreen = ({ nameOfDonation }: { nameOfDonation: string 
           {nameOfDonation}
         </Text>
         <View style={styles.cardsContainer}>
-          <InfoDateCard title='Last donation' date='20.01.2019' withBorder />
-          <InfoDateCard color={colors.inverseOnSurface} title='Next donation' date='03.04.2023' />
+          <InfoDateCard title='Last donation' date={lastDonationOfType.id ? formattingDate(lastDonationOfType.date) : 'never'} withBorder={!lastDonationOfType.id} prev={{ id: lastDonationOfType.id, type: nameOfDonation }} color={lastDonationOfType.id ? colors.surface : colors.inverseOnSurface} />
+          <InfoDateCard color={colors.inverseOnSurface} title='Next donation' date={formattingDate(next)} />
         </View>
         <ScrollView
           contentContainerStyle={styles.paragraphsContainer}

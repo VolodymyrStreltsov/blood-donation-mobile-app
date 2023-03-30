@@ -22,7 +22,7 @@ export const CustomTextInput = ({ value, onChange, label, right, disabled, calen
         <Text variant='h5' style={styles.label_text}>{label}</Text>
       </View>
       <Input
-        style={[styles.input, disabled && styles.disabled]}
+        style={[styles.input, { borderColor: colors.onSurfaceVariant, color: colors.onSurfaceVariant }, disabled && styles.disabled]}
         onChangeText={onChange}
         value={String(value)}
         keyboardType='numeric'
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     paddingLeft: 14,
-    borderColor: 'gray',
   },
   disabled: {
     backgroundColor: 'rgba(0, 0, 0, 0)',
