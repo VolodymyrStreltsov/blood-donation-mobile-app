@@ -4,7 +4,7 @@ export const getProfile = async (): Promise<ProfileData | null> => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT gender, height, weight, language, country FROM profile WHERE id = ?',
+        'SELECT gender, height, weight, language FROM profile WHERE id = ?',
         [1],
         (_tx, results) => {
           if (results.rows.length > 0) {
@@ -29,14 +29,13 @@ export const updateProfile = async (updatedProfile: ProfileData): Promise<void> 
   try {
     await db.transaction(async (tx) => {
       await tx.executeSql(
-        'INSERT OR REPLACE INTO profile (id, gender, height, weight, language, country) VALUES (?, ?, ?, ?, ?, ?)',
+        'INSERT OR REPLACE INTO profile (id, gender, height, weight, language) VALUES (?, ?, ?, ?, ?, ?)',
         [
           1,
           updatedProfile.gender,
           updatedProfile.height,
           updatedProfile.weight,
           updatedProfile.language,
-          updatedProfile.country,
         ],
         (_tx, results) => {
           console.log('Profile updated successfully', results.rowsAffected)

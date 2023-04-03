@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router'
 
-import { Pressable, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Avatar, Card, useTheme } from 'react-native-paper'
 import { Text } from '../../atoms'
 
@@ -11,21 +11,20 @@ export const NextDonationCard = ({ item, index }: { item: [string, number]; inde
   const text = item[0] === 'Leukocytes' ? 'Ask doctor' : !item[1] ? 'You can donate' : `in ${item[1]} days`
 
   return (
-    <Card style={[styles.card, { marginLeft: index === 0 ? 26 : 7 }]} theme={{ roundness: 4 }}>
+    <Card style={[styles.card, { marginLeft: index === 0 ? 26 : 7 }]} theme={{ roundness: 4 }}
+      onPress={() => {
+        router.push({ pathname: 'modal', params: { name: item[0], info: 'true', nextDate: item[1] } })
+      }}
+    >
       <Card.Content style={styles.content}>
         <View style={styles.header}>
           <Avatar.Text size={40} label={item[0][0]} />
-          <Pressable
-            onPress={() => {
-              router.push({ pathname: 'modal', params: { name: item[0], info: 'true', nextDate: item[1] } })
-            }}>
-            <Avatar.Icon
-              size={30}
-              icon='information-outline'
-              style={{ backgroundColor: 'transparent' }}
-              color={colors.onSurfaceVariant}
-            />
-          </Pressable>
+          <Avatar.Icon
+            size={30}
+            icon='information-outline'
+            style={{ backgroundColor: 'transparent' }}
+            color={colors.onSurfaceVariant}
+          />
         </View>
         <View style={styles.text}>
           <Text align='flex-start' variant='h4'>

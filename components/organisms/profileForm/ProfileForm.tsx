@@ -1,18 +1,15 @@
-import { useFocusEffect } from 'expo-router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dimensions, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar } from 'react-native-paper'
 import { getProfile, updateProfile } from '../../../data/profile'
 import { ControlledDropDown, ControlledRadioButton, ControlledTextInput } from '../../atoms'
+import { useChangeContext } from '../../wrappersAndProviders'
 
 const profileDataWithUnits: Indicator<ProfileData>[] = [
   {
     id: 'language',
-  },
-  {
-    id: 'country'
   },
   {
     id: 'gender',
@@ -32,11 +29,6 @@ const radioOptions = [
   { label: 'female', value: 'female' },
 ]
 
-const countriesOptions = [
-  { label: 'Polska', value: 'Polska' },
-  { label: 'Україна', value: 'Україна' },
-]
-
 const langOptions = [
   { label: 'PL', value: 'PL' },
   { label: 'EN', value: 'EN' },
@@ -44,7 +36,9 @@ const langOptions = [
 ]
 
 export const ProfileForm = () => {
+  const { setProfileChanged } = useChangeContext()
   const [profileData, setProfileData] = useState<ProfileData | null>({} as ProfileData)
+  const [editable, setEditable] = useState(false)
 
   useEffect(() => {
     getProfile()
@@ -56,22 +50,13 @@ export const ProfileForm = () => {
       })
   }, [])
 
-  const [editable, setEditable] = useState(false)
-
   const switchEditable = () => {
     setEditable(!editable)
   }
 
-  useFocusEffect(
-    useCallback(() => {
-      setEditable(false)
-    }, [])
-  )
-
   const defaultValues: ProfileData = useMemo(() => {
     return {
       language: 'EN',
-      country: 'Polska',
       gender: 'male',
       height: '',
       weight: '',
@@ -98,7 +83,8 @@ export const ProfileForm = () => {
 
   const onSubmit = (val: ProfileData) => {
     updateProfile(val)
-    switchEditable()
+    setEditable(false)
+    setProfileChanged(prev => prev + 1)
   }
 
   return (
@@ -119,18 +105,6 @@ export const ProfileForm = () => {
                 control={control}
                 name={item.id}
                 list={langOptions}
-                disabled={!editable}
-              />
-            )
-          }
-          if (item.id === 'country') {
-            return (
-              <ControlledDropDown
-                key={item.id}
-                style={styles.item}
-                control={control}
-                name={item.id}
-                list={countriesOptions}
                 disabled={!editable}
               />
             )

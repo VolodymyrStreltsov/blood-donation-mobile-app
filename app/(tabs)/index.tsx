@@ -1,44 +1,60 @@
-import { useFocusEffect } from 'expo-router'
-import { memo, useCallback, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import {
   MenuFAB,
   NextDonationCard,
+  NextDonationCardSkeleton,
   PageWrapper,
   PreviousDonationListElement,
-  Text
+  PreviousDonationListElementSkeleton,
+  Text,
+  useChangeContext
 } from '../../components'
 import { getAllDonations, getNextDonationsDate } from '../../data/donations'
 
 export default function TabDonationsScreen() {
+  const { donationChanged, profileChanged } = useChangeContext()
   const [nextDonations, setNextDonations] = useState<[string, number][]>([])
   const [previousDonations, setPreviousDonations] = useState<Partial<Donation>[]>([])
+  const [loadingNextDonations, setLoadingNextDonations] = useState<boolean>(true)
+  const [loadingPreviousDonations, setLoadingPreviousDonations] = useState<boolean>(true)
 
-  useFocusEffect(
-    useCallback(() => {
-      let unsubscribe: (() => void) | undefined
-      Promise.all([getNextDonationsDate(), getAllDonations()])
-        .then(([nextDonationsData, previousDonationsData]) => {
-          if (nextDonationsData) {
-            setNextDonations(Object.entries(nextDonationsData))
-          }
-          if (previousDonationsData) {
-            setPreviousDonations(previousDonationsData)
-          }
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-        .finally(() => {
-          if (unsubscribe) {
-            unsubscribe()
-          }
-        })
-      return () => {
-        unsubscribe = undefined
-      }
-    }, [])
-  )
+  useEffect(() => {
+    setLoadingNextDonations(true)
+    setLoadingPreviousDonations(true)
+    Promise.all([getNextDonationsDate(), getAllDonations()])
+      .then(([nextDonationsData, previousDonationsData]) => {
+        if (nextDonationsData) {
+          setNextDonations(Object.entries(nextDonationsData))
+        }
+        if (previousDonationsData) {
+          setPreviousDonations(previousDonationsData)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+      .finally(() => {
+        setLoadingNextDonations(false)
+        setLoadingPreviousDonations(false)
+      })
+  }, [donationChanged])
+
+  useEffect(() => {
+    setLoadingNextDonations(true)
+    getNextDonationsDate()
+      .then((nextDonationsData) => {
+        if (nextDonationsData) {
+          setNextDonations(Object.entries(nextDonationsData))
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+      .finally(() => {
+        setLoadingNextDonations(false)
+      })
+  }, [profileChanged])
 
   const MemoizedNextDonationCard = memo(NextDonationCard)
   const MemoizedPreviousDonationListElement = memo(PreviousDonationListElement)
@@ -49,19 +65,25 @@ export default function TabDonationsScreen() {
         Next donation
       </Text>
       <View style={{ height: 175, marginHorizontal: -26 }}>
-        <FlatList
-          horizontal
-          data={nextDonations}
-          renderItem={({ item, index }) => <MemoizedNextDonationCard item={item} index={index} />}
-          keyExtractor={(item) => item[0]}
-          showsHorizontalScrollIndicator={false}
-        />
+        {loadingNextDonations ? (
+          <NextDonationCardSkeleton />
+        ) : (
+          <FlatList
+            horizontal
+            data={nextDonations}
+            renderItem={({ item, index }) => <MemoizedNextDonationCard item={item} index={index} />}
+            keyExtractor={(item) => item[0]}
+            showsHorizontalScrollIndicator={false}
+          />
+        )}
       </View>
       <Text variant='h3' align='flex-start' style={{ marginBottom: 18, marginLeft: 16 }}>
         Previous donations
       </Text>
       <View style={{ flex: 1 }}>
-        {previousDonations.length > 0 ? (
+        {loadingPreviousDonations ? (
+          <PreviousDonationListElementSkeleton />
+        ) : previousDonations.length > 0 ? (
           <FlatList
             data={previousDonations}
             renderItem={({ item }) => <MemoizedPreviousDonationListElement item={item} />}

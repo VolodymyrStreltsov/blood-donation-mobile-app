@@ -41,7 +41,6 @@ interface BaseDonationInfo {
 
 interface ProfileData {
   language: 'PL' | 'EN' | 'UA'
-  country: 'Polska' | 'Україна'
   gender: string
   height: string
   weight: string

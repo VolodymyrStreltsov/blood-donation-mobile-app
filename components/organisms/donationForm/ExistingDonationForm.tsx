@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { deleteDonation, getDonationById, updateDonation } from '../../../data/donations'
 import { Loader } from '../../atoms'
+import { useChangeContext } from '../../wrappersAndProviders'
 import { DonationForm } from './DonationForm'
 import { useGetDonationDefaultValues } from './donationHelper'
 
@@ -14,6 +15,7 @@ interface ExistingDonationFormProps {
 export const ExistingDonationForm = ({ nameOfDonation, id }: ExistingDonationFormProps) => {
   const router = useRouter()
   const [donation, setDonation] = useState<Donation | null>(null)
+  const { setDonationChanged } = useChangeContext()
 
   useEffect(() => {
     const fetchDonation = async () => {
@@ -65,10 +67,12 @@ export const ExistingDonationForm = ({ nameOfDonation, id }: ExistingDonationFor
   const onSubmit = (val: Donation) => {
     updateDonation(id, val)
     switchActive()
+    setDonationChanged((prev) => prev + 1)
   }
 
   const deleteDonationHandler = () => {
     if (id) deleteDonation(id)
+    setDonationChanged((prev) => prev + 1)
     router.back()
   }
 
