@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import { Text } from '../text/Text'
+import { ActivityIndicator } from 'react-native-paper'
 
 
-export const Loader = () => <View><Text>Loader</Text></View>
+export const Loader = () => <View><ActivityIndicator animating size='large' /></View>
