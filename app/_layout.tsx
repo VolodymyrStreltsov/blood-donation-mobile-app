@@ -3,7 +3,7 @@ import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 
 import { useEffect } from 'react'
-import { ThemeProvider } from '../components'
+import { ChangeContextProvider, ThemeProvider } from '../components'
 
 export { ErrorBoundary } from 'expo-router'
 
@@ -29,22 +29,24 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider>
-      <Stack>
-        <Stack.Screen
-          name='(tabs)'
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name='modal'
-          options={{
-            headerShown: false,
-            presentation: 'modal',
-            animation: 'slide_from_bottom',
-          }}
-        />
-      </Stack>
+      <ChangeContextProvider>
+        <Stack>
+          <Stack.Screen
+            name='(tabs)'
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='modal'
+            options={{
+              headerShown: false,
+              presentation: 'modal',
+              animation: 'slide_from_bottom',
+            }}
+          />
+        </Stack>
+      </ChangeContextProvider>
     </ThemeProvider>
   )
 }

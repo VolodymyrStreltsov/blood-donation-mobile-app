@@ -1,11 +1,11 @@
-import { useFocusEffect } from 'expo-router'
-import { useCallback, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
-import { AchievementCard, PageWrapper, Text } from '../../components'
+import { AchievementCard, PageWrapper, Text, useChangeContext } from '../../components'
 import { getDonationsAmount } from '../../data/donations'
 import { getGender } from '../../data/profile'
 
 export default function TabProgressScreen() {
+  const { donationChanged, profileChanged } = useChangeContext()
   const [amount, setAmount] = useState(0)
   const [isMale, setIsMale] = useState(false)
 
@@ -36,31 +36,20 @@ export default function TabProgressScreen() {
     },
   ], [isMale])
 
-  useFocusEffect(
-    useCallback(() => {
-      let unsubscribe: (() => void) | undefined
-      Promise.all([getGender(), getDonationsAmount()])
-        .then(([gender, donationsAmount]) => {
-          if (gender) {
-            setIsMale(gender === 'male')
-          }
-          if (donationsAmount) {
-            setAmount(donationsAmount)
-          }
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-        .finally(() => {
-          if (unsubscribe) {
-            unsubscribe()
-          }
-        })
-      return () => {
-        unsubscribe = undefined
-      }
-    }, [])
-  )
+  useEffect(() => {
+    Promise.all([getGender(), getDonationsAmount()])
+      .then(([gender, donationsAmount]) => {
+        if (gender) {
+          setIsMale(gender === 'male')
+        }
+        if (donationsAmount) {
+          setAmount(donationsAmount)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [donationChanged, profileChanged])
 
   return (
     <PageWrapper>

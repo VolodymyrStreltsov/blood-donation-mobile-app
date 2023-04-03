@@ -1,11 +1,11 @@
-import { useFocusEffect } from 'expo-router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dimensions, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar } from 'react-native-paper'
 import { getProfile, updateProfile } from '../../../data/profile'
 import { ControlledDropDown, ControlledRadioButton, ControlledTextInput } from '../../atoms'
+import { useChangeContext } from '../../wrappersAndProviders'
 
 const profileDataWithUnits: Indicator<ProfileData>[] = [
   {
@@ -36,7 +36,9 @@ const langOptions = [
 ]
 
 export const ProfileForm = () => {
+  const { setProfileChanged } = useChangeContext()
   const [profileData, setProfileData] = useState<ProfileData | null>({} as ProfileData)
+  const [editable, setEditable] = useState(false)
 
   useEffect(() => {
     getProfile()
@@ -48,17 +50,9 @@ export const ProfileForm = () => {
       })
   }, [])
 
-  const [editable, setEditable] = useState(false)
-
   const switchEditable = () => {
     setEditable(!editable)
   }
-
-  useFocusEffect(
-    useCallback(() => {
-      setEditable(false)
-    }, [])
-  )
 
   const defaultValues: ProfileData = useMemo(() => {
     return {
@@ -89,7 +83,8 @@ export const ProfileForm = () => {
 
   const onSubmit = (val: ProfileData) => {
     updateProfile(val)
-    switchEditable()
+    setEditable(false)
+    setProfileChanged(prev => prev + 1)
   }
 
   return (

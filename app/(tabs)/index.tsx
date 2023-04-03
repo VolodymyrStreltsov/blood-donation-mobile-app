@@ -1,44 +1,48 @@
-import { useFocusEffect } from 'expo-router'
-import { memo, useCallback, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import {
   MenuFAB,
   NextDonationCard,
   PageWrapper,
   PreviousDonationListElement,
-  Text
+  Text,
+  useChangeContext
 } from '../../components'
 import { getAllDonations, getNextDonationsDate } from '../../data/donations'
 
 export default function TabDonationsScreen() {
+  const { donationChanged, profileChanged } = useChangeContext()
   const [nextDonations, setNextDonations] = useState<[string, number][]>([])
   const [previousDonations, setPreviousDonations] = useState<Partial<Donation>[]>([])
 
-  useFocusEffect(
-    useCallback(() => {
-      let unsubscribe: (() => void) | undefined
-      Promise.all([getNextDonationsDate(), getAllDonations()])
-        .then(([nextDonationsData, previousDonationsData]) => {
-          if (nextDonationsData) {
-            setNextDonations(Object.entries(nextDonationsData))
-          }
-          if (previousDonationsData) {
-            setPreviousDonations(previousDonationsData)
-          }
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-        .finally(() => {
-          if (unsubscribe) {
-            unsubscribe()
-          }
-        })
-      return () => {
-        unsubscribe = undefined
-      }
-    }, [])
-  )
+  useEffect(() => {
+    console.log('donation changed')
+    Promise.all([getNextDonationsDate(), getAllDonations()])
+      .then(([nextDonationsData, previousDonationsData]) => {
+        if (nextDonationsData) {
+          setNextDonations(Object.entries(nextDonationsData))
+        }
+        if (previousDonationsData) {
+          setPreviousDonations(previousDonationsData)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [donationChanged])
+
+  useEffect(() => {
+    console.log('profile changed')
+    getNextDonationsDate()
+      .then((nextDonationsData) => {
+        if (nextDonationsData) {
+          setNextDonations(Object.entries(nextDonationsData))
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [profileChanged])
 
   const MemoizedNextDonationCard = memo(NextDonationCard)
   const MemoizedPreviousDonationListElement = memo(PreviousDonationListElement)
