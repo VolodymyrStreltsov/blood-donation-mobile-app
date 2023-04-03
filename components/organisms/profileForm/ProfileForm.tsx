@@ -12,9 +12,6 @@ const profileDataWithUnits: Indicator<ProfileData>[] = [
     id: 'language',
   },
   {
-    id: 'country'
-  },
-  {
     id: 'gender',
   },
   {
@@ -30,11 +27,6 @@ const profileDataWithUnits: Indicator<ProfileData>[] = [
 const radioOptions = [
   { label: 'male', value: 'male' },
   { label: 'female', value: 'female' },
-]
-
-const countriesOptions = [
-  { label: 'Polska', value: 'Polska' },
-  { label: 'Україна', value: 'Україна' },
 ]
 
 const langOptions = [
@@ -71,7 +63,6 @@ export const ProfileForm = () => {
   const defaultValues: ProfileData = useMemo(() => {
     return {
       language: 'EN',
-      country: 'Polska',
       gender: 'male',
       height: '',
       weight: '',
@@ -119,18 +110,6 @@ export const ProfileForm = () => {
                 control={control}
                 name={item.id}
                 list={langOptions}
-                disabled={!editable}
-              />
-            )
-          }
-          if (item.id === 'country') {
-            return (
-              <ControlledDropDown
-                key={item.id}
-                style={styles.item}
-                control={control}
-                name={item.id}
-                list={countriesOptions}
                 disabled={!editable}
               />
             )

@@ -19,7 +19,7 @@ const createDonationsTable = () => {
 const createProfileTable = () => {
   db.transaction((tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS profile (id INTEGER PRIMARY KEY, gender TEXT, height REAL, weight REAL, language TEXT, country TEXT)',
+      'CREATE TABLE IF NOT EXISTS profile (id INTEGER PRIMARY KEY, gender TEXT, height REAL, weight REAL, language TEXT)',
       [],
       () => console.log('Profile table created successfully.'),
       (_tx, error) => {
