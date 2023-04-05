@@ -9,6 +9,8 @@ export default function TabProgressScreen() {
   const [amount, setAmount] = useState(0)
   const [isMale, setIsMale] = useState(false)
 
+  console.log(isMale)
+
   const achievements: Achievement[] = useMemo(() => [
     {
       id: 'first',

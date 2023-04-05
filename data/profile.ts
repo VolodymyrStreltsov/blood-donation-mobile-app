@@ -29,7 +29,7 @@ export const updateProfile = async (updatedProfile: ProfileData): Promise<void> 
   try {
     await db.transaction(async (tx) => {
       await tx.executeSql(
-        'INSERT OR REPLACE INTO profile (id, gender, height, weight, language) VALUES (?, ?, ?, ?, ?, ?)',
+        'INSERT OR REPLACE INTO profile (id, gender, height, weight, language) VALUES (?, ?, ?, ?, ?)',
         [
           1,
           updatedProfile.gender,
