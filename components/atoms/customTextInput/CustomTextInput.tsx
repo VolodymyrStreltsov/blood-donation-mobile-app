@@ -1,7 +1,9 @@
 import { ReactNode } from 'react'
-import { StyleSheet, TextInput as Input, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import MaskInput, { Mask } from 'react-native-mask-input'
 import { useTheme } from 'react-native-paper'
 import { Text } from '../text/Text'
+import { getMask } from './getMask'
 
 interface CustomTextInputProps {
   value: string | number
@@ -16,17 +18,21 @@ interface CustomTextInputProps {
 export const CustomTextInput = ({ value, onChange, label, right, disabled, calendar, height }: CustomTextInputProps) => {
   const { colors } = useTheme()
 
+  const mask: Mask | undefined = getMask(label, String(value))
+
   return (
     <View style={{ height: height || 48 }}>
       <View style={[styles.label, { backgroundColor: colors.surface }]}>
         <Text variant='h5' style={styles.label_text}>{label}</Text>
       </View>
-      <Input
+      <MaskInput
         style={[styles.input, { borderColor: colors.onSurfaceVariant, color: colors.onSurfaceVariant }, disabled && styles.disabled]}
         onChangeText={onChange}
         value={String(value)}
         keyboardType='numeric'
         editable={!disabled && !calendar}
+        mask={mask}
+        placeholderTextColor={colors.onSurfaceVariant}
       />
       <View style={[styles.right, calendar && styles.icon]}>
         {right}

@@ -19,11 +19,11 @@ export const ControlledTextInput = ({
   disabled = false,
   right = '',
 }: ControlledTextInputProps) =>
-  <View style={style}>
-    <Controller
-      name={name}
-      control={control}
-      render={({ field: { onChange, value } }) =>
+  <Controller
+    name={name}
+    control={control}
+    render={({ field: { onChange, value } }) =>
+      <View style={[style, { display: disabled && !value ? 'none' : 'flex' }]}>
         <CustomTextInput
           disabled={disabled}
           label={name}
@@ -31,7 +31,7 @@ export const ControlledTextInput = ({
           value={String(value)}
           right={<Text variant='h4' style={{ color: 'grey' }}>{right}</Text>}
         />
-      }
-    />
-  </View>
+      </View>
+    }
+  />
 
