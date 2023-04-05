@@ -4,6 +4,7 @@ import { SplashScreen, Stack } from 'expo-router'
 
 import { useEffect } from 'react'
 import { ChangeContextProvider, ThemeProvider } from '../components'
+import '../localization/i18n'
 
 export { ErrorBoundary } from 'expo-router'
 

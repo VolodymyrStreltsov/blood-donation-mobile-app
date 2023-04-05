@@ -1,4 +1,5 @@
 import { memo, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlatList, View } from 'react-native'
 import {
   MenuFAB,
@@ -13,6 +14,7 @@ import {
 import { getAllDonations, getNextDonationsDate } from '../../data/donations'
 
 export default function TabDonationsScreen() {
+  const { t } = useTranslation()
   const { donationChanged, profileChanged } = useChangeContext()
   const [nextDonations, setNextDonations] = useState<[string, number][]>([])
   const [previousDonations, setPreviousDonations] = useState<Partial<Donation>[]>([])
@@ -78,7 +80,7 @@ export default function TabDonationsScreen() {
         )}
       </View>
       <Text variant='h3' align='flex-start' style={{ marginBottom: 18, marginLeft: 16 }}>
-        Previous donations
+        {t('headers.previousDonations')}
       </Text>
       <View style={{ flex: 1 }}>
         {loadingPreviousDonations ? (
