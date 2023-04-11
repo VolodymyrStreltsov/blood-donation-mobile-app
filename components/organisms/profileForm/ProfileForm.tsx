@@ -30,9 +30,10 @@ const radioOptions = [
 ]
 
 const langOptions = [
-  { label: 'PL', value: 'PL' },
-  { label: 'EN', value: 'EN' },
-  { label: 'UA', value: 'UA' },
+  { label: 'PL', value: 'pl' },
+  { label: 'EN', value: 'en' },
+  { label: 'UA', value: 'ua' },
+  { label: 'RU', value: 'ru' },
 ]
 
 export const ProfileForm = () => {

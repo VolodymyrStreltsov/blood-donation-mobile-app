@@ -40,7 +40,7 @@ interface BaseDonationInfo {
 }
 
 interface ProfileData {
-  language: 'PL' | 'EN' | 'UA'
+  language: 'pl' | 'en' | 'ua' | 'ru'
   gender: string
   height: string
   weight: string
