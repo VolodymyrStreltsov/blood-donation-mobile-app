@@ -12,6 +12,7 @@ import {
   useChangeContext
 } from '../../components'
 import { getAllDonations, getNextDonationsDate } from '../../data/donations'
+import setLanguage from '../../localization/i18n'
 
 export default function TabDonationsScreen() {
   const { t } = useTranslation()
@@ -44,6 +45,7 @@ export default function TabDonationsScreen() {
 
   useEffect(() => {
     setLoadingNextDonations(true)
+    setLanguage()
     getNextDonationsDate()
       .then((nextDonationsData) => {
         if (nextDonationsData) {

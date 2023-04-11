@@ -72,3 +72,28 @@ export const getGender = async (): Promise<string | null> => {
     })
   })
 }
+
+export const getLanguage = async (): Promise<string | null> => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT language FROM profile WHERE id = ?',
+        [1],
+        (_tx, results) => {
+          if (results.rows.length > 0) {
+            console.log('language retrieved successfully', results.rows.item(0).language)
+            resolve(results.rows.item(0).language)
+          } else {
+            console.log('No language data found')
+            resolve(null)
+          }
+        },
+        (_tx, error) => {
+          console.error('Error retrieving language', error.message)
+          reject(error)
+          return true
+        },
+      )
+    })
+  })
+}
