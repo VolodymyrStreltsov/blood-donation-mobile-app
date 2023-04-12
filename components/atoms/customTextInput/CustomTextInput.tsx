@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 import MaskInput, { Mask } from 'react-native-mask-input'
 import { useTheme } from 'react-native-paper'
@@ -16,6 +17,7 @@ interface CustomTextInputProps {
 }
 
 export const CustomTextInput = ({ value, onChange, label, right, disabled, calendar, height }: CustomTextInputProps) => {
+  const { t } = useTranslation()
   const { colors } = useTheme()
 
   const mask: Mask | undefined = getMask(label, String(value))
@@ -23,7 +25,7 @@ export const CustomTextInput = ({ value, onChange, label, right, disabled, calen
   return (
     <View style={{ height: height || 48 }}>
       <View style={[styles.label, { backgroundColor: colors.surface }]}>
-        <Text variant='h5' style={styles.label_text}>{label}</Text>
+        <Text variant='h5' style={styles.label_text}>{t(`labels.${label}`)}</Text>
       </View>
       <MaskInput
         style={[styles.input, { borderColor: colors.onSurfaceVariant, color: colors.onSurfaceVariant }, disabled && styles.disabled]}

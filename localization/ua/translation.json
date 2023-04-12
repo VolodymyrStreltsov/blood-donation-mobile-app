@@ -1,5 +1,85 @@
 {
   "headers": {
-  "previousDonations": "Попередні донації"
+  "previousDonations": "Попередні донації",
+  "nextDonation": "Наступна донація",
+  "lastDonation": "Остання донація",
+  "progress": "Прогрес",
+  "morphology": "Морфологія"
+  },
+  "labels": {
+    "date": "Дата",
+    "volume": "Об'єм",
+    "type": "Тип",
+    "language": "Мова",
+    "gender": "Стать",
+    "weight": "Вага",
+    "height": "Зріст",
+    "duration": "Тривалість",
+    "blood_pressure": "Тиск",
+    "Hb": "Hb",
+    "Ht": "Ht",
+    "MCV": "MCV",
+    "MCH": "MCH",
+    "MCHC": "MCHC",
+    "RDW": "RDW",
+    "WBC": "WBC",
+    "PLT": "PLT",
+    "MPV": "MPV",
+    "PCT": "PCT",
+    "PDW": "PDW",
+    "MO": "MO"
+  },
+  "donationTypes": {
+    "Donation": "Донація",
+    "Whole_blood": "Кров",
+    "Platelets": "Тромбоцити",
+    "Disqualification": "Дискваліфікація",
+    "Plasma": "Плазма",
+    "Erythrocytes": "Еритроцити",
+    "Leukocytes": "Лейкоцити",
+    "Plasma_Platelets": "Плазма і Тромбоцити",
+    "Erythrocytes_Platelets": "Еритроцити і Тромбоцити"
+  },
+  "buttons": {
+    "delete": "Видалити",
+    "edit": "Редагувати"
+  },
+  "achievements": {
+    "first": "Odznaka Zasłużony Honorowy\nDawca Krwi za 5/6 litrów",
+    "second": "Odznaka Zasłużony Honorowy\nDawca Krwi za 10/12 litrów",
+    "third": "Odznaka Zasłużony Honorowy\nDawca Krwi za 15/18 litrów",
+    "fourth": "Honorowy Dawca Krwi —\nZasłużony dla Zdrowia Narodu"
+  },
+  "texts": {
+    "askDoctor": "Ask doctor",
+    "canDonate": "You can donate",
+    "nextDonationIn": "Next donation in {{days}} days",
+    "never": "never"
+  },
+  "infoParagraphs": {
+    "Whole_blood": {
+      "1": "Krew pełna jest pobierana nie częściej niż 6 razy w roku od mężczyzn i nie częściej niż 4 razy w roku od kobiet, z tym, że przerwa pomiędzy pobraniami musi wynosić 8 tygodni*;",
+      "2": "Jednorazowo od osoby ważącej co najmniej 50 kg lub więcej można pobrać 450± 45 ml krwi (1 jednostka);",
+      "3": "Jeżeli dawca został poddany zabiegowi aferezy, pobranie krwi pełnej może nastąpić najwcześniej po upływie 48 godzin od tego zabiegu, z wyjątkiem zabiegu erytroaferezy;",
+      "4": "Całkowita jednorazowa utrata krwinek czerwonych przez dawcę nie może przekroczyć wartości, która w warunkach izowolemicznych doprowadziłaby do obniżenia stężenia hemoglobiny u dawcy poniżej 110g/l (6,8mmol/l)."
+    },
+    "Platelets": {
+      "1": "Krew pełna jest pobierana nie częściej niż 6 razy w roku od mężczyzn i nie częściej niż 4 razy w roku od kobiet, z tym, że przerwa pomiędzy pobraniami musi wynosić 8 tygodni*;",
+      "2": "Jednorazowo od osoby ważącej co najmniej 50 kg lub więcej można pobrać 450± 45 ml krwi (1 jednostka);",
+      "3": "Jeżeli dawca został poddany zabiegowi aferezy, pobranie krwi pełnej może nastąpić najwcześniej po upływie 48 godzin od tego zabiegu, z wyjątkiem zabiegu erytroaferezy;",
+      "4": "Całkowita jednorazowa utrata krwinek czerwonych przez dawcę nie może przekroczyć wartości, która w warunkach izowolemicznych doprowadziłaby do obniżenia stężenia hemoglobiny u dawcy poniżej 110g/l (6,8mmol/l)."
+    },
+    "Plasma": {
+      "1": "Krew pełna jest pobierana nie częściej niż 6 razy w roku od mężczyzn i nie częściej niż 4 razy w roku od kobiet, z tym, że przerwa pomiędzy pobraniami musi wynosić 8 tygodni*;",
+      "2": "Jednorazowo od osoby ważącej co najmniej 50 kg lub więcej można pobrać 450± 45 ml krwi (1 jednostka);",
+      "3": "Jeżeli dawca został poddany zabiegowi aferezy, pobranie krwi pełnej może nastąpić najwcześniej po upływie 48 godzin od tego zabiegu, z wyjątkiem zabiegu erytroaferezy;",
+      "4": "Całkowita jednorazowa utrata krwinek czerwonych przez dawcę nie może przekroczyć wartości, która w warunkach izowolemicznych doprowadziłaby do obniżenia stężenia hemoglobiny u dawcy poniżej 110g/l (6,8mmol/l)."
+  },
+    "Erythrocytes": {
+      "1": "Krew pełna jest pobierana nie częściej niż 6 razy w roku od mężczyzn i nie częściej niż 4 razy w roku od kobiet, z tym, że przerwa pomiędzy pobraniami musi wynosić 8 tygodni*;",
+      "2": "Jednorazowo od osoby ważącej co najmniej 50 kg lub więcej można pobrać 450± 45 ml krwi (1 jednostka);",
+      "3": "Jeżeli dawca został poddany zabiegowi aferezy, pobranie krwi pełnej może nastąpić najwcześniej po upływie 48 godzin od tego zabiegu, z wyjątkiem zabiegu erytroaferezy;",
+      "4": "Całkowita jednorazowa utrata krwinek czerwonych przez dawcę nie może przekroczyć wartości, która w warunkach izowolemicznych doprowadziłaby do obniżenia stężenia hemoglobiny u dawcy poniżej 110g/l (6,8mmol/l)."
   }
+}
 }

@@ -1,32 +1,30 @@
 import { usePathname, useRouter } from 'expo-router'
 import { useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FAB, FABGroupProps, Portal, useTheme } from 'react-native-paper'
 
 type Action = Omit<FABGroupProps['actions'][0], 'onPress'> & { name: DonationName }
 
 export const MenuFAB = () => {
+  const { t } = useTranslation()
   const { colors } = useTheme()
   const actions: Action[] = [
     {
       icon: 'bandage',
-      label: 'Disqualification',
       style: { backgroundColor: colors.error },
       color: colors.background,
       name: 'Disqualification',
     },
     {
       icon: 'gauge',
-      label: 'Platelets',
       name: 'Platelets',
     },
     {
       icon: 'water-outline',
-      label: 'Whole blood',
       name: 'Whole_blood',
     },
     {
       icon: 'cup-water',
-      label: 'Donation',
       size: 'medium',
       style: { backgroundColor: colors.tertiary },
       color: colors.background,
@@ -45,6 +43,7 @@ export const MenuFAB = () => {
   const memoizedActions = useMemo(() => {
     return actions.map(action => ({
       ...action,
+      label: t(`donationTypes.${action.name}`),
       onPress: () => onPressAction(action.name),
     }))
   }, [onPressAction])

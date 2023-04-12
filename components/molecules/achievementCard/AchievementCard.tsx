@@ -6,12 +6,10 @@ export const AchievementCard = ({
   title,
   progress,
   remainder,
-  img,
 }: {
   title: string
   progress: number
   remainder: string
-  img: number
 }) => {
   const achieved = progress >= 1
   const { colors } = useTheme()

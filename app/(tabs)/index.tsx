@@ -66,7 +66,7 @@ export default function TabDonationsScreen() {
   return (
     <PageWrapper>
       <Text variant='h3' align='flex-start' style={{ marginBottom: 18, marginLeft: 16 }}>
-        Next donation
+        {t('headers.nextDonation')}
       </Text>
       <View style={{ height: 175, marginHorizontal: -26 }}>
         {loadingNextDonations ? (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import { View } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import DropDown from 'react-native-paper-dropdown'
 import { StyleProp, ViewStyle } from 'react-native/types'
 import { CustomTextInput } from '../customTextInput/CustomTextInput'
@@ -22,6 +23,7 @@ export function ControlledDropDown({
   disabled,
 }: ControlledDropDownProps) {
   const [showDropDown, setShowDropDown] = useState(false)
+  const { colors } = useTheme()
 
   const toggleShowDropDown = () => {
     setShowDropDown(!showDropDown)
@@ -38,6 +40,7 @@ export function ControlledDropDown({
           <DropDown
             label={name}
             mode='outlined'
+            activeColor={colors.primary}
             visible={showDropDown}
             onDismiss={toggleShowDropDown}
             showDropDown={toggleShowDropDown}
