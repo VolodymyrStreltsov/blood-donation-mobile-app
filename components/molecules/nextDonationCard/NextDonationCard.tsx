@@ -1,14 +1,16 @@
 import { useRouter } from 'expo-router'
 
+import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 import { Avatar, Card, useTheme } from 'react-native-paper'
 import { Text } from '../../atoms'
 
 export const NextDonationCard = ({ item, index }: { item: [string, number]; index: number }) => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { colors } = useTheme()
 
-  const text = item[0] === 'Leukocytes' ? 'Ask doctor' : !item[1] ? 'You can donate' : `in ${item[1]} days`
+  const text = item[0] === 'Leukocytes' ? t('texts.askDoctor') : !item[1] ? t('texts.canDonate') : t('texts.nextDonationIn', { days: item[1] })
 
   return (
     <Card style={[styles.card, { marginLeft: index === 0 ? 26 : 7 }]} theme={{ roundness: 4 }}
@@ -28,7 +30,7 @@ export const NextDonationCard = ({ item, index }: { item: [string, number]; inde
         </View>
         <View style={styles.text}>
           <Text align='flex-start' variant='h4'>
-            {item[0]}
+            {t(`donationTypes.${item[0]}`)}
           </Text>
           <Text align='flex-start' variant='p'>
             {text}

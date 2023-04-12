@@ -1,10 +1,12 @@
 import { useRouter } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { Avatar, useTheme } from 'react-native-paper'
 import { formattingDate } from '../../../functions'
 import { Text } from '../../atoms'
 
 export const PreviousDonationListElement = ({ item }: { item: Partial<Donation> }) => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { colors } = useTheme()
 
@@ -24,7 +26,7 @@ export const PreviousDonationListElement = ({ item }: { item: Partial<Donation> 
             {formattingDate(item.date || new Date())}
           </Text>
           <Text align='flex-start' variant='h4'>
-            {item.type}
+            {t(`donationTypes.${item.type}`)}
           </Text>
         </View>
       </View>

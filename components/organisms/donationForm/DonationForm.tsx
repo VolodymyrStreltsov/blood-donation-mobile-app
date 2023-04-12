@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router'
 import { Control } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar, Menu } from 'react-native-paper'
@@ -18,12 +19,14 @@ interface DonationFormProps {
 }
 
 export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisible, activeFields, switchActive, onSubmit, deleteDonationHandler }: DonationFormProps) => {
-
+  const { t } = useTranslation()
   const router = useRouter()
 
   const disqualified = nameOfDonation === 'Disqualification'
 
-  const donationTypes = extendedDonationNames.map((el: string) => ({ label: el, value: el }))
+  const donationTypes = extendedDonationNames.map((el: string) => ({
+    label: t(`donationTypes.${el}`), value: el
+  }))
 
   const dropdownActive = !baseDonationNames.includes(nameOfDonation)
 
@@ -79,17 +82,17 @@ export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisib
               onPress={!activeFields ? switchMenuVisible : onSubmit}
             />
           }>
-          <Menu.Item onPress={switchActive} title='Edit' leadingIcon='pencil-outline' />
+          <Menu.Item onPress={switchActive} title={t('buttons.edit')} leadingIcon='pencil-outline' />
           <Menu.Item
             onPress={deleteDonationHandler}
-            title='Delete'
+            title={t('buttons.delete')}
             leadingIcon='trash-can-outline'
           />
           {/* <Menu.Item onPress={() => null} title='Share' leadingIcon='check' /> */}
         </Menu>
       </Appbar.Header>
       <Text variant='h2' align='flex-start' style={{ marginBottom: 30 }}>
-        {nameOfDonation}
+        {t(`donationTypes.${nameOfDonation}`)}
       </Text>
       {dropdownActive && activeFields && (
         <ControlledDropDown
@@ -103,7 +106,7 @@ export const DonationForm = ({ nameOfDonation, visible, control, switchMenuVisib
         {header}
       </View>
       <Text variant='h4' bold align='flex-start' style={{ marginBottom: 10 }}>
-        Morphology results
+        {t('headers.morphology')}
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <KeyboardAvoidingView

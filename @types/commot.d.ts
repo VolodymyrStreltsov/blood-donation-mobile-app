@@ -29,8 +29,6 @@ interface MorphologyIndicators {
   MO: string
 }
 
-type InfoScreenData = { id: DonationName; paragraphs: string[] }
-
 interface BaseDonationInfo {
   type: DonationName
   date: number | Date | string
@@ -58,6 +56,4 @@ interface Donation extends BaseDonationInfo, MorphologyIndicators {
 interface Achievement {
   id: string
   required: number
-  title: string
-  img: number
 }

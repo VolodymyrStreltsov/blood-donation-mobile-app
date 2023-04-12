@@ -6,5 +6,5 @@ export const getMask = (label: string, value: string): Mask | undefined => {
       ? [/\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/]
       : [/\d/, /\d/, '/', /\d/, /\d/, /\d/]
   }
-  return undefined
+  return [[/\d./]]
 }

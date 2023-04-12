@@ -25,8 +25,8 @@ const profileDataWithUnits: Indicator<ProfileData>[] = [
 ]
 
 const radioOptions = [
-  { label: 'male', value: 'male' },
-  { label: 'female', value: 'female' },
+  { label: '👨‍🦱', value: 'male' },
+  { label: '👩‍🦰', value: 'female' },
 ]
 
 const langOptions = [
