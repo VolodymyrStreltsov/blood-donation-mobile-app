@@ -46,6 +46,14 @@ function RootLayoutNav() {
               animation: 'slide_from_bottom',
             }}
           />
+          <Stack.Screen
+            name='settings-modal'
+            options={{
+              headerShown: false,
+              presentation: 'modal',
+              animation: 'slide_from_bottom',
+            }}
+          />
         </Stack>
       </ChangeContextProvider>
     </ThemeProvider>

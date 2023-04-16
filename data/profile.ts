@@ -1,10 +1,10 @@
 import db from './database'
 
-export const getProfile = async (): Promise<ProfileData | null> => {
+export const getProfile = async (): Promise<DBProfileData | null> => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT gender, height, weight, language FROM profile WHERE id = ?',
+        'SELECT gender, AB0, RhD1, RhD2, KELL, Fy, MNS FROM profile WHERE id = ?',
         [1],
         (_tx, results) => {
           if (results.rows.length > 0) {
@@ -25,17 +25,20 @@ export const getProfile = async (): Promise<ProfileData | null> => {
   })
 }
 
-export const updateProfile = async (updatedProfile: ProfileData): Promise<void> => {
+export const updateProfile = async (updatedProfile: DBProfileData): Promise<void> => {
   try {
     await db.transaction(async (tx) => {
       await tx.executeSql(
-        'INSERT OR REPLACE INTO profile (id, gender, height, weight, language) VALUES (?, ?, ?, ?, ?)',
+        'INSERT OR REPLACE INTO profile (id, gender, AB0, RhD1, RhD2, KELL, Fy, MNS) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
         [
           1,
           updatedProfile.gender,
-          updatedProfile.height,
-          updatedProfile.weight,
-          updatedProfile.language,
+          updatedProfile.AB0,
+          updatedProfile.RhD1,
+          updatedProfile.RhD2,
+          updatedProfile.KELL,
+          updatedProfile.Fy,
+          updatedProfile.MNS,
         ],
         (_tx, results) => {
           console.log('Profile updated successfully', results.rowsAffected)
@@ -65,31 +68,6 @@ export const getGender = async (): Promise<string | null> => {
         },
         (_tx, error) => {
           console.error('Error retrieving gender', error.message)
-          reject(error)
-          return true
-        },
-      )
-    })
-  })
-}
-
-export const getLanguage = async (): Promise<string | null> => {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT language FROM profile WHERE id = ?',
-        [1],
-        (_tx, results) => {
-          if (results.rows.length > 0) {
-            console.log('language retrieved successfully', results.rows.item(0).language)
-            resolve(results.rows.item(0).language)
-          } else {
-            console.log('No language data found')
-            resolve(null)
-          }
-        },
-        (_tx, error) => {
-          console.error('Error retrieving language', error.message)
           reject(error)
           return true
         },

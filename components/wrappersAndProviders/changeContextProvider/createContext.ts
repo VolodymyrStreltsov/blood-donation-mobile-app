@@ -6,6 +6,8 @@ export interface ChangeContextValues {
   setProfileChanged: Dispatch<SetStateAction<number>>
   donationChanged: number
   setDonationChanged: Dispatch<SetStateAction<number>>
+  settingsChanged: number
+  setSettingsChanged: Dispatch<SetStateAction<number>>
 }
 
 export const ChangeContext = createContext<ChangeContextValues>({
@@ -13,6 +15,8 @@ export const ChangeContext = createContext<ChangeContextValues>({
   setProfileChanged: (x) => x,
   donationChanged: 0,
   setDonationChanged: (x) => x,
+  settingsChanged: 0,
+  setSettingsChanged: (x) => x,
 })
 
 export function useChangeContext() {
