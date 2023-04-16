@@ -1,7 +1,7 @@
 import { getLocales } from 'expo-localization'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import { getLanguage } from '../data/profile'
+import { getSettings } from '../data/settings'
 import translationEN from './en/translation.json'
 import translationPL from './pl/translation.json'
 import translationRU from './ru/translation.json'
@@ -33,9 +33,7 @@ i18n.use(initReactI18next).init({
 })
 
 const setLanguage = async () => {
-  console.log('Setting language')
-  const storedLanguage = await getLanguage()
-  console.log('Stored language', storedLanguage)
+  const storedLanguage = await getSettings().then((settings) => settings?.language)
   if (storedLanguage) {
     i18n.changeLanguage(storedLanguage)
   } else {

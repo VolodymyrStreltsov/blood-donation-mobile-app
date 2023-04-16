@@ -20,6 +20,7 @@ export const ControlledRadioButton = ({
 
   return (
     <View style={styles.container}>
+      <Text align='flex-start'>{name}</Text>
       <Controller
         name={name}
         control={control}
@@ -28,19 +29,21 @@ export const ControlledRadioButton = ({
             value={value}
             onValueChange={onChange}
           >
-            {options.map((option) => (
-              <View
-                key={option.value}
-                style={styles.item}
-              >
-                <RadioButton
-                  value={option.value}
-                  disabled={disabled}
-                />
-                <Text>{option.label}</Text>
-              </View>
-            ))
-            }
+            <View style={styles.group}>
+              {options.map((option) => (
+                <View
+                  key={option.value}
+                  style={styles.item}
+                >
+                  <RadioButton
+                    value={option.value}
+                    disabled={disabled}
+                  />
+                  <Text>{option.label}</Text>
+                </View>
+              ))
+              }
+            </View>
           </RadioButton.Group>
         }
       />
@@ -51,13 +54,17 @@ export const ControlledRadioButton = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    alignItems: 'flex-start',
+    marginTop: 8,
+  },
+  group: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    marginBottom: 26,
+    width: '100%',
+    justifyContent: 'flex-start',
+    marginTop: 8,
   },
   item: {
-    width: '100%',
     flexDirection: 'row',
+    width: '20%',
   },
 })

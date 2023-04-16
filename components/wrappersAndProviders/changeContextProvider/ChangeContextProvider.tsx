@@ -10,12 +10,15 @@ export function ChangeContextProvider({
 }: ChangeContextProviderProps) {
   const [profileChanged, setProfileChanged] = useState(0)
   const [donationChanged, setDonationChanged] = useState(0)
+  const [settingsChanged, setSettingsChanged] = useState(0)
 
   const values: ChangeContextValues = {
     profileChanged,
     setProfileChanged,
     donationChanged,
     setDonationChanged,
+    settingsChanged,
+    setSettingsChanged
   }
 
   return (

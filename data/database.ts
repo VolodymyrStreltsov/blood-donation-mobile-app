@@ -19,7 +19,7 @@ const createDonationsTable = () => {
 const createProfileTable = () => {
   db.transaction((tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS profile (id INTEGER PRIMARY KEY, gender TEXT, height REAL, weight REAL, language TEXT)',
+      'CREATE TABLE IF NOT EXISTS profile (id INTEGER PRIMARY KEY, gender TEXT, AB0 TEXT, RhD1 TEXT, RhD2 TEXT, KELL TEXT, Fy TEXT, MNS TEXT)',
       [],
       () => console.log('Profile table created successfully.'),
       (_tx, error) => {
@@ -30,9 +30,24 @@ const createProfileTable = () => {
   })
 }
 
+const createSettingsTable = () => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'CREATE TABLE IF NOT EXISTS settings (id INTEGER PRIMARY KEY, language TEXT, mode TEXT, firstLogin INTEGER)',
+      [],
+      () => console.log('Settings table created successfully.'),
+      (_tx, error) => {
+        console.error('Error creating settings table', error.message)
+        return true
+      },
+    )
+  })
+}
+
 export const initDB = () => {
   createDonationsTable()
   createProfileTable()
+  createSettingsTable()
 }
 
 initDB()

@@ -16,7 +16,7 @@ import setLanguage from '../../localization/i18n'
 
 export default function TabDonationsScreen() {
   const { t } = useTranslation()
-  const { donationChanged, profileChanged } = useChangeContext()
+  const { donationChanged, profileChanged, settingsChanged } = useChangeContext()
   const [nextDonations, setNextDonations] = useState<[string, number][]>([])
   const [previousDonations, setPreviousDonations] = useState<Partial<Donation>[]>([])
   const [loadingNextDonations, setLoadingNextDonations] = useState<boolean>(true)
@@ -45,7 +45,6 @@ export default function TabDonationsScreen() {
 
   useEffect(() => {
     setLoadingNextDonations(true)
-    setLanguage()
     getNextDonationsDate()
       .then((nextDonationsData) => {
         if (nextDonationsData) {
@@ -59,6 +58,10 @@ export default function TabDonationsScreen() {
         setLoadingNextDonations(false)
       })
   }, [profileChanged])
+
+  useEffect(() => {
+    setLanguage()
+  }, [settingsChanged])
 
   const MemoizedNextDonationCard = memo(NextDonationCard)
   const MemoizedPreviousDonationListElement = memo(PreviousDonationListElement)

@@ -1,52 +1,57 @@
+import { useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Appbar } from 'react-native-paper'
 import { getProfile, updateProfile } from '../../../data/profile'
-import { ControlledDropDown, ControlledRadioButton, ControlledTextInput, Loader } from '../../atoms'
+import { ControlledCheckbox, ControlledRadioButton, Loader, Text } from '../../atoms'
 import { useChangeContext } from '../../wrappersAndProviders'
 
-const profileDataWithUnits: Indicator<ProfileData>[] = [
-  {
-    id: 'language',
-  },
-  {
-    id: 'gender',
-  },
-  {
-    id: 'height',
-    unit: 'cm',
-  },
-  {
-    id: 'weight',
-    unit: 'kg',
-  },
-]
+const profileFields: ProfileFields[] = ['gender', 'AB0', 'RhD1', 'RhD2', 'KELL', 'Fy', 'MNS']
 
-const radioOptions = [
-  { label: '👨‍🦱', value: 'male' },
-  { label: '👩‍🦰', value: 'female' },
-]
-
-const langOptions = [
-  { label: 'PL', value: 'pl' },
-  { label: 'EN', value: 'en' },
-  { label: 'UA', value: 'ua' },
-  { label: 'RU', value: 'ru' },
-]
+const options = {
+  gender: [{ label: 'male', value: 'male' },
+  { label: 'female', value: 'female' }],
+  AB0: [{ label: 'A', value: 'A' }, { label: 'B', value: 'B' }, { label: 'AB', value: 'AB' }, { label: '0', value: '0' }],
+  RhD1: [{ label: '+', value: '+' }, { label: '-', value: '-' }],
+  RhD2: ['Cw', 'C', 'c', 'E', 'e'],
+  KELL: [{ label: '+', value: '+' }, { label: '-', value: '-' }],
+  Fy: ['a', 'b'],
+  MNS: ['M', 'N', 'S', 's'],
+}
 
 export const ProfileForm = () => {
   const { setProfileChanged, profileChanged } = useChangeContext()
-  const [profileData, setProfileData] = useState<ProfileData | null>(null)
+  const [profileData, setProfileData] = useState<FrontProfileData | null>(null)
   const [editable, setEditable] = useState(false)
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     setLoading(true)
     getProfile()
       .then((data) => {
-        setProfileData(data)
+        const RhD2 = (data?.RhD2 || '').split(',')
+        const Fy = (data?.Fy || '').split(',')
+        const MNS = (data?.MNS || '').split(',')
+        setProfileData({
+          gender: data?.gender,
+          AB0: data?.AB0,
+          RhD1: data?.RhD1,
+          Cw: RhD2.includes('Cw'),
+          C: RhD2.includes('C'),
+          c: RhD2.includes('c'),
+          E: RhD2.includes('E'),
+          e: RhD2.includes('e'),
+          KELL: data?.KELL,
+          a: Fy.includes('a'),
+          b: Fy.includes('b'),
+          M: MNS.includes('M'),
+          N: MNS.includes('N'),
+          S: MNS.includes('S'),
+          s: MNS.includes('s'),
+        } as FrontProfileData)
       })
       .catch((error: Error) => {
         console.log(error)
@@ -58,7 +63,7 @@ export const ProfileForm = () => {
     setEditable(!editable)
   }
 
-  const defaultValues = profileData as ProfileData
+  const defaultValues = profileData as FrontProfileData
 
   const { handleSubmit, control, reset } = useForm({
     mode: 'onSubmit',
@@ -72,9 +77,13 @@ export const ProfileForm = () => {
     }
   }, [profileData])
 
-  const onSubmit = (val: ProfileData) => {
-    console.log(val)
-    updateProfile(val)
+  const onSubmit = (val: FrontProfileData) => {
+    updateProfile({
+      ...val,
+      RhD2: [val.Cw && 'Cw', val.c && 'c', val.C && 'C', val.E && 'E', val.e && 'e'].filter(Boolean).join(','),
+      Fy: [val.a && 'a', val.b && 'b'].filter(Boolean).join(','),
+      MNS: [val.M && 'M', val.N && 'N', val.S && 'S', val.s && 's'].filter(Boolean).join(','),
+    })
       .then(() => {
         setEditable(false)
         setProfileChanged(prev => prev + 1)
@@ -84,54 +93,45 @@ export const ProfileForm = () => {
       })
   }
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <>
       <Appbar.Header style={styles.appbarContainer}>
         <Appbar.Action
           icon={editable ? 'check' : 'pencil-outline'}
           onPress={!editable ? switchEditable : handleSubmit(onSubmit)}
         />
+        <Appbar.Action
+          icon='settings-helper'
+          onPress={() => router.push({ pathname: 'settings-modal' })}
+        />
       </Appbar.Header>
       <ScrollView contentContainerStyle={styles.formContainer} showsVerticalScrollIndicator={false}>
-        {loading ? (
-          <Loader />
-        ) : (
-          profileDataWithUnits.map((item) => {
-            if (item.id === 'language') {
-              return (
-                <ControlledDropDown
-                  key={item.id}
-                  style={styles.item}
-                  control={control}
-                  name={item.id}
-                  list={langOptions}
-                  disabled={!editable}
-                />
-              )
-            }
-            if (item.id === 'gender') {
-              return (
-                <ControlledRadioButton
-                  key={item.id}
-                  control={control}
-                  name={item.id}
-                  options={radioOptions}
-                  disabled={!editable} />
-              )
-            } else {
-              return (
-                <ControlledTextInput
-                  disabled={!editable}
-                  key={item.id}
-                  name={item.id}
-                  control={control}
-                  style={styles.item}
-                  right={item.unit}
-                />
-              )
-            }
-          })
-        )}
+        {profileFields.map((item) => {
+          if (item === 'RhD2' || item === 'Fy' || item === 'MNS') {
+            return (
+              <View key={item}>
+                {item !== 'RhD2' && <Text align='flex-start'>{item}</Text>}
+                <View style={styles.checkboxes}>
+                  {options[item].map((option) =>
+                    <ControlledCheckbox control={control} name={option} key={option} disabled={!editable} />
+                  )}
+                </View>
+              </View>
+            )
+          } else {
+            return (
+              <ControlledRadioButton
+                key={item}
+                control={control}
+                name={item}
+                options={options[item]}
+                disabled={!editable} />
+            )
+          }
+        })
+        }
       </ScrollView>
     </>
   )
@@ -148,15 +148,14 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    width: '100%',
-    rowGap: 16,
+    width: Dimensions.get('window').width,
     paddingTop: 16,
   },
-  item: {
-    width: '46%',
+  checkboxes: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 8,
+    marginBottom: 8,
   },
 })

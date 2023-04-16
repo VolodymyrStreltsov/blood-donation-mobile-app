@@ -1,3 +1,4 @@
+export { ControlledCheckbox } from './controlledCheckbox/ControlledCheckbox'
 export { ControlledDropDown } from './controlledDropDown/ControlledDropDown'
 export { ControlledRadioButton } from './controlledRadioButton/ControlledRadioButton'
 export { ControlledTextInput } from './controlledTextInput/ControlledTextInput'
