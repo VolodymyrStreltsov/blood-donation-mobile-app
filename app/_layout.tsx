@@ -29,8 +29,8 @@ export default function RootLayout() {
 function RootLayoutNav() {
 
   return (
-    <ThemeProvider>
-      <ChangeContextProvider>
+    <ChangeContextProvider>
+      <ThemeProvider>
         <Stack>
           <Stack.Screen
             name='(tabs)'
@@ -55,7 +55,7 @@ function RootLayoutNav() {
             }}
           />
         </Stack>
-      </ChangeContextProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </ChangeContextProvider>
   )
 }

@@ -15,7 +15,7 @@ const langOptions = [
   { label: 'RU', value: 'ru' },
 ]
 
-const modeOptions = [{ label: '🌙', value: 'dark' }, { label: '☀️', value: 'light' }]
+const modeOptions = [{ label: 'dark', value: 'dark' }, { label: 'light', value: 'light' }, { label: 'system', value: '' }]
 
 export const SettingsForm = () => {
   const { setSettingsChanged, settingsChanged } = useChangeContext()
