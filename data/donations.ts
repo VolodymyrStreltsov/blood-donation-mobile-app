@@ -289,7 +289,12 @@ export const getNextDonationsDate = async (): Promise<Record<DonationName, numbe
   for (const nextDonation of Object.keys(nextDonations) as DonationName[]) {
     if (nextDonation === 'Whole_blood' && gender === 'female') {
       const value = await getWholeBlood_LastTwelveMonth()
-      nextDonations[nextDonation] = Math.ceil(Math.max(disqualification, value))
+      if (value < 0) {
+        const eligibilityPeriodInDays = getEligibilityPeriodInDays(lastDonation?.type, nextDonation)
+        nextDonations[nextDonation] = Math.ceil(Math.max(disqualification, eligibilityPeriodInDays))
+      } else {
+        nextDonations[nextDonation] = Math.ceil(Math.max(disqualification, value))
+      }
     } else {
       const eligibilityPeriodInDays = getEligibilityPeriodInDays(lastDonation?.type, nextDonation)
       const nextDate = +lastDonation.date + eligibilityPeriodInDays * 24 * 60 * 60 * 1000
