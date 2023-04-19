@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 import MaskInput, { Mask } from 'react-native-mask-input'
@@ -20,7 +20,7 @@ export const CustomTextInput = ({ value, onChange, label, right, disabled, calen
   const { t } = useTranslation()
   const { colors } = useTheme()
 
-  const mask: Mask | undefined = getMask(label, String(value))
+  const mask: Mask | undefined = useMemo(() => getMask(label, String(value)), [label, value])
 
   return (
     <View style={{ height: height || 48 }}>

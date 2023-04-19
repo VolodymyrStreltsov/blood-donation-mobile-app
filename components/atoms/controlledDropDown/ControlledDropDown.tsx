@@ -41,6 +41,7 @@ export function ControlledDropDown({
             label={name}
             mode='outlined'
             activeColor={colors.primary}
+            dropDownItemTextStyle={{ color: colors.onSurfaceVariant }}
             visible={showDropDown}
             onDismiss={toggleShowDropDown}
             showDropDown={toggleShowDropDown}

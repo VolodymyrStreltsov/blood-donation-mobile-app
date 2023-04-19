@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: 'row',
-    width: '20%',
+    marginRight: 26,
   },
 })

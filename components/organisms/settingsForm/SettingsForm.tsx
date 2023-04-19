@@ -66,7 +66,9 @@ export const SettingsForm = () => {
       })
   }
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <>
       <Appbar.Header style={styles.appbarContainer}>
         <Appbar.BackAction onPress={() => router.back()} />
@@ -121,9 +123,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '100%',
     rowGap: 16,
-    paddingTop: 16,
+    paddingVertical: 16,
   },
   item: {
-    width: '46%',
+    width: '100%',
   },
 })

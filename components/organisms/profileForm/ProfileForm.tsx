@@ -103,7 +103,7 @@ export const ProfileForm = () => {
           onPress={!editable ? switchEditable : handleSubmit(onSubmit)}
         />
         <Appbar.Action
-          icon='settings-helper'
+          icon='cog-outline'
           onPress={() => router.push({ pathname: 'settings-modal' })}
         />
       </Appbar.Header>
@@ -148,8 +148,9 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    width: Dimensions.get('window').width,
-    paddingTop: 16,
+    width: Dimensions.get('window').width - 52,
+    justifyContent: 'space-between',
+    paddingVertical: 16,
   },
   checkboxes: {
     flexDirection: 'row',
