@@ -1,6 +1,8 @@
 {
   "name": "sangon",
   "version": "1.0.0",
+  "author": "Volodymyr Streltsov",
+  "license": "MIT",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
